@@ -3,8 +3,8 @@
 ## Team members
 The members of the team are:
 - *Nathan Mani*
-- *<name of team member 2>*
 - *Aodhán Pepper*
+- *Sita Sethurajan*
 - *Justin Lu*
 - *Jory AlJuhani*
 
