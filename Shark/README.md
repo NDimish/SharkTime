@@ -2,7 +2,7 @@
 
 ## Team members
 The members of the team are:
-- *<name of team member 1>*
+- *Nathan Mani*
 - *<name of team member 2>*
 - *<name of team member 3>*
 - *Justin Lu*
