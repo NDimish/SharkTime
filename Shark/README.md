@@ -4,7 +4,7 @@
 The members of the team are:
 - *Nathan Mani*
 - *<name of team member 2>*
-- *<name of team member 3>*
+- *Sita Sethurajan*
 - *Justin Lu*
 - *Jory AlJuhani*
 
