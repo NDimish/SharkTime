@@ -5,7 +5,7 @@ The members of the team are:
 - *<name of team member 1>*
 - *<name of team member 2>*
 - *<name of team member 3>*
-- *<Justin Lu>*
+- *Justin Lu*
 - *<name of team member 5>*
 
 ## Project structure
