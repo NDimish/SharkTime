@@ -5,6 +5,12 @@
 <h1>Hello djjango<h1></h1>
 {%endif%}
 
+{%if booked_lessons%}
+<h1>Hello {{booked_lessons}}<h1>
+{%else%}
+<h1>nothing here<h1></h1>
+{%endif%}
+
 
 
 <a href="{% url 'button' %}" class="btn btn-primary">Button</button>
