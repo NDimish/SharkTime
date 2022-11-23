@@ -18,3 +18,5 @@ class request(models.Model):
     time = models.DecimalField(decimal_places = 2, max_digits= 4)
     DateSent = models.DateField(default = now)
     status = models.CharField(max_length=1, blank=False, choices=request_status,default= 'O' )
+    # for epic 2
+    additionalInfo = models.TextField(default = "N/A")
