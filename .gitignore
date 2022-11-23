@@ -138,3 +138,5 @@ GitHub.sublime-settings
 
 #nathan specific#
 nathnotes.txt
+Pipfile
+Pipfile.lock
