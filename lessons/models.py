@@ -5,6 +5,14 @@ from django.db import models
 # Aodhán
 
 """
+Template user class to be replaced
+"""
+class User:
+    studentNumber = "0000"
+    balence = 0
+    pass
+
+"""
 A simple class to store a reference number and an amount paid
 """
 class BankTransfer:
