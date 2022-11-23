@@ -6,7 +6,18 @@
 {%endif%}
 
 {%if booked_lessons%}
-<h1>Hello {{booked_lessons}}<h1>
+
+
+<ul>
+    {% for bookings in booked_lessons%}
+    <li> {{bookings}} </li>
+
+
+    {%endfor%}
+
+</ul>
+
+
 {%else%}
 <h1>nothing here<h1></h1>
 {%endif%}

@@ -5,11 +5,11 @@ from django.http import HttpResponse
 def studentHomePage(request):
     data ={
         'name' :'nathan',
-        'booked_lessons' :'0'
+        'booked_lessons' :[0,2,3,4,5,6]
     
     }
 
-    
+
     return render(request,'studentHome.html',data)
 
 
