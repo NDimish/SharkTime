@@ -18,6 +18,17 @@ def button(request):
 
 
 
-#@app.route('/my-link/')
-#def my_link():
-   #  return 'Click.'
+
+#function
+
+
+#get requests for user
+
+#get pending requests
+
+# edit pending requests
+
+# check if valid
+#check terms in type
+#
+
