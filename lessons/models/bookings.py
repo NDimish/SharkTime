@@ -32,7 +32,8 @@ class booking(models.Model):
         ONCE_PER_TWO_WEEKS  = 2, '1 lesson every 2 weeks'
     
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
- 
+
+    objects = models.Manager() 
 
  # Note - To retrieve all bookings for a request, can use request.bookings 
 
