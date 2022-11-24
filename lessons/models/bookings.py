@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from .users import User
 from .requests import request
 #helper file 
-import helpers 
+from lessons import helpers 
 from django.utils.translation import gettext_lazy as _
 
 
@@ -15,7 +15,7 @@ class booking(models.Model):
     #unique booking_id 
     id = models.AutoField(primary_key=True)
     #request that the booking will fulfill
-    request = models.ForeignKey(to=request , related_name = 'bookings', on_delete=models.Cascade )
+    request = models.ForeignKey(to=request , related_name = 'bookings', on_delete=models.CASCADE )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now = True)
 
@@ -33,7 +33,6 @@ class booking(models.Model):
     
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
  
-
 
  # Note - To retrieve all bookings for a request, can use request.bookings 
 
