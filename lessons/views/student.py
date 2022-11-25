@@ -31,6 +31,13 @@ def studentMakeRequest(request):
 
     return render(request,'request.html',data)
 
+def studenEditRequest(request,id):
+
+    form = make_request(request.POST or None)
+    
+
+    return render(request,'request.html',)
+
 
 
 

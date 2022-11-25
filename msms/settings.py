@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Shark.urls'
+ROOT_URLCONF = 'msms.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Shark.wsgi.application'
+WSGI_APPLICATION = 'msms.wsgi.application'
 
 
 # Database
