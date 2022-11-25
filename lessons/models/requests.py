@@ -26,7 +26,7 @@ class request(models.Model):
     Date = models.DateField(default = now)
     time = models.TimeField(default = now)
     DateSent = models.DateField(default = now)
-    status = models.CharField(max_length=1, blank=False, choices=request_status,default= 'O' )
+    status = models.CharField(max_length=1, blank=False, choices=request_status,default= 'P' )
     objects = models.Manager()
     durations = models.CharField(max_length=1, blank=False, choices=duration,default= '1' )
     lesson_type = models.CharField(max_length=1000, blank=False, default='fuck serge')
