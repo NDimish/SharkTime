@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from ..forms import make_request
+from ..forms.forms import make_request
 
 # Create your views here.
 def studentHomePage(request):
