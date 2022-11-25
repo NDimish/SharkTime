@@ -1,16 +1,59 @@
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="sidebar.css">
-    </head>
-    <body>
-    
-    
+{% extends "base.html" %}
+{% block body  %}
+    <body class="d-flex flex-column min-vh-100">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Music School Management System</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#">Home
+                      <span class="visually-hidden">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Requests</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">View Students</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Transactions</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#">Edit Account</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Sign out</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav> 
+          <div class = "container-fluid"> </div>
+          <h3 class="m-4">All Students</h3>
+          <div class="row">
+              <div class="col-12">
+                {% if requests %}
+                    <div class="card bg-light mb-4 ms-4 me-4" >
+                        <div class="card-header">Requests</div>
+                        <div class="card-body">
+                        <h4 class="card-title">Light card title</h4>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <h5 class="alert alert-primary ms-4 me-4">No Requests</h5>
+                {% endif %}
+                  
+              </div>
+          </div>
     </body>
-</html>
+{% endblock body %}
