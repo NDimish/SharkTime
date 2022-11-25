@@ -4,5 +4,6 @@ from .views import student
 urlpatterns =[
 
     path('home/',student.studentHomePage),
-    path('button/',student.button,name="button")
+    path('request/',student.studentMakeRequest, name = 'request'),
+
 ]
