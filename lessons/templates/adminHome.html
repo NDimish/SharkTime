@@ -45,7 +45,7 @@
                     <div class="card bg-light mb-4 ms-4 me-4" >
                         <div class="card-header">Requests</div>
                         <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
                             <div class ="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -64,7 +64,43 @@
                                           <td>{{request.Student}}</td>
                                           <td>{{request.lesson_type}}</td>
                                           <td>{{request.status}}</td>
-                                          <td>ACTIONS</td>
+                                          <td>
+                                            <button type="button" class="btn btn-success me-1" href="{% url 'view_request' request.id %}" data-bs-toggle="modal" 
+                                            data-bs-target="#myModal{{request.id}}">View</button>
+                                            <!-- Modal - View Request -->
+                                            <div class="modal" role="dialog" id="myModal{{request.id}}"  tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                              <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title">Request from {{request.Student}}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true"></span>
+                                                    </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <ul class="list-unstyled">
+                                                        <li>Request Status : <strong>{{request.status}}</strong> </li>
+                                                        <li>Request Date : <strong>{{request.DateSent}}</strong> </li>
+                                                        <li>Student Name : <strong>{{request.Student}}</strong> </li>
+                                                        <li>Teacher : <strong>{{request.Teacher}}</strong> </li>
+                                                        <li>Lesson Duration : <strong>{{request.durations}}</strong> </li>
+                                                        <li>Time Of Lesson : <strong>{{request.time}}</strong> </li>
+                                                        <li>Lesson Type : <strong>{{request.lesson_type}}</strong> </li>
+                                                        {% if request.isFulfilled  %}
+                                                          <li>Request Fulfilled : <strong>{{request.Date}}</strong> </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-btn-primary" data-bs-dismiss="modal">Close</button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <!--IF REQUEST IS UNFULFILLED, ENABLE OPTION TO BOOK REQUEST-->
+                                            {% if not request.isFulfilled %}
+                                            {% endif %}
+                                          </td>
                                         </tr>
                                       {% endfor %}
                                     </tbody>
