@@ -45,8 +45,33 @@
                     <div class="card bg-light mb-4 ms-4 me-4" >
                         <div class="card-header">Requests</div>
                         <div class="card-body">
-                        <h4 class="card-title">Light card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
+                            <div class ="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Date Sent</th>
+                                        <th scope="col">Student</th>
+                                        <th scope="col">Lesson Type</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">ACTiONS</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for request in requests %}
+                                        <tr>
+                                          <td>{{request.DateSent}}</td>
+                                          <td>{{request.Student}}</td>
+                                          <td>{{request.lesson_type}}</td>
+                                          <td>{{request.status}}</td>
+                                          <td>ACTIONS</td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                            </div>
+
+                          </p>
                         </div>
                     </div>
                 {% else %}
