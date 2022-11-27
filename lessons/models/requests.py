@@ -33,4 +33,11 @@ class request(models.Model):
 
     # for epic 2
     additionalInfo = models.TextField(default = "N/A")
+
+    def isFulfilled(self):
+        if(self.status=='A'):
+            return True
+        return False
+
     
+
