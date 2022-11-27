@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 #for static resources 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,"static") #defines path to static directory 
+    os.path.join(BASE_DIR,"lessons/templates/static") #defines path to static directory 
 ]
 
 # Default primary key field type
