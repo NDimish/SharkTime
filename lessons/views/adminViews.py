@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
+from django.urls import reverse
 import lessons.models as models
 
 
@@ -22,3 +23,8 @@ def admin_home(request):
     
 def admin_view_students(request):
     return render(request, 'adminViewStudents.html')
+
+def view_request(request,id):
+    #get the request from db with same pk as selected request
+    request = models.request.objects.get(pk=id)
+    return HttpResponseRedirect(reverse ('adminHome.html'))
