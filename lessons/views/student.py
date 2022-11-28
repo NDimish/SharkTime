@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse
 from django.http import Http404
 
-from ..forms.forms import make_request
+from ..forms.studentforms import make_request
 from ..models.requests import request as database
 
 # Create your views here.
