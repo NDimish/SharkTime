@@ -61,7 +61,7 @@ def studenEditRequest(request,my_id):
     }
     
 
-    return render(request,'request.html', data)
+    return render(request,'editrequest.html', data)
 
 
 
