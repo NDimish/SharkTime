@@ -26,7 +26,7 @@ class make_request(forms.ModelForm):
         user = request.objects.create(
            # self.cleaned_data.get('username'),
             Teacher=self.cleaned_data.get('Teacher'),
-            Student = 'wewe',
+            Student = 'testbob',
             Date=self.cleaned_data.get('Date'),
             time=self.cleaned_data.get('time'),
             durations=self.cleaned_data.get('durations'),

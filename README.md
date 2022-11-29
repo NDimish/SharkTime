@@ -51,3 +51,4 @@ $ python3 manage.py test
 The packages used by this application are specified in `requirements.txt`
 
 *Declare are other sources here.*
+Template used : Using bootswatch theme https://bootswatch.com/zephyr/ 
