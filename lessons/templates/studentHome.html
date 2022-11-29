@@ -10,7 +10,7 @@
 
 <ul>
     {% for bookings in booked_lessons%}
-    <li> {{bookings}} </li>
+    <li> <a href="{% url 'editrequest' bookings.id %}"  >{{bookings.Teacher}}</a> </li>
 
 
     {%endfor%}

@@ -1,15 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse
+from django.http import Http404
 
-from ..forms.forms import make_request
+from ..forms.studentforms import make_request
+from ..models.requests import request as database
 
 # Create your views here.
 def studentHomePage(request):
 
-    obj = get_requests()
+    obj =  database.objects.filter(Student = "testbob")
+    
     data ={
         'name' :'nathan',
-        'booked_lessons' :[0,2,3,4,5,6]
+        'booked_lessons' : obj
     
     }
 
@@ -31,12 +34,34 @@ def studentMakeRequest(request):
 
     return render(request,'request.html',data)
 
-def studenEditRequest(request,id):
 
-    form = make_request(request.POST or None)
+
+def studenEditRequest(request,my_id):
+
+    try:
+        obj = get_object_or_404(database,id=my_id)
+    except database.DoesNotExist:
+        raise Http404
+
+    context ={
+        'Teacher': obj.Teacher,
+        'Date': obj.Date,
+        'time': obj.time,
+        'durations': obj.duration,
+        'lesson_type':obj.lesson_type,
+        }
+    form = make_request(request.POST or None, initial = context)
+
+   
+
+    data ={
+        'data':obj,
+        'form':form
+
+    }
     
 
-    return render(request,'request.html',)
+    return render(request,'editrequest.html', data)
 
 
 
