@@ -29,7 +29,7 @@ class request(models.Model):
     status = models.CharField(max_length=1, blank=False, choices=request_status,default= 'P' )
     objects = models.Manager()
     durations = models.CharField(max_length=1, blank=False, choices=duration,default= '1' )
-    lesson_type = models.CharField(max_length=1000, blank=False, default='fuck serge')
+    lesson_type = models.CharField(max_length=1000, blank=False, default='serge')
 
     # for epic 2
     additionalInfo = models.TextField(default = "N/A")

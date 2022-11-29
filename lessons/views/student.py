@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
+from django.urls import reverse
 
 from ..forms.studentforms import make_request
 from ..models.requests import request as database
@@ -36,7 +37,7 @@ def studentMakeRequest(request):
 
 
 
-def studenEditRequest(request,my_id):
+def studentEditRequest(request,my_id):
 
     try:
         obj = get_object_or_404(database,id=my_id)
@@ -64,7 +65,34 @@ def studenEditRequest(request,my_id):
     return render(request,'editrequest.html', data)
 
 
+def Editrecord(request,my_id):
+    if("Edit" in request.POST):
+        return update(request,my_id)
+    elif("Delete" in request.POST):
+        return delete(request, my_id)
+    else:
+        #change later
+        return HttpResponseRedirect(reverse('adminHome'))
 
+
+def update(request,my_id):
+    member = database.objects.get(id=my_id)
+
+    member.Teacher = request.POST['Teacher']
+    member.Date = request.POST['Date']
+    member.Time = request.POST['time']
+    member.durations = request.POST['durations']
+    member.lesson_type = request.POST['lesson_type']
+
+    member.save()
+    return HttpResponseRedirect(reverse('studentHome'))
+
+
+
+def delete(request, my_id):
+  member = database.objects.get(id=my_id)
+  member.delete()
+  return HttpResponseRedirect(reverse('studentHome'))
 
 
 
@@ -72,8 +100,7 @@ def studenEditRequest(request,my_id):
 
 
 #get requests for user
-def get_requests():
-    return 1
+
     
 
 #get pending requests

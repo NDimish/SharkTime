@@ -3,9 +3,10 @@ from ..views import student
 
 urlpatterns =[
 
-    path('home/',student.studentHomePage),
+    path('home/',student.studentHomePage,name='studentHome'),
     path('request/',student.studentMakeRequest, name = 'request'),
-    path('request/<int:my_id>/',student.studenEditRequest, name = 'editrequest'),
+    path('editrequest/<int:my_id>/',student.studentEditRequest, name = 'editrequest'),
+    path('editrequest/update/<int:my_id>', student.Editrecord, name='editrecord'),
 
     
     
