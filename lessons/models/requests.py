@@ -39,5 +39,6 @@ class request(models.Model):
             return True
         return False
 
-    
+    def markAsFulfilled(self):
+        self.status = 'A' 
 
