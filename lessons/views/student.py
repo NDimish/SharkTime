@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
+from django.utils.timezone import now
 
 from ..forms.studentforms import make_request
 from ..models.requests import request as database
@@ -13,7 +14,7 @@ def studentHomePage(request):
     
     data ={
         'name' :'nathan',
-        'Available_lessons' : [1,2,3,45,5,6,76]
+        'Available_lessons' : [1,2,3,45,5,6,76,2,3,4,56,7,34,345,345,57,56634,54,5765,75,]
     
     }
 
@@ -26,6 +27,15 @@ def studentHomePage(request):
 def studentViewRequests(request):
     obj =  database.objects.filter(Student = "testbob")
     Pending = database.objects.filter(Student = "testbob", status ="P")
+    for book in Pending:
+        if(now().date().today() > book.Date):
+            book.status = "R"
+            book.save()
+       
+
+
+    Pending = database.objects.filter(Student = "testbob", status ="P")
+
     Rejected = database.objects.filter(Student = "testbob", status ="R")
     Approved = database.objects.filter(Student = "testbob", status ="A")
     
