@@ -1,4 +1,5 @@
-{% extends 'base_content.html' %}
+{% extends 'Studentbase.html' %}
+{% block body %}
 {% block content %}
 <div class="container">
   <div class="row">
@@ -7,9 +8,10 @@
       <form action="{% url 'request' %}" method="post">
         {% csrf_token %}
         {% include 'bootstrap_form.html' with form=form %}
-        <input type="submit" value="Sign up" class="btn btn-primary">
+        <input type="submit" value="Send Request" class="btn btn-primary">
       </form>
     </div>
   </div>
 </div>
+{% endblock %}
 {% endblock %}

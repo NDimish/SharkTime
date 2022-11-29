@@ -7,28 +7,6 @@
 <h1>Hello djjango<h1></h1>
 {%endif%}
 
-{%if booked_lessons%}
-
-
-    <ul>
-        {% for bookings in booked_lessons%}
-        <li> <a href="{% url 'editrequest' bookings.id %}"  >{{bookings.Teacher}}</a> </li>
-
-
-        {%endfor%}
-
-    </ul>
-
-
-    {%else%}
-    <h1>nothing here<h1></h1>
-    {%endif%}
-
-
-
-
-    <a href="{% url 'request' %}" class="btn btn-primary">Button</button></a>
-    
 
 
 {% endblock body  %}

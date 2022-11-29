@@ -22,11 +22,37 @@ def studentHomePage(request):
 
 
 
+
+def studentViewRequests(request):
+    obj =  database.objects.filter(Student = "testbob")
+    Pending = database.objects.filter(Student = "testbob", status ="P")
+    Rejected = database.objects.filter(Student = "testbob", status ="R")
+    Approved = database.objects.filter(Student = "testbob", status ="A")
+    
+    data ={
+
+        'booked_lessons' : obj,
+        'Pending_lessons':Pending,
+        'Rejected_lessons':Rejected,
+        'Accepted_lessons':Approved,
+    
+    }
+
+
+    return render(request,'studentViewRequests.html',data)    
+
+
+
+    
+
+
+
 def studentMakeRequest(request):
 
     form = make_request(request.POST or None)
     if form.is_valid():
         form.save()
+        return HttpResponseRedirect(reverse('studentVeiwRequests'))
     data ={
         'form':form
     
@@ -43,6 +69,8 @@ def studentEditRequest(request,my_id):
         obj = get_object_or_404(database,id=my_id)
     except database.DoesNotExist:
         raise Http404
+    if(obj.status != "P"):
+        return HttpResponseRedirect(reverse('studentHome'))
 
     context ={
         'Teacher': obj.Teacher,
@@ -72,7 +100,7 @@ def Editrecord(request,my_id):
         return delete(request, my_id)
     else:
         #change later
-        return HttpResponseRedirect(reverse('adminHome'))
+        return HttpResponseRedirect(reverse('studentHome'))
 
 
 def update(request,my_id):
@@ -85,14 +113,14 @@ def update(request,my_id):
     member.lesson_type = request.POST['lesson_type']
 
     member.save()
-    return HttpResponseRedirect(reverse('studentHome'))
+    return HttpResponseRedirect(reverse('studentVeiwRequests'))
 
 
 
 def delete(request, my_id):
   member = database.objects.get(id=my_id)
   member.delete()
-  return HttpResponseRedirect(reverse('studentHome'))
+  return HttpResponseRedirect(reverse('studentVeiwRequests'))
 
 
 
