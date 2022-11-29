@@ -1,2 +1,2 @@
-from adminForms import *
-from forms import * 
+from .adminForms import *
+from .studentforms import * 
