@@ -13,7 +13,7 @@ def studentHomePage(request):
     
     data ={
         'name' :'nathan',
-        'booked_lessons' : obj
+        'Available_lessons' : [1,2,3,45,5,6,76]
     
     }
 

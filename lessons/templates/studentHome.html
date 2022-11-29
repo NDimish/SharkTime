@@ -7,6 +7,22 @@
 <h1>Hello djjango<h1></h1>
 {%endif%}
 
+<div class ="row lg -4">
+{%for lessons in Available_lessons%}
+<div class ="col lg -4">
+<div class="card text-white bg-primary mb-3" style="max-width: 20rem;"  >
+
+    <div class="card-header">Header</div>
+    <div class="card-body">
+      <h4 class="card-title">Primary card title</h4>
+      <p class="card-text">stuff.</p>
+    </div>
+  </div>
+</div>
+
+
+{%endfor%}
+</div>
 
 
 {% endblock body  %}
