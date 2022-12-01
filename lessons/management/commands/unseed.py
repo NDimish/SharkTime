@@ -1,6 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
+from lessons.models.requests import Weekday
+from lessons.models import User,Student
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print("The unseed command has not been implemented yet!")
-        print("TO DO: Create an unseed command following the instructions of the assignment carefully.")
+        # Weekday.objects.all().delete()
+        User.objects.filter(is_superuser=False).delete()
+        Student.objects.all().delete()
