@@ -13,7 +13,7 @@ class Command(BaseCommand):
         # self.weekdays = Weekday.objects.all()
 
         self.create_users()
-        self.users = User.objects.exclude(is_superuser=True)
+        self.users = User.objects
         self.students = Student.objects.all()
 
     def create_weekdays(self):
