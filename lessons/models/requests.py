@@ -3,7 +3,7 @@ from django.utils.timezone import now
 from lessons import helpers
 from .users import Student 
 from .users import User
-from multiselectfield import MultiSelectField
+
 from django.utils.translation import gettext as _
 from django.contrib import admin
 from django import forms
