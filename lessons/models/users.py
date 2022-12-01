@@ -14,8 +14,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
-    objects = models.Manager()
-
+    
     def __str__(self):
         return '{}'.format(self.get_full_name())
 
