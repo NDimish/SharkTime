@@ -5,12 +5,24 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 from ..forms.studentforms import make_request
-from ..models.requests import request as database
+from ..models.models import LessonBook as database
 
 # Create your views here.
+
+
+# def login(view_function):
+#    def mod_view(request):
+#        if request.user.is_authenticated:
+#            pass
+#        else:
+#            return view_function(request)
+
+
+
+
 def studentHomePage(request):
 
-    obj =  database.objects.filter(Student = "testbob")
+   # obj =  database.objects.filter(Student = "testbob")
     
     data ={
         'name' :'nathan',
@@ -25,19 +37,19 @@ def studentHomePage(request):
 
 
 def studentViewRequests(request):
-    obj =  database.objects.filter(Student = "testbob")
-    Pending = database.objects.filter(Student = "testbob", status ="P")
+    obj =  database.objects.filter(student_id = 1)
+    Pending = database.objects.filter(student_id = 1, book_status ="P")
     for book in Pending:
-        if(now().date().today() > book.Date):
-            book.status = "R"
+        if(now().date().today() > book.book_date):
+            book.book_status = "R"
             book.save()
        
 
 
-    Pending = database.objects.filter(Student = "testbob", status ="P")
+    Pending = database.objects.filter(student_id = 1, book_status ="P")
 
-    Rejected = database.objects.filter(Student = "testbob", status ="R")
-    Approved = database.objects.filter(Student = "testbob", status ="A")
+    Rejected = database.objects.filter(student_id = 1, book_status ="R")
+    Approved = database.objects.filter(student_id = 1, book_status ="A")
     
     data ={
 

@@ -1,5 +1,5 @@
 from django import forms
-from ..models.requests import request
+from ..models.models import LessonBook as request
 
 #student forms
 
@@ -10,10 +10,9 @@ class make_request(forms.ModelForm):
         fields =[
 
         
-       'Teacher',
-        'Date',
-        'time',
-        'durations',
+        'book_date',
+        'booking_time',
+        'book_duration',
         'lesson_type'
 
         
@@ -24,13 +23,15 @@ class make_request(forms.ModelForm):
 
         super().save(commit=False)
         user = request.objects.create(
-           # self.cleaned_data.get('username'),
-            Teacher=self.cleaned_data.get('Teacher'),
-            Student = 'testbob',
-            Date=self.cleaned_data.get('Date'),
-            time=self.cleaned_data.get('time'),
-            durations=self.cleaned_data.get('durations'),
-            lesson_type=self.cleaned_data.get('lesson_type'),
+            lesson_type = "sadas",
+            booking_time = self.cleaned_data.get('booking_time'),
+            student_id = 1,
+            remarks = "usdfisad",
+            book_duration =self.cleaned_data.get('book_duration'),
+            book_date = self.cleaned_data.get('book_date'),
+            book_status = "P"
+            
         )
+        
         return user
 

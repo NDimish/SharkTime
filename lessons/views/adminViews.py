@@ -4,7 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
-import lessons.models as models
+from lessons.models.models import LessonBook as modelsrequests
+from lessons.models.models import LessonConfirmed as modelsbooking
 from lessons.forms import adminForms
 from lessons.forms.adminForms import bookingForm as BookingForm
 
@@ -16,7 +17,7 @@ from lessons.forms.adminForms import bookingForm as BookingForm
 """
 def admin_home(request):
     #Get all requests 
-    requests = models.request.objects.all()
+    requests = modelsrequests.objects.all()
     context = {'requests' : requests}
     #request_count = models.request.objects.all().count()
     return render(request, 'adminHome.html', context)
@@ -29,11 +30,11 @@ def admin_view_students(request):
 
 def view_request(request,id):
     #get the request from db with same pk as selected request
-    a_request = models.requests.objects.get(pk=id)
+    a_request = modelsrequests.objects.get(pk=id)
     return HttpResponseRedirect(reverse ('adminHome.html')) 
 
 def make_booking(request, request_id):
-    booking_request = models.requests.objects.get(pk=request_id)
+    booking_request = modelsrequests.objects.get(pk=request_id)
     print("hello")
     print(booking_request.teacher)
     
@@ -54,7 +55,7 @@ def make_booking(request, request_id):
             new_LessonDuration =  form.cleaned_data['LessonDuration']
             new_LessonIntervals = form.cleaned_data['LessonIntervals']
             new_number_of_lessons =  form.cleaned_data['number_of_lessons']
-        new_booking = models.booking(
+        new_booking = modelsbooking(
             new_created_at,
             new_updated_at,
             new_day_of_week,
@@ -89,9 +90,9 @@ def make_booking(request, request_id):
 
 #add a booking
 def add_booking(request,id):
-    corresponding_request = models.requests.request.objects.get(pk=id) 
+    corresponding_request = modelsrequests.objects.get(pk=id) 
     form = BookingForm()
-    print(" teacher is " , corresponding_request.Teacher)
+    print(" teacher is " , corresponding_request.lesson_type)
     if request.method == 'GET':
         form = adminForms.bookingForm(initial={'request' : id})
     if request.method == 'POST':

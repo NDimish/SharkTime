@@ -22,10 +22,10 @@
                                     <tbody>
                                       {% for request in requests %}
                                         <tr>
-                                          <td>{{request.DateSent}}</td>
-                                          <td>{{request.Student}}</td>
-                                          <td>{{request.lesson_type}}</td>
-                                          <td>{{request.status}}</td>
+                                          <td>{{request.create_time}}</td>
+                                          <td>{{request.student_id}}</td>
+                                          <td>{{request.lesson_name}}</td>
+                                          <td>{{request.book_status}}</td>
                                           <td>
                                             <button type="button" class="btn btn-success me-1" href="{% url 'view_request' request.id %}" data-bs-toggle="modal" 
                                             data-bs-target="#myModal{{request.id}}">View</button>
@@ -41,12 +41,11 @@
                                                   </div>
                                                   <div class="modal-body">
                                                     <ul class="list-unstyled">
-                                                        <li>Request Status : <strong>{{request.status}}</strong> </li>
-                                                        <li>Request Date : <strong>{{request.DateSent}}</strong> </li>
-                                                        <li>Student Name : <strong>{{request.Student}}</strong> </li>
-                                                        <li>Teacher : <strong>{{request.Teacher}}</strong> </li>
-                                                        <li>Lesson Duration : <strong>{{request.durations}}</strong> </li>
-                                                        <li>Time Of Lesson : <strong>{{request.time}}</strong> </li>
+                                                        <li>Request Status : <strong>{{request.book_status}}</strong> </li>
+                                                        <li>Request Date : <strong>{{request.create_time}}</strong> </li>
+                                                        <li>Student Name : <strong>{{request.student_id}}</strong> </li>
+                                                        <li>Lesson Duration : <strong>{{request.book_duration}}</strong> </li>
+                                                        <li>Time Of Lesson : <strong>{{request.booking_time}}</strong> </li>
                                                         <li>Lesson Type : <strong>{{request.lesson_type}}</strong> </li>
                                                         {% if request.isFulfilled  %}
                                                           <li>Request Fulfilled : <strong>{{request.Date}}</strong> </li>
