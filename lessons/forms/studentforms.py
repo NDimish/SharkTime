@@ -45,18 +45,8 @@ class make_request(forms.ModelForm):
     def save(self, commit=True):
         """Create a new user."""
         instance = forms.ModelForm.save(self,False)
-
-        # old_save_m2m = self.save_m2m
-        # def save_m2m():
-        #     old_save_m2m()
-        #     instance.availability.clear()
-        #     instance.availability.add(*self.cleaned_data['availability'])
-        # self.save_m2m = save_m2m
-     
-        # self.cleaned_data.get('username'),
         instance.lesson_teacher=self.cleaned_data['lesson_teacher']
         instance.student_id = self.cleaned_data['student_id']
-        #instance.student_id = 1
         instance.lesson_start_date = self.cleaned_data['lesson_start_date']
         instance.lesson_duration = self.cleaned_data['lesson_duration']
         instance.lesson_interval = self.cleaned_data['lesson_interval']
@@ -64,62 +54,8 @@ class make_request(forms.ModelForm):
         instance.number_of_lessons = self.cleaned_data['number_of_lessons']
         instance.lesson_time = self.cleaned_data['lesson_time']
          
-         
-        # if commit:
-        #     instance.save()
-        #     self.save_m2m()
-        # super().save(commit=False)
-        # user = request.objects.create(
-        #    # self.cleaned_data.get('username'),
-        #     lesson_teacher=self.cleaned_data.get('lesson_teacher'),
-        #     student_id=self.cleaned_data.get('student_id'),
-        #     Date=self.cleaned_data.get('Date'),
-        #     lesson_duration=self.cleaned_data.get('lesson_duration'),
-        #     lesson_interval=self.cleaned_data.get('lesson_interval'),
-        #     lesson_type=self.cleaned_data.get('lesson_type'),
-        #     number_of_lessons=self.cleaned_data.get('number_of_lessons'),
-        #     availability = self.cleaned_data.get('availability') 
-        #     # = self.cleaned_data.get('availability')
-        # )
-
-        
-        
-       # super().save(commit=False)
         return instance
 
-#PREVIOUS VERSION make_request
-
-# class make_request(forms.ModelForm):
-
-#     class Meta:
-#         model = request
-#         fields =[
-
-        
-#        'Teacher',
-#         'Date',
-#         'time',
-#         'durations',
-#         'lesson_type'
-
-        
-#         ]
-
-    # def save(self):
-        
-    #     #-------Create a new user.
-
-    #     super().save(commit=False)
-    #     user = request.objects.create(
-    #        # self.cleaned_data.get('username'),
-    #         Teacher=self.cleaned_data.get('Teacher'),
-    #         Student = 'testbob',
-    #         Date=self.cleaned_data.get('Date'),
-    #         time=self.cleaned_data.get('time'),
-    #         durations=self.cleaned_data.get('durations'),
-    #         lesson_type=self.cleaned_data.get('lesson_type'),
-    #     )
-    #     return user
 
 
 
