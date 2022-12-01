@@ -11,7 +11,7 @@ from ..models.users import User, Student
 
 # Create your views here.
 def studentHomePage(request):
-    obj = User.objects.get(role = 'S')
+    obj = User.objects.filter(role = 'S').first()
     data = {
         'name' : obj.first_name , 
         'Available_lessons' : [1,2,3,45,5,6,76,2,3,4,56,7,34,345,345,57,56634,54,5765,75,]
@@ -21,7 +21,12 @@ def studentHomePage(request):
 
 def studentViewRequests(request):
     obj = database.objects.all()
-    Pending = database.objects.filter(student_id = 2, status ="P")
+    #For now just get the first student in the database
+    student = User.objects.filter(role='S').first()
+    print(student.pk , "says hello")
+    id = student.pk 
+    print("student id is " , obj)
+    Pending = database.objects.filter( status ="P")
     for book in Pending:
         if(now().date().today() > book.lesson_start_date):
             book.status = "R"
@@ -29,10 +34,10 @@ def studentViewRequests(request):
 
 
 
-    Pending = database.objects.filter(student_id = 2, status ="P")
+    Pending = database.objects.filter(student_id = id, status ="P")
 
-    Rejected = database.objects.filter(student_id = 2, status ="R")
-    Approved = database.objects.filter(student_id = 2, status ="A")
+    Rejected = database.objects.filter(student_id = id, status ="R")
+    Approved = database.objects.filter(student_id = id, status ="A")
 
     data ={
         'booked_lessons' : obj,
@@ -43,37 +48,37 @@ def studentViewRequests(request):
     }
     return render(request,'studentViewRequests.html',data)    
 
-def studentMakeRequest(request):
-
-    form = make_request(request.POST or None)
-    if request.method =="POST":
-        form = make_request(request.POST)
-        
-        if form.is_valid():
-        
-            form.save(commit=True)
-            return HttpResponseRedirect(reverse('studentViewRequests'))
-            
-    data ={
-        'form':form,
-    }
-
-
-    return render(request,'request.html',data)
-
-
-#OTHER VERSION make_request
 # def studentMakeRequest(request):
 
 #     form = make_request(request.POST or None)
-#     if form.is_valid():
-#         form.save(commit=True)
-#         return HttpResponseRedirect(reverse('studentViewRequests'))
+#     if request.method =="POST":
+#         form = make_request(request.POST)
+        
+#         if form.is_valid():
+        
+#             form.save(commit=True)
+#             return HttpResponseRedirect(reverse('studentViewRequests'))
+            
 #     data ={
-#         'form':form
-
+#         'form':form,
 #     }
+
+
 #     return render(request,'request.html',data)
+
+
+#OTHER VERSION make_request
+def studentMakeRequest(request):
+
+    form = make_request(request.POST or None)
+    if form.is_valid():
+        form.save(commit=True)
+        return HttpResponseRedirect(reverse('studentViewRequests'))
+    data ={
+        'form':form
+
+    }
+    return render(request,'request.html',data)
 
 def studentEditRequest(request,my_id):
     try:

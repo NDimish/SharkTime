@@ -67,7 +67,7 @@ class request(models.Model):
 
     date_sent = models.DateField(default = now)
 
-    student_id = models.ForeignKey(to=Student, related_name = 'request', on_delete=models.CASCADE )
+    student_id = models.ForeignKey(to=User, related_name = 'request', on_delete=models.CASCADE )
     status = models.CharField(max_length=1, blank=False, choices = REQUEST_STATUS_CHOICES, default='P')
     lesson_time = models.TimeField(default=now)
     lesson_interval = models.IntegerField(blank=False,choices=helpers.CHOICE_LESSON_INTERVAL, default=1 )
