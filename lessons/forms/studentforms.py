@@ -65,9 +65,9 @@ class make_request(forms.ModelForm):
         instance.lesson_time = self.cleaned_data['lesson_time']
          
          
-        if commit:
-            instance.save()
-            self.save_m2m()
+        # if commit:
+        #     instance.save()
+        #     self.save_m2m()
         # super().save(commit=False)
         # user = request.objects.create(
         #    # self.cleaned_data.get('username'),
