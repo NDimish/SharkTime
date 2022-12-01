@@ -53,6 +53,8 @@ class make_request(forms.ModelForm):
         instance.lesson_type = self.cleaned_data['lesson_type']
         instance.number_of_lessons = self.cleaned_data['number_of_lessons']
         instance.lesson_time = self.cleaned_data['lesson_time']
+        if commit:
+            instance.save()
          
         return instance
 
