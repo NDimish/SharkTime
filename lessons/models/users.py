@@ -14,21 +14,25 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
+    objects = models.Manager()
 
     def __str__(self):
         return '{}'.format(self.get_full_name())
 
 #Student class 
-class Students(models.Model):
+class Student(models.Model):
     #unique student_id 
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+    def __str__(self):
+        return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")")
+    
 
 #Admin class
-class Admins(models.Model):
+class Admin(models.Model):
     #unique admin id 
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
@@ -37,10 +41,11 @@ class Admins(models.Model):
     objects = models.Manager()
 
 #Director class 
-class Directors(models.Model):
+class Director(models.Model):
     #unique admin id 
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
