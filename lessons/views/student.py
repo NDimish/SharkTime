@@ -50,7 +50,7 @@ def studentMakeRequest(request):
         form = make_request(request.POST)
         
         if form.is_valid():
-            print("HELLLOOO")
+        
             form.save(commit=True)
             return HttpResponseRedirect(reverse('studentViewRequests'))
             
@@ -128,6 +128,7 @@ def update(request,my_id):
     return HttpResponseRedirect(reverse('studentViewRequests'))
 
 
+    
 
 def delete(request, my_id):
   member = database.objects.get(id=my_id)
