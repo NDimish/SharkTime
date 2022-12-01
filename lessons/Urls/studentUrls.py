@@ -8,6 +8,7 @@ urlpatterns =[
     path('request/',student.studentMakeRequest, name = 'request'),
     path('editrequest/<int:my_id>/',student.studentEditRequest, name = 'editrequest'),
     path('editrequest/update/<int:my_id>', student.Editrecord, name='editrecord'),
+    path('home/viewInvoices',student.studentViewInvoices,name='studentViewInvoices'),
 
     
     

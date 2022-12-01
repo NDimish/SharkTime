@@ -52,8 +52,32 @@ def studentViewRequests(request):
     return render(request,'studentViewRequests.html',data)    
 
 
+def studentViewInvoices(request):
+    data = {
+        'Invoices' : database.objects.filter(Student = "testbob", status ="A")
+    }
 
-    
+    return render(request,'studentViewINvoices.html',data)
+
+from fpdf import FPDF
+from django.http import FileResponse
+
+def studentGenerateInvoice(request, my_id):
+    member = database.objects.get(id=my_id)
+
+    invoicePdf = FPDF()
+    invoicePdf.add_page()
+    invoicePdf.set_font("Arial", size=11)
+
+    invoicePdf.cell(200,10, txt = f"Testing {member.Teacher}",
+                    ln = 1, align = 'L')
+
+    invoicePdf.output(f"Invoice-{my_id}.pdf")
+
+    try:
+        return FileResponse(open(f'Invoice-{my_id}.pdf', 'rb'), content_type = 'application/pdf')
+    except FileNotFoundError:
+        raise Http404
 
 
 
