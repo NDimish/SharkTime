@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from lessons import views
+from lessons import Urls
 
 urlpatterns = [
 

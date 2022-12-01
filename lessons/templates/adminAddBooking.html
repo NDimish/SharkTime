@@ -1,0 +1,30 @@
+ {% extends 'adminBase.html' %}
+ {% block body %}
+    <h3 class="text-center m-4">Add Booking</h3>
+    {% if success %}
+        <div class="alert alert-success" role="alert">
+            The booking was made successfully
+            <a href="{% url 'home' %}" class="alert-link"> Return to Home Page</a>
+        </div>
+    {% else %}
+        <div class="row-justify-content-center">
+            <div class="col-6">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">Header</div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {% comment %} {% include 'bootstrap_form.html' with form=form %} {% endcomment %}
+                            {{ form.as_p }}
+                            <button type="submit" name = "Submit" class="btn btn-primary">Book</button>
+                            <input type="submit" value="Reject" name = "Reject"  class="btn btn-primary">
+                            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                  </div>
+            </div>
+
+        </div>
+    {% endif %}
+ 
+ {% endblock body %}
