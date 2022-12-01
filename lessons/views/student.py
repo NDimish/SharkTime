@@ -20,8 +20,8 @@ def studentHomePage(request):
     return render(request,'studentHome.html',data)
 
 def studentViewRequests(request):
-    obj = database.objects.filter(student_id =1)
-    Pending = database.objects.filter(student_id = 1, status ="P")
+    obj = database.objects.all()
+    Pending = database.objects.filter(student_id = 2, status ="P")
     for book in Pending:
         if(now().date().today() > book.lesson_start_date):
             book.status = "R"
@@ -29,10 +29,10 @@ def studentViewRequests(request):
 
 
 
-    Pending = database.objects.filter(student_id = 1, status ="P")
+    Pending = database.objects.filter(student_id = 2, status ="P")
 
-    Rejected = database.objects.filter(student_id = 1, status ="R")
-    Approved = database.objects.filter(student_id = 1, status ="A")
+    Rejected = database.objects.filter(student_id = 2, status ="R")
+    Approved = database.objects.filter(student_id = 2, status ="A")
 
     data ={
         'booked_lessons' : obj,
