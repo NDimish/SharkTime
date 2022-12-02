@@ -16,7 +16,7 @@
                             {% csrf_token %}
                             {% comment %} {% include 'bootstrap_form.html' with form=form %} {% endcomment %}
                             {{ form.as_p }}
-                            <button type="submit" name = "Submit" class="btn btn-primary">Book</button>
+                            <button type="submit" name = "Submit" value = "Submit" class="btn btn-primary">Book</button>
                             <input type="submit" value="Reject" name = "Reject"  class="btn btn-primary">
                             <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
                         </form>
