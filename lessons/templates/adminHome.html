@@ -65,7 +65,8 @@
                                             
                                             
                                             {% if request.isFulfilled %}
-                                            
+                                            <!--IF REQUEST IS FULFILLED SHOULD HAVE OPTION TO EDIT/DELETE BOOKING-->
+                                                <a class="btn btn-success me-1" href="{% url 'edit_booking' request.id  %}">Edit Booking</a>
                                             <!--IF REQUEST IS UNFULFILLED, ENABLE BUTTON TO BOOK REQUEST-->
                                             {% else %}
                                               <a class="btn btn-warning me-1" href="{% url 'add_booking' request.id  %}">Fulfil Request</a>
