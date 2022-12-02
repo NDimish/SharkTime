@@ -29,6 +29,7 @@ class bookingForm(forms.ModelForm):
             'lesson_interval' : 'Lesson Interval' , 
             'number_of_lessons' : 'Number Of Lessons' ,
             'day_of_week' : 'Day Of Lesson' , 
+            #'lesson_type' : 'Lesson Type'
           
         } 
     
@@ -45,7 +46,8 @@ class bookingForm(forms.ModelForm):
             'lesson_interval' : forms.Select(attrs={'class' : 'form-control'}),
             'number_of_lessons' : forms.NumberInput(attrs={'class' : 'form-control'}),
             #'day_of_week' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'})
-        }
+            #'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'})
+        }   
 
         #OVERRIDE SAVE METHOD
         def save(self, commit=True):
@@ -60,6 +62,7 @@ class bookingForm(forms.ModelForm):
             # self.save_m2m = save_m2m
         
             # self.cleaned_data.get('username'),
+            instance.start_date = self.cleaned_data['start_date']
             instance.lesson_teacher=self.cleaned_data['lesson_teacher']
             instance.student_id = self.cleaned_data['student_id']
             instance.Date = self.cleaned_data.get('Date')
