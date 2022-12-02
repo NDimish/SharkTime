@@ -25,8 +25,9 @@ class booking(models.Model):
     #day_of_week = models.CharField(choices=requests.DAY_OF_WEEK_CHOICES,max_length=100)
     # time_of_lesson = models.DecimalField(decimal_places = 2, max_digits= 4)
     lesson_time = models.TimeField()
-    teacher = models.CharField(max_length = 10)
-    start_date = models.DateField(validators=[helpers.validateDate]) #front end use a Date Picker? 
+    lesson_type = models.CharField(max_length=1000, blank=False, default='instrument name here')
+    lesson_teacher = models.CharField(max_length = 10)
+    lesson_start_date = models.DateField(validators=[helpers.validateDate]) #front end use a Date Picker? 
     # class LessonDuration(models.IntegerChoices):
     #     THIRTY_MINS = 30 , '30 minutes'
     #     FORTY_FIVE_MINS = 45 , '45 minutes'

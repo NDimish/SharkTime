@@ -39,39 +39,6 @@ def view_request(request,id):
     a_request = models.requests.objects.get(pk=id)
     return HttpResponseRedirect(reverse ('adminHome.html')) 
 
-def make_booking(request, request_id):
-    booking_request = models.requests.objects.get(pk=request_id)
-    print("hello")
-    print(booking_request.teacher)
-    form = adminForms.bookingForm(request.POST or None )
-    if request.method =='POST':
-        
-        form = adminForms.bookingForm(request.POST)
-        
-        print (form.errors)
-        if form.is_valid():
-            form.save(commit=True)
-        
-        #mark request as fulfilled  if not already 
-
-        
-        if( not booking_request.isFulfilled):
-           booking_request.markAsFulfilled  
-        
-        return render(request,'adminAddBooking.html', {
-            #'id' : id,
-            'form' : adminForms.bookingForm(request_id),
-            'success' : True
-        })
-
-    else:
-        form = adminForms.bookingForm(request_id)
-        print("hello there")
-    return render(request, 'adminAddBooking.html',{
-       # 'id' : id,
-        'form' : adminForms.bookingForm(request_id)
-    })
-
 
 
 
@@ -119,12 +86,12 @@ def edit_booking(request,id):
         raise Http404
 
     context ={
-        'teacher': obj.teacher,
-        'start_date': obj.start_date,
+        'lesson_teacher': obj.lesson_teacher,
+        'lesson_start_date': obj.lesson_start_date,
         'lesson_time': obj.lesson_time,
         'lesson_duration': obj.lesson_duration,
         'lesson_interval': obj.lesson_interval,
-        #'lesson_type':obj.lesson_type,
+        'lesson_type':obj.lesson_type,
         'number_of_lessons':obj.number_of_lessons,
         
         }
@@ -146,11 +113,11 @@ def editBookingRecord(request,id):
 
 def update(request, id):
     member = booking.objects.get(pk=id)
-    member.teacher = request.POST['teacher']
-    member.start_date = request.POST['start_date_year'] + "-" + request.POST['start_date_month'] + "-" + request.POST['start_date_day']
+    member.lesson_teacher = request.POST['lesson_teacher']
+    member.lesson_start_date = request.POST['lesson_start_date_year'] + "-" + request.POST['lesson_start_date_month'] + "-" + request.POST['lesson_start_date_day']
     member.lesson_time = request.POST['lesson_time']
     member.lesson_duration = request.POST['lesson_duration']
-   # member.lesson_type = request.POST['lesson_type']
+    member.lesson_type = request.POST['lesson_type']
     member.number_of_lessons = request.POST['number_of_lessons']
     member.lesson_interval = request.POST['lesson_interval']
     member.save()
@@ -176,13 +143,13 @@ def get_init_booking_data(id):
     request = models.requests.request.objects.get(pk=id) 
     initial_data = {
         'request' : id,
-        'teacher' : request.lesson_teacher ,
-        'start_date' : request.lesson_start_date, 
+        'lesson_teacher' : request.lesson_teacher ,
+        'lesson_start_date' : request.lesson_start_date, 
         #add day_of_week
         'lesson_time' : request.lesson_time,
         'lesson_duration' : request.lesson_duration,
         'lesson_interval' : request.lesson_interval,
-        #'lesson_type' : request.lesson_type ,
+        'lesson_type' : request.lesson_type ,
         'number_of_lessons' : request.number_of_lessons
 
     }
