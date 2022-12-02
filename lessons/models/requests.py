@@ -10,6 +10,12 @@ from django import forms
 
 
 
+class requestAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': forms.CheckboxSelectMultiple},
+    }
+
+
 
 
 class request(models.Model):
@@ -42,12 +48,12 @@ class request(models.Model):
     lesson_type = models.CharField(max_length=1000, blank=False, default='instrument name here')
     lesson_start_date = models.DateField(default = now)
 
+
     def isFulfilled(self):
         if self.status=='P':
             return False
         return True
 
-    
     def getStudentName(self):
         student = Student.objects.get(pk=self.student_id)
         user = User.objects.get(pk=student.user)
