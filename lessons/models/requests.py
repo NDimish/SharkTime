@@ -7,41 +7,7 @@ from django.utils.translation import gettext as _
 from django.contrib import admin
 from django import forms
 
-DAY_OF_WEEK_CHOICES = (('Monday', 'Monday'),
-    ('Tuesday', 'Tuesday'),
-    ('Wednesday', 'Wednesday'),
-    ('Thursday', 'Thursday'),
-    ('Friday', 'Friday'),)
-class Weekday(models.Model):
-    MONDAY = 1
-    TUESDAY= 2
-    WEDNESDAY = 3
-    THURSDAY = 4
-    FRIDAY = 5
 
-    WEEKDAY_CHOICES = (
-        (MONDAY, _('Monday')),
-        (TUESDAY, _('Tuesday')),
-        (WEDNESDAY, _('Wednesday')),
-        (THURSDAY, _('Thursday') ),
-        (FRIDAY, _('Friday')),
-    )
-
-    
-    weekday = models.IntegerField(choices=WEEKDAY_CHOICES, default=1) 
-
-
-    day = models.IntegerField(_('Days'),
-                        choices=WEEKDAY_CHOICES, blank=True , unique=True)
-    def __str__(self):
-        return self.get_day_display()
-
-
-
-class requestAdmin(admin.ModelAdmin):
-    formfield_overrides = {
-        models.ManyToManyField: {'widget': forms.CheckboxSelectMultiple},
-    }
 
 
 
@@ -76,15 +42,11 @@ class request(models.Model):
     lesson_type = models.CharField(max_length=1000, blank=False, default='instrument name here')
     lesson_start_date = models.DateField(default = now)
 
-    #availability = models.ManyToManyField(Weekday)
-
     def isFulfilled(self):
         if self.status=='P':
             return False
         return True
-    
-    # def markAsFulfilled(self):
-    #     update field in db
+
     
     def getStudentName(self):
         student = Student.objects.get(pk=self.student_id)

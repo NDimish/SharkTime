@@ -9,7 +9,6 @@ admin.site.register(request , requests.requestAdmin)
 admin.site.register(booking)
 admin.site.register(users.User)
 admin.site.register(users.Student)
-admin.site.register(requests.Weekday)
 
 
 

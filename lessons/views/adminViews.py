@@ -47,9 +47,7 @@ def add_booking(request,id):
     corresponding_request = models.requests.request.objects.get(pk=id) 
     #Get the available days 
     form = BookingForm(request.POST or None)
-    #days=requests.request.objects.filter(pk = id).values_list('availability')
-    #Filter the day_of_week field so that only days student marked as available can be booked
-    #BookingForm.base_fields['day_of_week'] = forms.ModelMultipleChoiceField(queryset=requests.Weekday.objects.filter(pk__in=days), widget=forms.CheckboxSelectMultiple())   
+
     
 
     if 'Submit' in request.POST:

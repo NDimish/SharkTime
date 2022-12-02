@@ -1,7 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
-from ..models.requests import Weekday
 from ..forms.studentforms import make_request
 from ..models.requests import request as database
 from django.urls import reverse
@@ -48,23 +47,6 @@ def studentViewRequests(request):
     }
     return render(request,'studentViewRequests.html',data)    
 
-# def studentMakeRequest(request):
-
-#     form = make_request(request.POST or None)
-#     if request.method =="POST":
-#         form = make_request(request.POST)
-        
-#         if form.is_valid():
-        
-#             form.save(commit=True)
-#             return HttpResponseRedirect(reverse('studentViewRequests'))
-            
-#     data ={
-#         'form':form,
-#     }
-
-
-#     return render(request,'request.html',data)
 
 
 #OTHER VERSION make_request

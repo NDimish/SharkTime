@@ -10,15 +10,7 @@ class bookingForm(forms.ModelForm):
         model = booking
         def __init__(self,  *args, **kwargs):
             self.order_fields(self.Meta.fields)
-        #     super(bookingForm, self).__init__(*args, **kwargs)    
-        #     qs = request.objects.filter(request=user)
-        #     self.fields['account'] = forms.Select(queryset=qs)
-       
-                # for day in request.availability:
-                #     print (str(day))
-                #     self.fields['day_of_week'] = forms.Select(day)
-       
-        #day_of_week = forms.ModelChoiceField(queryset=requests.Weekday.objects.all(),widget=forms.CheckboxSelectMultiple)
+   
         fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_duration','lesson_interval','number_of_lessons'}
         labels = {
             
