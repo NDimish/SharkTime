@@ -4,7 +4,7 @@ from ..models.bookings import booking
 from ..models import bookings
 
 class bookingForm(forms.ModelForm):
-    field_order = ['lesson_time','teacher','start_date','lesson_duration','lesson_interval','number_of_lessons'] # 'day_of_week']
+
         
     class Meta:
         model = booking
@@ -19,17 +19,17 @@ class bookingForm(forms.ModelForm):
                 #     self.fields['day_of_week'] = forms.Select(day)
        
         #day_of_week = forms.ModelChoiceField(queryset=requests.Weekday.objects.all(),widget=forms.CheckboxSelectMultiple)
-        fields = {  'request' , 'lesson_time','teacher','start_date','lesson_duration','lesson_interval','number_of_lessons'}
+        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_duration','lesson_interval','number_of_lessons'}
         labels = {
             
             'lesson_time' : 'Time of Lesson' , 
             'teacher' : 'Teacher' , 
-            'start_date' : 'Start Date' , 
+            'lesson_start_date' : 'Start Date' , 
             'lesson_duration' : 'Lesson Duration',
             'lesson_interval' : 'Lesson Interval' , 
             'number_of_lessons' : 'Number Of Lessons' ,
             'day_of_week' : 'Day Of Lesson' , 
-            #'lesson_type' : 'Lesson Type'
+            'lesson_type' : 'Lesson Type'
           
         } 
     
@@ -40,13 +40,13 @@ class bookingForm(forms.ModelForm):
             #'updated_at' : forms.DateTimeInput(attrs={'class' : 'form-control'}),
             #'day_of_week' : forms.CheckboxInput(attrs={'class' : 'form-control'}),
             'lesson_time' : forms.TimeInput(attrs={'class' : 'form-control'}),
-            'teacher' : forms.TextInput(attrs={'class' : 'form-control'}),
-            'start_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
+            'lesson_teacher' : forms.TextInput(attrs={'class' : 'form-control'}),
+            'lesson_start_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
             'lesson_duration' : forms.Select(attrs={'class' : 'form-control'}),
             'lesson_interval' : forms.Select(attrs={'class' : 'form-control'}),
             'number_of_lessons' : forms.NumberInput(attrs={'class' : 'form-control'}),
             #'day_of_week' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'})
-            #'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'})
+            'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'})
         }   
 
         #OVERRIDE SAVE METHOD
@@ -62,7 +62,7 @@ class bookingForm(forms.ModelForm):
             # self.save_m2m = save_m2m
         
             # self.cleaned_data.get('username'),
-            instance.start_date = self.cleaned_data['start_date']
+            instance.lesson_start_date = self.cleaned_data['lesson_start_date']
             instance.lesson_teacher=self.cleaned_data['lesson_teacher']
             instance.student_id = self.cleaned_data['student_id']
             instance.Date = self.cleaned_data.get('Date')
@@ -70,6 +70,7 @@ class bookingForm(forms.ModelForm):
             instance.lesson_interval = self.cleaned_data['lesson_interval']
             instance.lesson_type = self.cleaned_data['lesson_type']
             instance.number_of_lessons = self.cleaned_data['number_of_lessons']
+            instance.lesson_type = self.cleaned_data['lesson_type']
             
             
             if commit:
