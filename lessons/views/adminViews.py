@@ -49,29 +49,7 @@ def make_booking(request, request_id):
         print (form.errors)
         if form.is_valid():
             form.save(commit=True)
-          
-        #     new_created_at = form.cleaned_data['created_at']
-        #     new_updated_at = form.cleaned_data['updated_at']
-        #     new_day_of_week = form.cleaned_data['day_of_week']
-        #     new_time_of_lesson = form.cleaned_data['time_of_lesson']
-        #     new_teacher = form.cleaned_data['teacher']
-        #     new_start_date = form.cleaned_data['start_date']
-        #     new_LessonDuration =  form.cleaned_data['LessonDuration']
-        #     new_LessonIntervals = form.cleaned_data['LessonIntervals']
-        #     new_number_of_lessons =  form.cleaned_data['number_of_lessons']
-        # new_booking = models.booking(
-        #     new_created_at,
-        #     new_updated_at,
-        #     new_day_of_week,
-        #     new_time_of_lesson ,
-        #     new_teacher ,
-        #     new_start_date,
-        #     new_LessonDuration,
-        #     new_LessonIntervals ,
-        #     new_number_of_lessons 
-        # )
-        #Create the new booking object
-        #new_booking.save()
+        
         #mark request as fulfilled  if not already 
 
         
@@ -105,19 +83,17 @@ def add_booking(request,id):
     #BookingForm.base_fields['day_of_week'] = forms.ModelMultipleChoiceField(queryset=requests.Weekday.objects.filter(pk__in=days), widget=forms.CheckboxSelectMultiple())   
     
 
-    if 'Submit' in request.method == 'POST':
+    if 'Submit' in request.POST:
        # booking = get_ob
         form = BookingForm(request.POST)
         print (form.errors)
         if form.is_valid():
-            
             corresponding_request.status = 'A'
             corresponding_request.save()
             form.save(commit=True)
             #Redirect back to admin home page
-            
             return redirect('/')
-        #print('Printing post' , request.POST)
+        print('invalid form')
     elif 'Reject' in request.POST:
         form = BookingForm(request.POST)
         corresponding_request.status = 'R'
