@@ -4,6 +4,7 @@ from ..views import adminViews
 urlpatterns =[
 
     path('home/',adminViews.admin_home),
+    
 
 
 ]

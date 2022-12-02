@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block body %}
     <div class="container vh-100">
-        <div class="row h-100">
-            <div class="col-12 my-auto">
+         <div class="row h-100">
+           <div class="col-8 my-auto">
                 <div class ="card cover-card offset-sm-2 offset-md-4 offset-lg-7">
-                    <h1 class="cover-heading">Homepage</h1>
-                    <p class="cover-text"><a href='#' class="btn btn-lg btn-secondary">Sign up</a></p>
-                    <p class="cover-text"><a href='#' class="btn btn-lg btn-secondary">Log in</a></p>
-                    <p class="cover-text"><a href='/lessons/student/home' class="btn btn-lg btn-secondary">student testing with blank student</a></p>
-                    <p class="cover-text"><a href='/lessons/admin/home' class="btn btn-lg btn-secondary">admin view</a></p>
-                </div>
-            </div>
+                    <h1 class="cover-heading">Music School</h1>
+                    <p><a href='{% url 'sign_up' %}' class="btn btn-primary " >Sign up</a></p>
+                    <p><a href='{% url 'log_in' %}' class="btn btn-primary " >Log in</a></p>
+                    {# <p class="cover-text"><a href='#' class="btn btn-lg btn-secondary">Log in</a></p> #}
+                    <p class="cover-text"><a href='/lessons/student/home' class="btn btn-primary ">student testing with blank student</a></p>
+                    <p class="cover-text"><a href='/lessons/admin/home' class="btn btn-primary ">admin view</a></p>
+              </div>
+             </div>
         </div>
 
     </div>

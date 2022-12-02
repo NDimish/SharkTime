@@ -1,0 +1,14 @@
+<html>
+ <head>
+ <title>Log in</title>
+ </head>
+ <body>
+ <h1>Music Academy</h1>
+ <h2>Log in</h2>
+ <form action="{% url 'log_in' %}" method="post">
+ {% csrf_token %}
+ {{ form.as_p }}
+ <input type="submit" value="Log in">
+ </form>
+ </body>
+ </html>
