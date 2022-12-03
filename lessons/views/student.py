@@ -62,6 +62,8 @@ def studentMakeRequest(request):
     }
     return render(request,'request.html',data)
 
+    
+
 def studentEditRequest(request,my_id):
     try:
         obj = get_object_or_404(database,id=my_id)
