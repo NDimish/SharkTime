@@ -1,13 +1,13 @@
 from django import forms
-from ..models.requests import request
-from ..models.bookings import booking 
-from ..models import bookings
+from lessons.models import LessonRequest
+from lessons.models import LessonBooking
+
 
 class bookingForm(forms.ModelForm):
 
         
     class Meta:
-        model = booking
+        model = LessonBooking
         def __init__(self,  *args, **kwargs):
             self.order_fields(self.Meta.fields)
    
@@ -19,8 +19,7 @@ class bookingForm(forms.ModelForm):
             'lesson_start_date' : 'Start Date' , 
             'lesson_duration' : 'Lesson Duration',
             'lesson_interval' : 'Lesson Interval' , 
-            'number_of_lessons' : 'Number Of Lessons' ,
-            'day_of_week' : 'Day Of Lesson' , 
+            'number_of_lessons' : 'Number Of Lessons' , 
             'lesson_type' : 'Lesson Type'
           
         } 
@@ -62,7 +61,7 @@ class bookingForm(forms.ModelForm):
             instance.lesson_interval = self.cleaned_data['lesson_interval']
             instance.lesson_type = self.cleaned_data['lesson_type']
             instance.number_of_lessons = self.cleaned_data['number_of_lessons']
-            instance.lesson_type = self.cleaned_data['lesson_type']
+            instance.lesson_time = self.cleaned_data['lesson_time']
             
             
             if commit:

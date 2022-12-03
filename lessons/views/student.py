@@ -2,15 +2,14 @@ from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from ..forms.studentforms import make_request
-from ..models.requests import request as database
+from lessons.models import LessonRequest as database
 from django.urls import reverse
-from ..models import requests
 from django.utils.timezone import now
-from ..models.users import User, Student
+from lessons.models import User, Student
 
 # Create your views here.
 def studentHomePage(request):
-    obj = User.objects.filter(role = 'S').first()
+    obj = User.objects.filter(role='S').first()
     data = {
         'name' : obj.first_name , 
         'Available_lessons' : [1,2,3,45,5,6,76,2,3,4,56,7,34,345,345,57,56634,54,5765,75,]
@@ -21,22 +20,23 @@ def studentHomePage(request):
 def studentViewRequests(request):
     obj = database.objects.all()
     #For now just get the first student in the database
-    student = User.objects.filter(role='S').first()
-    print(student.pk , "says hello")
-    id = student.pk 
+    #student = User.objects.filter(role='S').first()
+    student = Student.objects.first()
+    print(student.pk, "says hello")
+    s = student.pk
     print("student id is " , obj)
-    Pending = database.objects.filter( status ="P")
+    Pending = database.objects.filter( book_status ="P")
     for book in Pending:
         if(now().date().today() > book.lesson_start_date):
-            book.status = "R"
+            book.book_status = "R"
             #book.save()
 
 
 
-    Pending = database.objects.filter(student_id = id, status ="P")
+    Pending = database.objects.filter(student_id= s, book_status ="P")
 
-    Rejected = database.objects.filter(student_id = id, status ="R")
-    Approved = database.objects.filter(student_id = id, status ="A")
+    Rejected = database.objects.filter(student_id= s, book_status ="R")
+    Approved = database.objects.filter(student_id= s, book_status ="A")
 
     data ={
         'booked_lessons' : obj,
@@ -67,7 +67,7 @@ def studentEditRequest(request,my_id):
         obj = get_object_or_404(database,id=my_id)
     except database.DoesNotExist:
         raise Http404
-    if(obj.status != "P"):
+    if(obj.book_status != "P"):
         return HttpResponseRedirect(reverse('studentHome'))
 
     context ={

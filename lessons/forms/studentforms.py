@@ -1,6 +1,6 @@
 from django import forms
-from ..models.requests import request
-from ..models import requests
+from lessons.models import LessonRequest as request
+
 
 
 

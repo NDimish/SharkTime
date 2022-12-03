@@ -26,7 +26,7 @@
 
                   {% for Bookings in Pending_lessons%}
                     <tr class="table-info">
-                        <th scope="row">{{Bookings.date_sent}}</th>
+                        <th scope="row">{{Bookings.date_created}}</th>
                         <td>{{Bookings.lesson_teacher}}</td>
                         <td>{{Bookings.lesson_start_date}}</td>
                         <td>{{Bookings.lesson_time}}</td>
@@ -65,7 +65,7 @@
               {%else%}
               <tr class="table-warning">
               {%endif%}
-                  <th scope="row">{{Bookings.date_sent}}</th>
+                  <th scope="row">{{Bookings.date_created}}</th>
                     <td>{{Bookings.lesson_teacher}}</td>
                     <td>{{Bookings.lesson_start_date}}</td>
                     <td>{{Bookings.lesson_time}}</td>
@@ -102,7 +102,7 @@
 
               {% for Bookings in Rejected_lessons%}
                 <tr class="table-info">
-                  <th scope="row">{{Bookings.date_sent}}</th>
+                  <th scope="row">{{Bookings.date_created}}</th>
                     <td>{{Bookings.lesson_teacher}}</td>
                     <td>{{Bookings.lesson_start_date}}</td>
                     <td>{{Bookings.lesson_time}}</td>

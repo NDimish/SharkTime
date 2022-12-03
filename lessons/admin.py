@@ -1,15 +1,21 @@
 from django.contrib import admin
-from .models.requests import request
-from .models.bookings import booking
+from .models import *
 
-from .models import requests
-from .models import users
+
+
 # Register your models here.
-admin.site.register(request , requests.requestAdmin)
-admin.site.register(booking)
-admin.site.register(users.User)
-admin.site.register(users.Student)
 
+admin.site.register(User)
+admin.site.register(Director)
+admin.site.register(Student)
+admin.site.register(Teacher)
+admin.site.register(Payment)
+admin.site.register(Sys_user)
+admin.site.register(Sys_user_authority)
+admin.site.register(Sys_authority)
+admin.site.register(Lesson)
+admin.site.register(LessonRequest)
+admin.site.register(LessonBooking)
 
 
 

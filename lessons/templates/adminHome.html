@@ -15,17 +15,17 @@
                                         <th scope="col">Date Sent</th>
                                         <th scope="col">Student</th>
                                         <th scope="col">Lesson Type</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">book_status</th>
                                         <th scope="col">ACTiONS</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       {% for request in requests %}
                                         <tr>
-                                          <td>{{request.date_sent}}</td>
+                                          <td>{{request.date_created}}</td>
                                           <td>{{request.student_id}}</td>
                                           <td>{{request.lesson_type}}</td>
-                                          <td>{{request.get_status_display}}</td>
+                                          <td>{{request.get_book_status_display}}</td>
                                           <td>
                                             <button type="button" class="btn btn-success me-1" href="{% url 'view_request' request.id %}" data-bs-toggle="modal" 
                                             data-bs-target="#myModal{{request.id}}">View Request</button>
@@ -41,8 +41,8 @@
                                                   </div>
                                                   <div class="modal-body">
                                                     <ul class="list-unstyled">
-                                                        <li>Request Status : <strong>{{request.get_status_display}}</strong> </li>
-                                                        <li>Request Made On : <strong>{{request.date_sent}}</strong> </li>
+                                                        <li>Request book_status : <strong>{{request.get_book_status_display}}</strong> </li>
+                                                        <li>Request Made On : <strong>{{request.date_created}}</strong> </li>
                                                         {% comment %} <li>Student Name : <strong>{{request.getStudentName}}</strong> </li> {% endcomment %}
                                                         <li>Teacher : <strong>{{request.lesson_teacher}}</strong> </li>
                                                         <li>Lesson Duration : <strong>{{request.get_lesson_duration_display}}</strong> </li>

@@ -7,11 +7,8 @@ from django.urls import reverse
 import lessons.models as models
 from lessons.forms import adminForms
 from lessons.forms.adminForms import bookingForm as BookingForm
-from ..models import bookings
-from ..models.bookings import booking
-from django import forms
+from lessons.models import LessonBooking, LessonRequest
 from django.http import Http404
-from ..models import requests
 
 
 
@@ -22,10 +19,10 @@ from ..models import requests
 """
 def admin_home(request):
     #Get all requests 
-    requests = models.request.objects.all()
+    requests = LessonRequest.objects.all()
 
     context = {'requests' : requests}
-    #request_count = models.request.objects.all().count()
+    #request_count = LessonRequest.objects.all().count()
     return render(request, 'adminHome.html', context)
 
 
@@ -36,7 +33,7 @@ def admin_view_students(request):
 
 def view_request(request,id):
     #get the request from db with same pk as selected request
-    a_request = models.requests.objects.get(pk=id)
+    a_request = LessonRequest.objects.get(pk=id)
     return HttpResponseRedirect(reverse ('adminHome.html')) 
 
 
@@ -44,7 +41,8 @@ def view_request(request,id):
 
 #add a booking
 def add_booking(request,id):
-    corresponding_request = models.requests.request.objects.get(pk=id) 
+    corresponding_request = LessonRequest.objects.get(pk=id) 
+    
     #Get the available days 
     form = BookingForm(request.POST or None)
 
@@ -55,7 +53,7 @@ def add_booking(request,id):
         form = BookingForm(request.POST)
         print (form.errors)
         if form.is_valid():
-            corresponding_request.status = 'A'
+            corresponding_request.book_status = 'A'
             corresponding_request.save()
             form.save(commit=True)
             #Redirect back to admin home page
@@ -63,7 +61,7 @@ def add_booking(request,id):
         print('invalid form')
     elif 'Reject' in request.POST:
         form = BookingForm(request.POST)
-        corresponding_request.status = 'R'
+        corresponding_request.book_status = 'R'
         corresponding_request.save()
         form.save(commit=True)
         #Redirect back to admin home page
@@ -79,8 +77,8 @@ def add_booking(request,id):
 
 def edit_booking(request,id):
     try:
-        obj = get_object_or_404(bookings.booking,request=id)
-    except booking.DoesNotExist:
+        obj = get_object_or_404(LessonBooking,request=id)
+    except LessonBooking.DoesNotExist:
         raise Http404
 
     context ={
@@ -110,7 +108,7 @@ def editBookingRecord(request,id):
         return HttpResponseRedirect(reverse('studentHome'))
 
 def update(request, id):
-    member = booking.objects.get(pk=id)
+    member = LessonBooking.objects.get(pk=id)
     member.lesson_teacher = request.POST['lesson_teacher']
     member.lesson_start_date = request.POST['lesson_start_date_year'] + "-" + request.POST['lesson_start_date_month'] + "-" + request.POST['lesson_start_date_day']
     member.lesson_time = request.POST['lesson_time']
@@ -122,13 +120,13 @@ def update(request, id):
     return HttpResponseRedirect(reverse('adminHome'))
 
 def delete(request, id):
-  member = booking.objects.get(pk=id)
+  member = LessonBooking.objects.get(pk=id)
   
   request_id  = member.request.pk
 
   member.delete()
-  corresponding_request = models.requests.request.objects.get(pk=request_id) 
-  corresponding_request.status = 'P'
+  corresponding_request = LessonRequest.objects.get(pk=request_id) 
+  corresponding_request.book_status = 'P'
   corresponding_request.save()
   
   #Mark the corresponding request as unfulfilled 
@@ -138,7 +136,7 @@ def delete(request, id):
 Create an initial booking object based on the request
 """
 def get_init_booking_data(id):
-    request = models.requests.request.objects.get(pk=id) 
+    request = LessonRequest.objects.get(pk=id) 
     initial_data = {
         'request' : id,
         'lesson_teacher' : request.lesson_teacher ,
