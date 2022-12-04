@@ -3,6 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
 from django.utils.timezone import now
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 
 from ..forms.studentforms import make_request
 from ..models.requests import request as database
@@ -57,27 +60,30 @@ def studentViewInvoices(request):
         'Invoices' : database.objects.filter(Student = "testbob", status ="A")
     }
 
-    return render(request,'studentViewINvoices.html',data)
+    return render(request,'studentViewInvoices.html',data)
 
-from fpdf import FPDF
-from django.http import FileResponse
 
-def studentGenerateInvoice(request, my_id):
-    member = database.objects.get(id=my_id)
+def makeAndViewInvoice(request, my_id):
+    # Grab the student
+    student = database.objects.get(id=my_id)
+    
+    # Creat a buffer for receiving PDF data and intialise a pdf to save onto it
+    pdfBuffer = io.BytesIO()
 
-    invoicePdf = FPDF()
-    invoicePdf.add_page()
-    invoicePdf.set_font("Arial", size=11)
+    pdf = canvas.Canvas(pdfBuffer)
 
-    invoicePdf.cell(200,10, txt = f"Testing {member.Teacher}",
-                    ln = 1, align = 'L')
+    # Let's add stuff!
+    pdf.drawString(10, 10, "Oi Oi guv'nor.")
+    # This currently creates a PDF with the above text displayed in the lower left hand corner
 
-    invoicePdf.output(f"Invoice-{my_id}.pdf")
+    # render, save, close
+    pdf.showPage()
+    pdf.save()
 
-    try:
-        return FileResponse(open(f'Invoice-{my_id}.pdf', 'rb'), content_type = 'application/pdf')
-    except FileNotFoundError:
-        raise Http404
+    # Grab the pdf from the buffer to export
+    pdfBuffer.seek(0)
+
+    return FileResponse(pdfBuffer, as_attachment=True, filename=f'invoice-{my_id}.pdf')
 
 
 
