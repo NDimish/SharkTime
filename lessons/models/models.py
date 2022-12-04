@@ -26,11 +26,12 @@ class Teacher(models.Model):
 
 
 class Lesson(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, null=True)
     lesson_num = models.IntegerField(max_length=5)
     lesson_price = models.FloatField(max_length=10)
-    interval = models.IntegerField(max_length=3)
-    duration = models.IntegerField(max_length=5)
+    interval = models.IntegerField(max_length=3, verbose_name="unit is day")
+    duration = models.IntegerField(max_length=5, validators="unit minutes")
     description = models.CharField(max_length=500, null=True)
     create_time = models.DateTimeField(null=False)
     update_time = models.DateTimeField(null=False)
