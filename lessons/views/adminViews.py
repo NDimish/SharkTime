@@ -4,10 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
-import lessons.models as models
 from lessons.forms import adminForms
 from lessons.forms.adminForms import bookingForm as BookingForm
-from lessons.models import LessonBooking, LessonRequest
+from lessons.models import LessonBooking, LessonRequest, Student
 from django.http import Http404
 
 
@@ -27,16 +26,32 @@ def admin_home(request):
 
 
 
-    
-def admin_view_students(request):
-    return render(request, 'adminViewStudents.html')
+#display all students in the school who have registered
+def view_students(request):
+    students = Student.objects.all()
+    context = {'students' : students}
+    return render(request, 'adminViewStudents.html', context)
 
+#view an individual request
 def view_request(request,id):
     #get the request from db with same pk as selected request
     a_request = LessonRequest.objects.get(pk=id)
     return HttpResponseRedirect(reverse ('adminHome.html')) 
 
+#view request page 
+def view_requests(request):
+    #Get all requests 
+    requests = LessonRequest.objects.all()
 
+    context = {'requests' : requests}
+    #request_count = LessonRequest.objects.all().count()
+    return render(request, 'adminViewRequests.html', context)
+
+#display all incoming transacions 
+def view_transactions(request):
+    students = Student.objects.all()
+    context = {'students' : students}
+    return render(request, 'adminViewTransactions.html',context)
 
 
 #add a booking
