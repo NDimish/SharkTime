@@ -11,6 +11,9 @@ urlpatterns =[
     # path('home/', loginviews.sign_up, name='sign_up'),
     # path('home/', loginviews.log_in, name='log_in'),
     path('sign_up/', loginviews.sign_up, name='sign_up'),
+    #path('log_in/', loginviews.log_in, name='home')
     path('log_in/', loginviews.log_in, name='log_in')
+
+
 
 ]

@@ -5,6 +5,9 @@
  <body>
  <h1>Music Academy</h1>
  <h2>Log in</h2>
+ {%for message in messages%}
+ <p><b>{{message}}</b></p>
+ {%endfor%}
  <form action="{% url 'log_in' %}" method="post">
  {% csrf_token %}
  {{ form.as_p }}

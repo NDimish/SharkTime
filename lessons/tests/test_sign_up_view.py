@@ -10,12 +10,12 @@ class SignUpViewTestCase(TestCase):
 
     def setUp(self):
         self.url = reverse('sign_up')
-        self.form_input = {
+        self.form_input = { 'janedoe@example.org'
         'first_name': 'Jane',
         'last_name': 'Doe',
-        'email': 'janedoe@example.org',
         'new_password': 'Password123',
-        'password_confirmation': 'Password123'
+        'password_confirmation': 'Password123',
+        'role':'Student'
          }
 
     # def test_sign_up_url(self):
@@ -40,18 +40,21 @@ class SignUpViewTestCase(TestCase):
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertTrue(form.is_bound)
 
-    # def test_succesful_sign_up(self):
-    #     before_count = User.objects.count()
-    #     response = self.client.post(self.url, self.form_input)
-    #     after_count = User.objects.count()
-    #     self.assertEqual(after_count, before_count + 1)
-    #     response_url = reverse('home')
-    #     self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-    #     self.assertTemplateUsed(response, 'student_home.html')
-    #     self.assertEqual(user.first_name, 'Jane')
-    #     self.assertEqual(user.last_name, 'Doe')
-    #     self.assertEqual(user.email, 'janedoe@example.org')
-    #     self.assertEqual(user.role, 'Student')
-    #     is_password_correct = check_password('Password123',user.password)  # since the password will be hashed, so to check its equality dehash it using check_password
-    #     self.assertTrue(is_password_correct)
-    #     self.assertTrue(self._is_logged_in())
+    def test_succesful_sign_up(self):
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count)
+        response_url = reverse('log_in')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'student_home.html')
+        user=User.objects.get(username='janedoe@example.org')
+        self.assertEqual(user.first_name, 'Jane')
+        self.assertEqual(user.last_name, 'Doe')
+        self.assertEqual(user.role, 'Student')
+        is_password_correct = check_password('Password123',user.password)  # since the password will be hashed, so to check its equality dehash it using check_password
+        self.assertTrue(is_password_correct)
+        self.assertTrue(self._is_logged_in())
+
+    def _is_logged_in(self):
+        return '_auth_user_id' in self.client.session.keys()

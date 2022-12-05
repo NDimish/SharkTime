@@ -4,11 +4,11 @@ from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
 
 
+
 class SignUpForm(forms.ModelForm):
  class Meta:
   model = User
-  fields = ['first_name', 'last_name', 'email', 'role']
-
+  fields = ['first_name', 'last_name','username', 'role']
  new_password = forms.CharField(
  label='Password',
  widget=forms.PasswordInput(),
@@ -19,7 +19,7 @@ class SignUpForm(forms.ModelForm):
  )]
 )
  password_confirmation = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput())
-
+ #username=forms.CharField(label='Email')
  def clean(self):
   super().clean()
   new_password = self.cleaned_data.get('new_password')
@@ -31,25 +31,25 @@ class SignUpForm(forms.ModelForm):
      """Create a new user."""
      super().save(commit=False)
      user = User.objects.create_user(
+         self.cleaned_data.get('username'),
          first_name=self.cleaned_data.get('first_name'),
          last_name=self.cleaned_data.get('last_name'),
-         email=self.cleaned_data.get('email'),
-         role=self.cleaned_data.get('role'),
+         # email=self.cleaned_data.get('email'),
+         role=self.cleaned_data.get('role')
      )
      return user
 
 
 class LogInForm(forms.Form):
-   email = forms.CharField(label="Email")
+   username = forms.CharField(label="Username")
    password = forms.CharField(label="Password", widget=forms.PasswordInput())
-   def save(self):
-       """Create a new user."""
-       super().save(commit=False)
-       user = User.objects.create_user(
-           first_name=self.cleaned_data.get('first_name'),
-           last_name=self.cleaned_data.get('last_name'),
-           email=self.cleaned_data.get('email'),
-           role=self.cleaned_data.get('role'),
-       )
-
-       return user
+   # def save(self):
+   #     """Create a new user."""
+   #     super().save(commit=False)
+   #     user = User.objects.create_user(
+   #         self.cleaned_data.get('username'),
+   #         first_name=self.cleaned_data.get('first_name'),
+   #         last_name=self.cleaned_data.get('last_name'),
+   #         email=self.cleaned_data.get('email'),
+   #         role=self.cleaned_data.get('role'),
+   #     )

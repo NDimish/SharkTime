@@ -8,14 +8,14 @@ class LogInFormTestCase(TestCase):
 
 
     def setUp(self):
-        self.form_input = {'email': 'johndoe@domain.org', 'password': 'Password123'}
+        self.form_input = {'username': 'johndoe@domain.org', 'password': 'Password123'}
 
     def test_form_contains_required_fields(self):
         form = LogInForm()
-        self.assertIn('email', form.fields)
+        self.assertIn('username', form.fields)
         self.assertIn('password', form.fields)
-        email_field = form.fields['email']
-        self.assertTrue(isinstance(email_field.widget, forms.EmailInput))
+        #email_field = form.fields['email']
+        #self.assertTrue(isinstance(email_field.widget, forms.EmailInput))
         password_field = form.fields['password']
         self.assertTrue(isinstance(password_field.widget, forms.PasswordInput))
 
@@ -24,7 +24,7 @@ class LogInFormTestCase(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_form_rejects_blank_email(self):
-        self.form_input['email'] = ''
+        self.form_input['username'] = ''
         form = LogInForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
@@ -35,7 +35,7 @@ class LogInFormTestCase(TestCase):
 
 # check this function
     def test_form_accepts_incorrect_email(self):
-        self.form_input['email'] = 'ghl.com'
+        self.form_input['username'] = 'ghl.com'
         form = LogInForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 

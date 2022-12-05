@@ -1,8 +1,8 @@
 """Unit tests of the sign up form."""
 from django import forms
 from django.test import TestCase
-from ..forms.loginforms import LogInForm,SignUpForm
-from lessons.models import Students
+from ..forms.loginforms import SignUpForm
+from lessons.models import User
 # from django.contrib.auth.hashers import check_password
 
 class SignUpFormTestCase(TestCase):
@@ -12,6 +12,8 @@ class SignUpFormTestCase(TestCase):
         self.form_input = {
             'first_name': 'Jane',
             'last_name': 'Doe',
+            'username': '@janedoe',
+            'role':'Role',
             'email': 'janedoe@example.org',
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
@@ -25,9 +27,7 @@ class SignUpFormTestCase(TestCase):
         form = SignUpForm()
         self.assertIn('first_name', form.fields)
         self.assertIn('last_name', form.fields)
-        self.assertIn('email', form.fields)
-        email_field = form.fields['email']
-        self.assertTrue(isinstance(email_field, forms.EmailField))
+        self.assertIn('username', form.fields)
         self.assertIn('role', form.fields)
         self.assertIn('new_password', form.fields)
         new_password_widget = form.fields['new_password'].widget

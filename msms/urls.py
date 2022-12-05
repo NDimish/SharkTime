@@ -26,7 +26,6 @@ urlpatterns = [
     path('', loginviews.home, name='home'),
     path('', loginviews.sign_up, name='sign_up'),
     path('lessons/student/', include('lessons.Urls.studentUrls')),
-    #path('lessons/student', include('lessons.Urls.studentUrls')),
     path('lessons/admin/', include('lessons.Urls.adminUrls')),
     path('lessons/admin/', include('lessons.Urls.adminUrls'))
 
