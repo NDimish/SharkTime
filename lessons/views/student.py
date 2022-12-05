@@ -55,28 +55,90 @@ def studentViewRequests(request):
     return render(request,'studentViewRequests.html',data)
 
 
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import inch
+
 def makeAndViewInvoice(request, my_id):
-    # Grab the student
-    student = database.objects.get(id=my_id)
+    lesson = get_object_or_404(database,id=my_id)
     
     # Creat a buffer for receiving PDF data and intialise a pdf to save onto it
     pdfBuffer = io.BytesIO()
 
-    pdf = canvas.Canvas(pdfBuffer)
+    pdf = canvas.Canvas(pdfBuffer, pagesize=A4)
+
+    # Set font and fontsize
+    pdf.setFont("Courier-Bold", 36)
+
+    # Move the origin of the document to the given coords (by default it is lower left corner)
+    pdf.translate(30,800)
 
     # Let's add stuff!
-    pdf.drawString(10, 10, "Oi Oi guv'nor.")
-    # This currently creates a PDF with the above text displayed in the lower left hand corner
+    pdf.drawString(0, 0, "INVOICE")
+ 
+ 
+    pdf.setFont("Helvetica-Bold", 14)
+    x = -40
+    pdf.drawString(0, x, "Shark Time Music School")
+    # If multiple schools are implemented then make this variable
+    pdf.setFont("Helvetica", 14)
+    pdf.drawString(0, x - 22, "47 Haberdashery Avenue")
+    pdf.drawString(0, x - 42, "London, W2 1DS")
+    
+    y = x - 90
+    pdf.drawString(0, y, "Nathan Mani")
+
+    pdf.setFont("Courier-Bold", 18)
+    pdf.drawString(0, y + 20, "BILL TO")
+    
+    v = 270
+    pdf.drawString(v, y + 40, "INVOICE #")
+    pdf.drawString(v, y + 20, "INVOICE DATE")
+    pdf.drawString(v, y, "DUE DATE")
+
+    z = y - 30
+    pdf.line(-100, z + 15, 1000, z + 15)
+    pdf.drawString(0, z, "QTY")
+    pdf.drawString(50, z, "DESC")
+    pdf.drawString(400, z, "AMOUNT")
+    pdf.line(-100, z - 5, 1000, z - 5)
+
+    w = z - 20
+
+    pdf.drawString(330, w - 100, "TOTAL")
+    pdf.drawString(400, w - 100, f"£{'{:.2f}'.format(30)}")
+
+
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(12, w, "1")
+    # Get the values from the lesson booking and display them on the invoice
+    pdf.drawString(50, w, f"{lesson.duration[int(lesson.durations) - 1][1]} minute {lesson.lesson_type} lesson taught by {lesson.Teacher} on {lesson.Date}.")
+    pdf.drawString(400, w, f"£{'{:.2f}'.format(30)}")
+
+    pdf.drawString(v + 160, y + 40, f"{'%04d' % my_id}")
+    # Replace this with student id + invoice id
+    pdf.drawString(v + 160, y + 20, f"{lesson.DateSent}")
+    # Replace this with whenever the request was accepted
+    from datetime import timedelta
+    pdf.drawString(v + 160, y, f"{lesson.DateSent + timedelta(days=30)}")
+
+    a = -730
+    b = 240
+    pdf.setFont("Courier-Bold", 14)
+    pdf.drawString(b, a, "TERMS & CONDITIONS")
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(b, a - 20, "Payment is due within 30 days.")
+    pdf.drawString(b, a - 35, "Please make checks payable to: Shark Time Music School")
+    pdf.line(b - 5, a + 10, b - 5, a - 50)
 
     # render, save, close
     pdf.showPage()
     pdf.save()
 
-    # Grab the pdf from the buffer to export
+    # Grab the PDF from the buffer to export
     pdfBuffer.seek(0)
 
-    return FileResponse(pdfBuffer, as_attachment=True, filename=f'invoice-{my_id}.pdf')
-
+    return FileResponse(pdfBuffer, as_attachment=False, filename=f'invoice-{"%04d" % my_id}.pdf')
+    # as_attachment determines (primarily) whether the PDF will be downloaded automatically
 
 
 def studentMakeRequest(request):
