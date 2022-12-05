@@ -137,6 +137,8 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
+# Metals #
+.metals
 
 #nathan specific#
 nathnotes.txt

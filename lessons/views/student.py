@@ -52,15 +52,7 @@ def studentViewRequests(request):
     }
 
 
-    return render(request,'studentViewRequests.html',data)    
-
-
-def studentViewInvoices(request):
-    data = {
-        'Invoices' : database.objects.filter(Student = "testbob", status ="A")
-    }
-
-    return render(request,'studentViewInvoices.html',data)
+    return render(request,'studentViewRequests.html',data)
 
 
 def makeAndViewInvoice(request, my_id):
