@@ -110,6 +110,7 @@ class Sys_user(models.Model):
     # INSERT INTO `sys_user`(`id`, `username`, `password`, `salt`, `name`, `create_time`, `create_by`, `update_time`,
     # `update_by`) VALUES(1, 'admin', 'admin', '123456', 'super administrator', DEFAULT, NULL, DEFAULT, NULL)
     user_name = models.CharField(max_length=20, null=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     password = models.CharField(max_length=20, null=True)
     salt = models.CharField(max_length=50, null=True)
     name = models.CharField(max_length=50, null=True)
