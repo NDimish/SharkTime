@@ -1,0 +1,89 @@
+{% extends 'adminBase.html' %}
+{% block body  %}
+          <h3 class="m-4">All Requests</h3>
+          <div class="row">
+              <div class="col-12">
+                {% if requests %}
+                    <div class="card bg-light mb-4 ms-4 me-4" >
+                        <div class="card-header">Requests</div>
+                        <div class="card-body">
+                            <div class ="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Date Sent</th>
+                                        <th scope="col">Student</th>
+                                        <th scope="col">Lesson Type</th>
+                                        <th scope="col">book_status</th>
+                                        <th scope="col">ACTiONS</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for request in requests %}
+                                        <tr>
+                                          <td>{{request.date_created}}</td>
+                                          <td>{{request.student_id}}</td>
+                                          <td>{{request.lesson_type}}</td>
+                                          <td>{{request.get_book_status_display}}</td>
+                                          <td>
+                                            <button type="button" class="btn btn-success me-1" href="{% url 'view_request' request.id %}" data-bs-toggle="modal" 
+                                            data-bs-target="#myModal{{request.id}}">View Request</button>
+                                            <!-- Modal - View Request -->
+                                            <div class="modal" role="dialog" id="myModal{{request.id}}"  tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                              <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title">Request from {{request.Student}}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true"></span>
+                                                    </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <ul class="list-unstyled">
+                                                        <li>Request book_status : <strong>{{request.get_book_status_display}}</strong> </li>
+                                                        <li>Request Made On : <strong>{{request.date_created}}</strong> </li>
+                                                        {% comment %} <li>Student Name : <strong>{{request.getStudentName}}</strong> </li> {% endcomment %}
+                                                        <li>Teacher : <strong>{{request.lesson_teacher}}</strong> </li>
+                                                        <li>Lesson Duration : <strong>{{request.get_lesson_duration_display}}</strong> </li>
+                                                       <!--<li>Time Of Lesson : <strong>{{request.time_of_lesson}}</strong> </li>--> 
+                                                        <li>Lesson Type : <strong>{{request.lesson_type}}</strong> </li>
+                                                        {% comment %} <li>Availability : <strong>{{request.availability}}</strong> </li> {% endcomment %}
+                                                        {% comment %} <li>Availability : <strong>{% for day in request.availability.all%}{{ day}} {%if not forloop.last%}, {%endif%} {% endfor %}</strong> </li>
+                                                        {% if request.isFulfilled  %}
+                                                          <li>Request Fulfilled : <strong>{{  }}</strong> </li> 
+                                                        {% endif %} {% endcomment %}
+                                                    </ul>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-btn-primary" data-bs-dismiss="modal">Close</button>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            
+                                            
+                                            {% if request.isFulfilled %}
+                                            <!--IF REQUEST IS FULFILLED SHOULD HAVE OPTION TO EDIT/DELETE BOOKING-->
+                                                <a class="btn btn-success me-1" href="{% url 'edit_booking' request.id  %}">Edit Booking</a>
+                                            <!--IF REQUEST IS UNFULFILLED, ENABLE BUTTON TO BOOK REQUEST-->
+                                            {% else %}
+                                              <a class="btn btn-warning me-1" href="{% url 'add_booking' request.id  %}">Fulfil Request</a>
+                                            {% endif %}
+                                          </td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                            </div>
+
+                        </div>
+                    </div>
+                {% else %}
+                    <h5 class="alert alert-primary ms-4 me-4">No Requests</h5>
+                {% endif %}
+                  
+              </div>
+          </div>
+
+{% endblock body %}
