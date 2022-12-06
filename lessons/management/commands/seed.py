@@ -1,8 +1,11 @@
 import datetime
 import random
-from lessons.models import Lesson, Teacher, Student
+
+from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonBook, \
+    LessonConfirmed
 from django.core.management.base import BaseCommand
 from faker import Faker
+from django_seed.seeder import Seeder
 
 
 class Command(BaseCommand):
@@ -10,6 +13,9 @@ class Command(BaseCommand):
         print("The seed command has not been implemented yet!")
         print("TO DO: Create a seed command following the instructions of the assignment carefully.")
 
+
+# It is more accurate to use faker himself to write
+# For more complex data we use faker to generate accurate test data
 
 # Set to global variables
 specialList = ["piano", "violin", "guitar", "guitar", "drums", "saxophone", "cello", "flute"]
@@ -48,7 +54,6 @@ def seed_teacher():
 
 
 def seed_student():
-    pass
     faker = Faker("en_UK")
     for i in range(1, 101):
         student = Student()
@@ -63,6 +68,34 @@ def seed_student():
         student.update_time = datetime.datetime.now()
         # insert data to sqlite3 db
         Student.objects.update(student)
+
+
+# Put some ordered action data and some snapshots here
+def seed_lessonBook():
+    faker = Faker("en_UK")
+    for i in range(1, 101):
+        lessonbook = LessonBook()
+        lessonbook.lesson_id = faker.ean8()
+        lessonbook.lesson_name = random_special()
+        lessonbook.book_status = 1
+        lessonbook.booking_time = datetime.datetime.now()
+        lessonbook.student_id = faker.ean8()
+        lessonbook.create_time = datetime.datetime.now()
+        lessonbook.update_time = datetime.datetime.now()
+        LessonBook.objects.update(lessonbook)
+
+
+def seed_lessonConfirmed():
+    faker = Faker("en_UK")
+    for i in range(1, 101):
+        lessonconfirmed = LessonConfirmed()
+        lessonconfirmed.lesson_id = faker.ean8()
+        lessonconfirmed.teacher_id = faker.ean8()
+        lessonconfirmed.schedule_time = datetime.timedelta(days=2)
+        lessonconfirmed.finish_time = datetime.timedelta(days=2, hours=1)
+        lessonconfirmed.create_time = datetime.datetime.now()
+        lessonconfirmed.update_time = datetime.datetime.now()
+        LessonConfirmed.objects.update(lessonconfirmed)
 
 
 def random_price():
@@ -83,3 +116,32 @@ def random(type):
 
 
 random_price()
+
+
+# Here we use seed to automatically generate test data
+def seed_Payment():
+    # write like this ,it will add 10 numbers of Lesson data
+    # we used seeder package
+    Seeder.add_entity(Payment, 100)
+    Seeder.execute()
+
+
+def seed_Sys_user():
+    # write like this ,it will add 10 numbers of Lesson data
+    # we used seeder package
+    Seeder.add_entity(Sys_user, 10)
+    Seeder.execute()
+
+
+def seed_Sys_authority():
+    # write like this ,it will add 10 numbers of Lesson data
+    # we used seeder package
+    Seeder.add_entity(Sys_authority, 10)
+    Seeder.execute()
+
+
+def seed_Sys_user_authority():
+    # write like this ,it will add 10 numbers of Lesson data
+    # we used seeder package
+    Seeder.add_entity(Sys_user_authority, 10)
+    Seeder.execute()
