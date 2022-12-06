@@ -56,7 +56,6 @@ def studentViewRequests(request):
 
 
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import inch
 
 def makeAndViewInvoice(request, my_id):
     lesson = get_object_or_404(database,id=my_id)
@@ -73,8 +72,9 @@ def makeAndViewInvoice(request, my_id):
     pdf.translate(30,800)
 
     # Let's add stuff!
+    pdf.setTitle("Invoice")
+
     pdf.drawString(0, 0, "INVOICE")
- 
  
     pdf.setFont("Helvetica-Bold", 14)
     x = -40

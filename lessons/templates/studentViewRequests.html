@@ -52,8 +52,8 @@
                 <th scope="col">Teacher</th>
                 <th scope="col">Lesson Date</th>
                 <th scope="col">Lesson Time</th>
+                <th scope="col">Payment</th>
                 <th scope="col">Invoice</th>
-                <th scope="col">payment</th>
               </tr>
             </thead>
 
@@ -71,11 +71,8 @@
                     <td>{{Bookings.Date}}</td>
                     <td>{{Bookings.time}}</td>
                     <!--used when payment in-->
-                    {%if Bookings.id == 8%}
-                    <td><a href="{% url 'showInvoice' Bookings.id %}" class = "btn btn-primary">TEMP</a> </td>
-                    {%else%}
                     <td><a href="{% url 'studentHome' %}" class = "btn btn-primary">Pay</a> </a></td>
-                    {%endif%}
+                    <td><a href="{% url 'showInvoice' Bookings.id %}" class = "btn btn-primary">Invoice PDF</a> </td>
                   </tr>
               {%endfor%}
             </tbody>
