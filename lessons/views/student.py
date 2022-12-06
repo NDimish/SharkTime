@@ -60,6 +60,11 @@ def studentViewRequests(request,Logged_ID):
 def makeAndViewInvoice(request, Logged_ID, my_id):
     lesson = get_object_or_404(database,id=my_id)
     
+    invoice_number = f"{lesson.student_id.reference_number}-{'%03d' % my_id}"
+    
+    pricePer = 30
+    price = pricePer * lesson.number_of_lessons
+    
     # Creat a buffer for receiving PDF data and intialise a pdf to save onto it
     pdfBuffer = io.BytesIO()
 
@@ -85,7 +90,7 @@ def makeAndViewInvoice(request, Logged_ID, my_id):
     pdf.drawString(0, x - 42, "London, W2 1DS")
     
     y = x - 90
-    # pdf.drawString(0, y, f"{str(lesson.getStudentName)}")
+    pdf.drawString(0, y, f"{lesson.student_id.user.first_name} {lesson.student_id.user.last_name}")
 
     pdf.setFont("Courier-Bold", 18)
     pdf.drawString(0, y + 20, "BILL TO")
@@ -96,25 +101,32 @@ def makeAndViewInvoice(request, Logged_ID, my_id):
     pdf.drawString(v, y, "DUE DATE")
 
     z = y - 30
+    c = 425
     pdf.line(-100, z + 15, 1000, z + 15)
     pdf.drawString(0, z, "QTY")
     pdf.drawString(50, z, "DESC")
-    pdf.drawString(400, z, "AMOUNT")
+    pdf.drawString(c - 75, z, "PER")
+    pdf.drawString(c, z, "AMOUNT")
     pdf.line(-100, z - 5, 1000, z - 5)
 
     w = z - 20
 
-    pdf.drawString(330, w - 100, "TOTAL")
-    pdf.drawString(400, w - 100, f"£{'{:.2f}'.format(30)}")
+    pdf.drawString(c - 70, w - 100, "TOTAL")
+    pdf.drawString(c, w - 100, f"£{'{:.2f}'.format(price)}")
 
 
     pdf.setFont("Helvetica", 10)
-    pdf.drawString(12, w, "1")
+    pdf.drawString(12, w, f"{lesson.number_of_lessons}")
     # Get the values from the lesson booking and display them on the invoice
-    pdf.drawString(50, w, f"{lesson.lesson_duration} minute {lesson.lesson_type} lesson taught by {lesson.lesson_teacher} on {lesson.lesson_start_date}.")
-    pdf.drawString(400, w, f"£{'{:.2f}'.format(30)}")
 
-    pdf.drawString(v + 160, y + 40, f"{'%04d' % my_id}")
+    
+
+    pdf.drawString(50, w, f"{((1,30),(2,45),(3,60))[lesson.lesson_duration - 1][1]} minute {lesson.lesson_type} lesson taught by {lesson.lesson_teacher} at {'%02d' % lesson.lesson_time.hour}:{'%02d' % lesson.lesson_time.minute}")
+    pdf.drawString(50, w - 15, f"every {lesson.lesson_interval} week(s) starting from {lesson.lesson_start_date}.")
+    pdf.drawString(c - 75, w, f"£{'{:.2f}'.format(pricePer)}")
+    pdf.drawString(c, w, f"£{'{:.2f}'.format(price)}")
+
+    pdf.drawString(v + 160, y + 40, invoice_number)
     # Replace this with student id + invoice id
     pdf.drawString(v + 160, y + 20, f"{lesson.date_created}")
     # Replace this with whenever the request was accepted
@@ -137,7 +149,7 @@ def makeAndViewInvoice(request, Logged_ID, my_id):
     # Grab the PDF from the buffer to export
     pdfBuffer.seek(0)
 
-    return FileResponse(pdfBuffer, as_attachment=False, filename=f'invoice-{"%04d" % my_id}.pdf')
+    return FileResponse(pdfBuffer, as_attachment=False, filename=f'invoice {invoice_number}.pdf')
     # as_attachment determines (primarily) whether the PDF will be downloaded automatically
 
 
