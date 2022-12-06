@@ -14,7 +14,7 @@ class Command(BaseCommand):
         print("TO DO: Create a seed command following the instructions of the assignment carefully.")
 
 
-# It is more accurate to use faker himself to write
+# It is more accurate to use faker to write
 # For more complex data we use faker to generate accurate test data
 
 # Set to global variables
