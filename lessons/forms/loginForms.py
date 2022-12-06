@@ -23,7 +23,6 @@ class signUp(forms.Form):
     )
     nick_name = forms.CharField(max_length=50)
     age = forms.IntegerField()
-    role=forms.CharField(max_length=50)
     class Meta:
         fields=(
 
@@ -33,7 +32,6 @@ class signUp(forms.Form):
             "password ",
             "nick_name", 
             "age", 
-            "role"
         )
         
 #labels = {'availability' : "Days You Are Available For Lessons"}  
