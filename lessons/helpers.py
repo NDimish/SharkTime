@@ -2,20 +2,19 @@
 from django.core.exceptions import ValidationError
 import datetime 
 
-DAY_OF_THE_WEEK = {
-    (0, 'Monday'),
-    (1, 'Tuesday'),
-    (2, 'Wednesday'),
-    (3, 'Thursday'),
-    (4, 'Friday'),
+CHOICE_DAY_OF_THE_WEEK = [
+    (1, 'Monday'),
+    (2, 'Tuesday'),
+    (3, 'Wednesday'),
+    (4, 'Thursday'),
+    (5, 'Friday'),
     #For now, assume weekend leesons are not possible to book 
     #(5, 'Saturday'),
     #(6, 'Sunday'),
-}
+]
 
-LESSON_DURATIONS =  {
-
-}
+CHOICE_LESSON_DURATION = ((1 , '30 minutes'),(2 , '45 minutes'), (3, '60 minutes'))
+CHOICE_LESSON_INTERVAL = ((1, '1 lesson every week'), (2, '1 lesson every 2 weeks'))
 #VALIDATORS--------------------------------------
 
 # Reject dates in the past  

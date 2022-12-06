@@ -3,13 +3,12 @@ from ..views import student
 
 urlpatterns =[
 
-    path('home/',student.studentHomePage,name='studentHome'),
-    path('home/viewRequests',student.studentViewRequests,name='studentVeiwRequests'),
-    path('request/',student.studentMakeRequest, name = 'request'),
-    path('editrequest/<int:my_id>/',student.studentEditRequest, name = 'editrequest'),
-    path('editrequest/update/<int:my_id>', student.Editrecord, name='editrecord'),
+   path('home/<int:Logged_ID>/',student.studentHomePage,name='studentHome'),
+    path('home/<int:Logged_ID>/viewRequessts/',student.studentViewRequests,name='studentViewRequests'),
+    path('request/<int:Logged_ID>/',student.studentMakeRequest, name = 'request'),
+    path('editrequest/<int:Logged_ID>/<int:my_id>/',student.studentEditRequest, name = 'editrequest'),
+    path('editrequest/update/<int:Logged_ID>/<int:my_id>', student.Editrecord, name='editrecord'),
     path('showInvoice/<int:my_id>',student.makeAndViewInvoice,name='showInvoice'),
-
     
     
 ]

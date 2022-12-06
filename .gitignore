@@ -140,7 +140,7 @@ GitHub.sublime-settings
 # Metals #
 .metals
 
-#nathan specific#
+#nathan specific# 
 nathnotes.txt
 Pipfile
 Pipfile.lock

@@ -1,11 +1,11 @@
 {% extends 'studentBase.html' %}
 {% block body  %}
 
-<h1> Mak new Request </h1>
+<h1> Make New Request </h1>
 
-<a href="{% url 'request' %}" class="btn btn-lg btn-outline-primary">New Request</button></a>
+<a href="{% url 'request' Logged_ID %}" class="btn btn-lg btn-outline-primary">New Request</button></a>
 
-<h1>View your requests<h1>
+<h1>View your requests</h1>
 
     <div class="card text-white bg-warning mb-3" >
         <div class="card-header">Pending</div>
@@ -26,11 +26,11 @@
 
                   {% for Bookings in Pending_lessons%}
                     <tr class="table-info">
-                        <th scope="row">{{Bookings.DateSent}}</th>
-                        <td>{{Bookings.Teacher}}</td>
-                        <td>{{Bookings.Date}}</td>
-                        <td>{{Bookings.time}}</td>
-                        <td><a href="{% url 'editrequest' Bookings.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
+                        <th scope="row">{{Bookings.date_created}}</th>
+                        <td>{{Bookings.lesson_teacher}}</td>
+                        <td>{{Bookings.lesson_start_date}}</td>
+                        <td>{{Bookings.lesson_time}}</td>
+                        <td><a href="{% url 'editrequest' Logged_ID Bookings.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
                       </tr>
                   {%endfor%}
                 </tbody>
@@ -66,10 +66,10 @@
               {%else%}
               <tr class="table-warning">
               {%endif%}
-                  <th scope="row">{{Bookings.DateSent}}</th>
-                    <td>{{Bookings.Teacher}}</td>
-                    <td>{{Bookings.Date}}</td>
-                    <td>{{Bookings.time}}</td>
+                  <th scope="row">{{Bookings.date_created}}</th>
+                    <td>{{Bookings.lesson_teacher}}</td>
+                    <td>{{Bookings.lesson_start_date}}</td>
+                    <td>{{Bookings.lesson_time}}</td>
                     <!--used when payment in-->
                     <td><a href="{% url 'studentHome' %}" class = "btn btn-primary">Pay</a> </a></td>
                     <td><a href="{% url 'showInvoice' Bookings.id %}" class = "btn btn-primary">Invoice PDF</a> </td>
@@ -100,10 +100,10 @@
 
               {% for Bookings in Rejected_lessons%}
                 <tr class="table-info">
-                  <th scope="row">{{Bookings.DateSent}}</th>
-                    <td>{{Bookings.Teacher}}</td>
-                    <td>{{Bookings.Date}}</td>
-                    <td>{{Bookings.time}}</td>
+                  <th scope="row">{{Bookings.date_created}}</th>
+                    <td>{{Bookings.lesson_teacher}}</td>
+                    <td>{{Bookings.lesson_start_date}}</td>
+                    <td>{{Bookings.lesson_time}}</td>
                   </tr>
               {%endfor%}
             </tbody>
