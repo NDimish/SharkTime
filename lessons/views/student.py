@@ -6,8 +6,10 @@ from lessons.models import LessonRequest as database
 from django.urls import reverse
 from django.utils.timezone import now
 from lessons.models import User, Student
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def studentHomePage(request):
     obj = User.objects.filter(role='S').first()
     data = {
@@ -17,6 +19,7 @@ def studentHomePage(request):
 
     return render(request,'studentHome.html',data)
 
+@login_required
 def studentViewRequests(request):
     obj = database.objects.all()
     #For now just get the first student in the database
@@ -50,6 +53,7 @@ def studentViewRequests(request):
 
 
 #OTHER VERSION make_request
+@login_required
 def studentMakeRequest(request):
 
     form = make_request(request.POST or None)
@@ -63,7 +67,7 @@ def studentMakeRequest(request):
     return render(request,'request.html',data)
 
     
-
+@login_required
 def studentEditRequest(request,my_id):
     try:
         obj = get_object_or_404(database,id=my_id)
@@ -90,7 +94,7 @@ def studentEditRequest(request,my_id):
     
     return render(request,'editrequest.html', data)
 
-
+@login_required
 def Editrecord(request,my_id):
     if("Edit" in request.POST):
         return update(request,my_id)
@@ -103,7 +107,7 @@ def Editrecord(request,my_id):
 
 
 
-
+@login_required
 def update(request,my_id):
     member = database.objects.get(id=my_id)
     member.lesson_teacher = request.POST['lesson_teacher']
@@ -118,7 +122,7 @@ def update(request,my_id):
 
 
     
-
+@login_required
 def delete(request, my_id):
   member = database.objects.get(id=my_id)
   member.delete()
