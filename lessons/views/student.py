@@ -1,13 +1,11 @@
 from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from ..forms.studentforms import make_request
 from lessons.models import LessonRequest as database
 from django.urls import reverse
 from django.utils.timezone import now
-
-from ..forms.studentforms import make_request
-from ..models.requests import request as database
+from lessons.models import User, Student, Lesson
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @login_required
