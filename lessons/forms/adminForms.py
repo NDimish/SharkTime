@@ -1,6 +1,6 @@
 from django import forms
 from lessons.models import LessonRequest
-from lessons.models import LessonBooking
+from lessons.models import LessonBooking,Term
 
 
 class bookingForm(forms.ModelForm):
@@ -45,14 +45,7 @@ class bookingForm(forms.ModelForm):
             """Create a new user."""
             instance = forms.ModelForm.save(self,False)
             
-            old_save_m2m = self.save_m2m
-            # def save_m2m():
-            #     old_save_m2m()
-            #     instance.day_of_week.clear()
-            #     instance.day_of_week.add(*self.cleaned_data['day_of_week'])
-            # self.save_m2m = save_m2m
-        
-            # self.cleaned_data.get('username'),
+           
             instance.lesson_start_date = self.cleaned_data['lesson_start_date']
             instance.lesson_teacher=self.cleaned_data['lesson_teacher']
             instance.student_id = self.cleaned_data['student_id']
@@ -70,5 +63,23 @@ class bookingForm(forms.ModelForm):
             
             return instance
         
-    
-   
+
+class TermForm(forms.ModelForm):
+    class Meta:
+        model = Term
+        fields = {"start_of_term_date", 'end_of_term_date', "name"}
+        widgets = {
+            'start_of_term_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
+            'end_of_term_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
+        }
+    def clean(self, *args, **kwargs):
+        start_of_term_date = self.cleaned_data['start_of_term_date']
+        end_of_term_date= self.cleaned_data['end_of_term_date']
+        obj = Term.objects.filter(end_of_term_date__gte=start_of_term_date, start_of_term_date__lte=end_of_term_date)
+        if obj is not None:
+            raise forms.ValidationError("Please select a term date range that does not overlap with the existing terms")
+            
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+       

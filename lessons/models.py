@@ -28,16 +28,19 @@ class User(AbstractUser):
         ('A', 'Administrator'),
         ('D', 'Director'),
         ('S', 'Student'),
+        ( 'P', 'External Client / Parent')
     )
     
+    SUB_USER_ROLES = (
+         ('S', 'Student'),
+        ( 'P', 'External Client / Parent')
+    )
     email = models.EmailField(_("email address"), unique=True)
-    #email_verified = models.BooleanField(default=False)
+    is_client_or_student = models.CharField(max_length=1, blank=True, choices=SUB_USER_ROLES, default = "S" )
     role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default = "S" )
-    # first_name = models.CharField(max_length=50)
-    # last_name = models.CharField(max_length=50)gr
-    # username = models.CharField(max_length=20)
-    #email = models.EmailField(max_length=100,null=False, verbose_name="user name or email address", unique=True)
+   
     objects = UserManager()
+
     #USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
    
@@ -51,23 +54,30 @@ class Student(models.Model):
     id = models.AutoField(primary_key=True)
     #unique 4 digit student reference number
     reference_number =models.CharField(default=str(uuid.uuid4().int)[:4], editable=False, max_length=4)
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-    #don't need created at as AbstractUser already has field date_joined
-    #created_at = models.DateTimeField(auto_now_add=True)
-    #updated_at = models.DateTimeField(auto_now=True)
-    nick_name = models.CharField(max_length=500, null=True)
-    age = models.IntegerField(null=False)
+    user = models.OneToOneField('User',on_delete=models.CASCADE)
+   
     objects = models.Manager()
-    icon_url = models.CharField(max_length=500, null=True)
-    # class Meta:
-    #     constraints = [
-    #         models.UniqueConstraint(
-    #             fields=['reference_number'], name='unique_migration_refno_combination'
-    #         )
-    # ]
+
+
     def __str__(self):
         return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
-    
+
+class Client(models.Model):
+    #unique client
+    id = models.AutoField(primary_key=True)
+    #unique 4 digit student reference number
+    reference_number =models.CharField(default=str(uuid.uuid4().int)[:4], editable=False, max_length=4)
+    user = models.OneToOneField('User',on_delete=models.CASCADE)
+    objects = models.Manager()
+    def __str__(self):
+        return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
+
+class Invoice(models.Model):
+    reference_number =models.AutoField(primary_key=True, default=str(uuid.uuid4().int)[:4], editable=False, max_length=4)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    objects = models.Manager()
+    def __str__(self):
+        return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
 
 
 #Admin class
@@ -219,3 +229,14 @@ class LessonBooking(models.Model):
     lesson_teacher = models.CharField(max_length = 20, default='')
     objects = models.Manager() 
 
+class Term(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20, null = False)
+    start_of_term_date = models.DateField(null=False,default = now)
+    end_of_term_date =  models.DateField(null=False,default = now)
+
+    # def validateTermDate(start, end):
+#     return not Term.filter(start_of_term_date=intialDate, start__lte=endDate).exists()
+
+    
+    

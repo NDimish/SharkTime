@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from lessons.forms import adminForms
-from lessons.forms.adminForms import bookingForm as BookingForm
-from lessons.models import LessonBooking, LessonRequest, Student
+from lessons.forms.adminForms import bookingForm as BookingForm , TermForm
+from lessons.models import LessonBooking, LessonRequest, Student,Term
 from django.http import Http404
 
 
@@ -25,6 +25,11 @@ def admin_home(request):
     return render(request, 'adminHome.html', context)
 
 
+#display all the term dates set
+def view_term_dates(request):
+    term_dates = Term.objects.all()
+    context = {'terms' : term_dates}
+    return render(request, 'adminViewTermDates.html', context)
 
 #display all students in the school who have registered
 def view_students(request):
@@ -53,7 +58,24 @@ def view_transactions(request):
     context = {'students' : students}
     return render(request, 'adminViewTransactions.html',context)
 
-
+#add a term
+def add_term(request):
+    form =TermForm(request.POST or None)
+    if 'Submit' in request.POST:
+       # booking = get_ob
+        form = TermForm(request.POST)
+        print (form.errors)
+        if form.is_valid():
+            form.save()
+            #Redirect back to admin home page
+            return redirect('/')
+        print('invalid form')
+    else :
+        form = TermForm()
+    
+    context ={'form' : form }
+    print("return render")
+    return render(request, 'adminAddBooking.html', context)
 #add a booking
 def add_booking(request,id):
     corresponding_request = LessonRequest.objects.get(pk=id) 

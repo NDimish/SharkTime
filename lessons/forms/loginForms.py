@@ -2,126 +2,33 @@ from django import forms
 from django.forms import ValidationError
 from lessons.models import User
 from lessons.models import Student as Student
-from django.core.validators import RegexValidator
 from django.utils.timezone import now
 from django.db import models
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 import datetime
 
-<<<<<<< Updated upstream
 
-class signUp(forms.Form):
-  
-    first_name = forms.CharField(max_length=50)
-    last_name = forms.CharField(max_length=50)
-    email = forms.EmailField(max_length=100)
-    password = forms.CharField(label='Password',
-    widget=forms.PasswordInput(),
-    validators=[RegexValidator(
-    regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
-    message='Password must contain an uppercase character, a lowercase '
-    'character and a number'
-    )]
-    )
-    nick_name = forms.CharField(max_length=50)
-    age = forms.IntegerField()
-    role=forms.CharField(max_length=50)
-    class Meta:
-        fields=(
-
-            "first_name",
-            "last_name", 
-            "email ",
-            "password ",
-            "nick_name", 
-            "age", 
-            "role"
-        )
-        
-#labels = {'availability' : "Days You Are Available For Lessons"}  
-#widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
-
-    
-    def save(self, commit=True):
-        """Create a new user."""
-
-        dataCheck = sign.objects.filter(email = self.cleaned_data.get('email'))
-        if(dataCheck.count() >0):
-            return False
-
-        user1 = sign.objects.create(
-        first_name = self.cleaned_data.get('first_name'),
-        last_name = self.cleaned_data.get('last_name'),
-        email = self.cleaned_data.get('email'),
-        role = 'S',
-        )
-
-
-        sys_user1 = User.objects.create(
-            user_name = (user1.first_name + user1.last_name + str(user1.id)),
-            user = user1,
-            password = self.cleaned_data.get('password'),
-            salt = 123456,
-            name = self.cleaned_data.get('first_name'),
-            create_time = now(),
-            update_time = now(),
-        )
-        
-        student1 = Student.objects.create( 
-            user=user1,
-            created_at = now,
-            updated_at = now,
-            nick_name = self.cleaned_data.get('nick_name'),
-            age = self.cleaned_data.get('age'),
-            icon_url = "/user/a.jpg",
-        )
-
-        return True
-        
-
-
-class login(forms.Form):
-  
-
-    email = forms.EmailField(max_length=100)
-    password = forms.CharField(max_length=50, widget=forms.PasswordInput())
-
-
-    class Meta:
-        fields=(
-            "email ",
-            "password ",
-        )
-        
-#labels = {'availability' : "Days You Are Available For Lessons"}  
-#widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
-
-    def save(self, commit=True):
-        userCheck = sign.objects.filter(email = self.cleaned_data.get('email'))
-        if(userCheck.count() <1):
-            return "F"
-        
-        passwordCheck = User.objects.filter(user = userCheck[0])
-        if(passwordCheck[0].password == self.cleaned_data.get('password')):
-             return userCheck[0].role
-        return "F" 
-=======
 class UserSignUpForm(UserCreationForm):
    # email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=20)
     last_name = forms.CharField(max_length=20)
+  
+    
     class Meta():
         model = User
-        fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name', "role" ,)
-
+        fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name', "is_client_or_student" )
+        #add labels here
+        
         def clean_email(self):
             email = self.cleaned_data['email']
             obj = User.objects.get(email=email)
             if obj is not None:
                 raise forms.ValidationError("This email is already associated with another account")
+
         
+       
 
 class UserLoginForm(AuthenticationForm):
 
     email = forms.EmailField(required=True, label="email")
->>>>>>> Stashed changes
+

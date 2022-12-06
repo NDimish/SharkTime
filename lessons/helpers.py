@@ -2,6 +2,7 @@
 from django.core.exceptions import ValidationError
 import datetime 
 
+
 CHOICE_DAY_OF_THE_WEEK = [
     (1, 'Monday'),
     (2, 'Tuesday'),
@@ -28,5 +29,7 @@ def validateLessonNumber(lessonNum):
     if (lessonNum<1 or lessonNum>10):
         raise ValidationError("Invalid number of lessons")
 
-
+def isStudentUser(user):
+    pass
 #For epic 2.2 later need to validate lesson start dates 
+

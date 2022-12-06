@@ -1,0 +1,27 @@
+
+{% extends 'loginBase.html' %}
+{% block body %}
+{% block content %}
+{%if alert%}
+<h3>Register</h3>
+<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>Oh snap!</strong> <a href="{% url 'login' %}" class="alert-link">{{alert}}</a>.
+</div>
+{%endif%}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>Request</h1>
+      <form action="{% url 'registerUser' %}" method="POST">
+ 
+        {% csrf_token %}
+        {% include 'bootstrap_form.html' with form=form %}
+        <input type="submit"  value = "Sign Up" class="btn btn-primary"> 
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% endblock %} 
