@@ -6,6 +6,7 @@ from ..forms.loginForms import login
 from django.urls import reverse
 from django.utils.timezone import now
 from lessons.models import User, Student
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import messages
 
@@ -30,9 +31,10 @@ def loginPage(request):
     form = login(request.POST or None)
     if form.is_valid():
         formResult = form.save(commit=True)
-        username = form.cleaned_data.get('username')
+        username = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
+        user = authenticate(username='qwerty@gmail.com',password = password)
+
         if(formResult == "F"):
             alert = "Somthings wrong with your details"
         else:

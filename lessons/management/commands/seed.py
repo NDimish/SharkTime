@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker 
-from lessons.models import User,Student
+from lessons.models import User,Student,Sys_user
 class Command(BaseCommand):
     
     def __init__(self):
@@ -19,12 +19,15 @@ class Command(BaseCommand):
     
     def create_users(self): 
         user1 = User.objects.create(role='S' , first_name = "Jane", last_name ="Doe",email = "janeDoe@gmail.com")
+        user1.save()
+        user2 = User.objects.create(role='D' , first_name = "Jace", last_name ="Doe",email = "jaceDoe@gmail.com")
+        user3 = Sys_user.objects.create(user_name='434' , user = user2, last_name ="Doe",email = "jaceDoe@gmail.com")
         # user1.username = "itsjanedoe"     
         # user1.first_name = "Jane"
         # user1.last_name="Doe"
         # user1.role = 'S'
         # user1.email = "janeDoe@gmail.com"
-        user1.save()
+        
 
         student1 = Student( user=user1)
         student1.created_at = "2022-11-24 10:30:28"
