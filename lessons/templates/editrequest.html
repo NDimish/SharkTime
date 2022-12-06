@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col-12">
       <h1>Request</h1>
-      <form action="{% url 'editrecord' my_id=data.id %}" method="POST">
+      <form action="{% url 'editrecord' Logged_ID data.id %}" method="POST">
         {% csrf_token %}
         {% include 'bootstrap_form.html' with form=form %}
         <input type="submit" value="Edit" name = "Edit" class="btn btn-primary">

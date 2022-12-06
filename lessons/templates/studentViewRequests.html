@@ -71,8 +71,8 @@
                     <td>{{Bookings.lesson_start_date}}</td>
                     <td>{{Bookings.lesson_time}}</td>
                     <!--used when payment in-->
-                    <td><a href="{% url 'studentHome' %}" class = "btn btn-primary">Pay</a> </a></td>
-                    <td><a href="{% url 'showInvoice' Bookings.id %}" class = "btn btn-primary">Invoice PDF</a> </td>
+                    <td><a href="{% url 'studentHome' Logged_ID%}" class = "btn btn-primary">Pay</a> </a></td>
+                    <td><a href="{% url 'showInvoice' Logged_ID Bookings.id %}" class = "btn btn-primary">Invoice PDF</a> </td>
                   </tr>
               {%endfor%}
             </tbody>

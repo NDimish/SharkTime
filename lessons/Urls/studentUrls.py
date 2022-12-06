@@ -8,7 +8,7 @@ urlpatterns =[
     path('request/<int:Logged_ID>/',student.studentMakeRequest, name = 'request'),
     path('editrequest/<int:Logged_ID>/<int:my_id>/',student.studentEditRequest, name = 'editrequest'),
     path('editrequest/update/<int:Logged_ID>/<int:my_id>', student.Editrecord, name='editrecord'),
-    path('showInvoice/<int:my_id>',student.makeAndViewInvoice,name='showInvoice'),
+    path('showInvoice/<int:Logged_ID>/<int:my_id>',student.makeAndViewInvoice,name='showInvoice'),
     
     
 ]

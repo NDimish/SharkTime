@@ -1,11 +1,14 @@
 from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, FileResponse
 from ..forms.studentforms import make_request
 from lessons.models import LessonRequest as database
 from django.urls import reverse
 from django.utils.timezone import now
 from lessons.models import User, Student, Lesson
 from django.contrib.auth.decorators import login_required
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+import io
 
 # Create your views here.
 @login_required
@@ -53,8 +56,8 @@ def studentViewRequests(request,Logged_ID):
 
     return render(request,'studentViewRequests.html',data)
 
-
-def makeAndViewInvoice(request, my_id):
+@login_required
+def makeAndViewInvoice(request, Logged_ID, my_id):
     lesson = get_object_or_404(database,id=my_id)
     
     # Creat a buffer for receiving PDF data and intialise a pdf to save onto it
@@ -82,7 +85,7 @@ def makeAndViewInvoice(request, my_id):
     pdf.drawString(0, x - 42, "London, W2 1DS")
     
     y = x - 90
-    pdf.drawString(0, y, f"{lesson.Student}")
+    # pdf.drawString(0, y, f"{str(lesson.getStudentName)}")
 
     pdf.setFont("Courier-Bold", 18)
     pdf.drawString(0, y + 20, "BILL TO")
@@ -108,15 +111,15 @@ def makeAndViewInvoice(request, my_id):
     pdf.setFont("Helvetica", 10)
     pdf.drawString(12, w, "1")
     # Get the values from the lesson booking and display them on the invoice
-    pdf.drawString(50, w, f"{lesson.duration[int(lesson.durations) - 1][1]} minute {lesson.lesson_type} lesson taught by {lesson.Teacher} on {lesson.Date}.")
+    pdf.drawString(50, w, f"{lesson.lesson_duration} minute {lesson.lesson_type} lesson taught by {lesson.lesson_teacher} on {lesson.lesson_start_date}.")
     pdf.drawString(400, w, f"£{'{:.2f}'.format(30)}")
 
     pdf.drawString(v + 160, y + 40, f"{'%04d' % my_id}")
     # Replace this with student id + invoice id
-    pdf.drawString(v + 160, y + 20, f"{lesson.DateSent}")
+    pdf.drawString(v + 160, y + 20, f"{lesson.date_created}")
     # Replace this with whenever the request was accepted
     from datetime import timedelta
-    pdf.drawString(v + 160, y, f"{lesson.DateSent + timedelta(days=30)}")
+    pdf.drawString(v + 160, y, f"{lesson.date_created + timedelta(days=30)}")
 
     a = -730
     b = 240
@@ -138,12 +141,12 @@ def makeAndViewInvoice(request, my_id):
     # as_attachment determines (primarily) whether the PDF will be downloaded automatically
 
 
-def studentMakeRequest(request):
+def studentMakeRequest(request, Logged_ID):
 
     form = make_request(request.POST or None)
     if form.is_valid():
         form.save(commit=True)
-        return HttpResponseRedirect(reverse('studentViewRequests') ,Logged_ID = Logged_ID)
+        return HttpResponseRedirect(reverse('studentViewRequests' , args =(Logged_ID,)) )
     data ={
         'form':form,
         'Logged_ID':Logged_ID
@@ -159,7 +162,7 @@ def studentEditRequest(request,Logged_ID,my_id):
     except database.DoesNotExist:
         raise Http404
     if(obj.book_status != "P"):
-        return HttpResponseRedirect(reverse('studentHome'), Logged_ID = Logged_ID)
+        return HttpResponseRedirect(reverse('studentHome' , args =(Logged_ID,)) )
 
     context ={
         'lesson_teacher': obj.lesson_teacher,
@@ -169,7 +172,6 @@ def studentEditRequest(request,Logged_ID,my_id):
         'lesson_type':obj.lesson_type,
         'number_of_lessons':obj.number_of_lessons,
         'student_id':obj.student_id,
-        'Logged_ID':Logged_ID
         }
     form = make_request(request.POST or None, initial = context)
    
@@ -184,12 +186,12 @@ def studentEditRequest(request,Logged_ID,my_id):
 @login_required
 def Editrecord(request,Logged_ID,my_id):
     if("Edit" in request.POST):
-        return update(request,my_id)
+        return update(request,Logged_ID, my_id)
     elif("Delete" in request.POST):
-        return delete(request, my_id)
+        return delete(request,Logged_ID, my_id)
     else:
         #change later
-        return HttpResponseRedirect(reverse('studentHome'),Logged_ID = Logged_ID)
+        return HttpResponseRedirect(reverse('studentHome' , args =(Logged_ID,)) )
 
 
 
@@ -205,7 +207,7 @@ def update(request,Logged_ID,my_id):
     member.number_of_lessons = request.POST['number_of_lessons']
 
     member.save()
-    return HttpResponseRedirect(reverse('studentViewRequests'),Logged_ID = Logged_ID)
+    return HttpResponseRedirect(reverse('studentViewRequests' , args =(Logged_ID,)) )
 
 
     
@@ -213,7 +215,7 @@ def update(request,Logged_ID,my_id):
 def delete(request,Logged_ID, my_id):
   member = database.objects.get(id=my_id)
   member.delete()
-  return HttpResponseRedirect(reverse('studentViewRequests'),Logged_ID = Logged_ID)
+  return HttpResponseRedirect(reverse('studentViewRequests' , args =(Logged_ID,)) )
 
 
 
