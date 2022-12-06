@@ -24,14 +24,12 @@ def studentHomePage(request,Logged_ID):
 
 @login_required
 def studentViewRequests(request,Logged_ID):
-    obj = database.objects.all()
+
+    student = Student.objects.get(user = User.objects.get(id = Logged_ID))
     #For now just get the first student in the database
     #student = User.objects.filter(role='S').first()
-    student = Student.objects.first()
-    print(student.pk, "says hello")
     s = student.pk
-    print("student id is " , obj)
-    Pending = database.objects.filter( book_status ="P")
+    Pending = database.objects.filter( book_status ="P",student_id= s)
     for book in Pending:
         if(now().date().today() > book.lesson_start_date):
             book.book_status = "R"
@@ -45,7 +43,7 @@ def studentViewRequests(request,Logged_ID):
     Approved = database.objects.filter(student_id= s, book_status ="A")
 
     data ={
-        'booked_lessons' : obj,
+
         'Pending_lessons':Pending,
         'Rejected_lessons':Rejected,
         'Accepted_lessons':Approved,
@@ -55,6 +53,8 @@ def studentViewRequests(request,Logged_ID):
 
 
     return render(request,'studentViewRequests.html',data)
+
+
 
 @login_required
 def makeAndViewInvoice(request, Logged_ID, my_id):
