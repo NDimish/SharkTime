@@ -18,19 +18,19 @@
     <body class="d-flex flex-column min-vh-100">
         <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
             <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'studentHome' %}">Music School Management System<br><strong>Student</strong></a>
+              <a class="navbar-brand" href="{% url 'studentHome' Logged_ID %}">Music School Management System<br><strong>Student</strong></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto">
                   <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'studentHome' %}">Home
+                    <a class="nav-link active" href="{% url 'studentHome' Logged_ID %}">Home
                       <span class="visually-hidden">(current)</span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'studentViewRequests'%}">View Request</a>
+                    <a class="nav-link" href="{% url 'studentViewRequests' Logged_ID %}">View Request</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">View Dependents</a>

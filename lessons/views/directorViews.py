@@ -37,3 +37,19 @@ def UserFormPage(request,my_id):
 
 
     return render(request,'directorDataChange.html',data)
+
+
+def UserFormPage(request,my_id):
+
+
+    form = directorForms.Userform(request.POST or None)
+    if form.is_valid():
+        form.save(commit=True)
+
+    data ={
+        "form" : form,
+
+    }
+
+
+    return render(request,'directorDataChange.html',data)

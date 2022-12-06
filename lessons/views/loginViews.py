@@ -9,6 +9,7 @@ from lessons.models import User, Student
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 
 def signUpPage(request):
     alert=""
@@ -33,13 +34,17 @@ def loginPage(request):
         formResult = form.save(commit=True)
         username = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
-        user = authenticate(username='qwerty@gmail.com',password = password)
+        user = authenticate(username=username,password = password)
 
         if(formResult == "F"):
             alert = "Somthings wrong with your details"
         else:
+            user = get_user_model()
+            user1= user.objects.get(username = username)
+            Logged_ID = user1.id
+
             if(formResult == 'S'):
-                return HttpResponseRedirect(reverse('studentHome'))
+                return HttpResponseRedirect(reverse('studentHome',args=(Logged_ID,)))
             elif(formResult == 'A'):
                 return HttpResponseRedirect(reverse('adminHome'))
             elif(formResult == 'D'):

@@ -3,7 +3,7 @@
 
 <h1> Make New Request </h1>
 
-<a href="{% url 'request' %}" class="btn btn-lg btn-outline-primary">New Request</button></a>
+<a href="{% url 'request' Logged_ID %}" class="btn btn-lg btn-outline-primary">New Request</button></a>
 
 <h1>View your requests</h1>
 
@@ -30,7 +30,7 @@
                         <td>{{Bookings.lesson_teacher}}</td>
                         <td>{{Bookings.lesson_start_date}}</td>
                         <td>{{Bookings.lesson_time}}</td>
-                        <td><a href="{% url 'editrequest' Bookings.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
+                        <td><a href="{% url 'editrequest' Logged_ID Bookings.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
                       </tr>
                   {%endfor%}
                 </tbody>
