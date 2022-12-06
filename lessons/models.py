@@ -55,6 +55,7 @@ class Student(models.Model):
     #             fields=['reference_number'], name='unique_migration_refno_combination'
     #         )
     # ]
+
     def __str__(self):
         return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
     
@@ -180,11 +181,12 @@ class LessonRequest(models.Model):
             return False
         return True
 
+    @property
     def getStudentName(self):
-        student = Student.objects.get(pk=self.student_id)
-        user = User.objects.get(pk=student.user)
-        if user is not None: 
-            return user.first_name , " " , user.last_name 
+        obj = self.student_id
+        first_name = obj.user.first_name.removeprefix('"')
+        return  ( first_name, " " , obj.user.last_name)
+         
 
     # for epic 2
     #additionalInfo = models.TextField(default = "N/A")

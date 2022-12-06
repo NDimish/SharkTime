@@ -9,8 +9,6 @@ from lessons.forms.adminForms import bookingForm as BookingForm
 from lessons.models import LessonBooking, LessonRequest, Student
 from django.http import Http404
 
-
-
 """
     Admin home view - This is the view displayed to the admin after logging in
     - Should display all student requests
@@ -42,7 +40,6 @@ def view_request(request,id):
 def view_requests(request):
     #Get all requests 
     requests = LessonRequest.objects.all()
-
     context = {'requests' : requests}
     #request_count = LessonRequest.objects.all().count()
     return render(request, 'adminViewRequests.html', context)
@@ -141,6 +138,7 @@ def delete(request, id):
 
   member.delete()
   corresponding_request = LessonRequest.objects.get(pk=request_id) 
+  print(corresponding_request.getStudentName)
   corresponding_request.book_status = 'P'
   corresponding_request.save()
   
