@@ -18,7 +18,7 @@
     <body class="d-flex flex-column min-vh-100">
         <nav class="navbar navbar-expand-lg navbar-light bg-lightk">
             <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'home' %}">Music School Management System</a>
+              <a style="color:black;" class="navbar-brand" href="{% url 'home' %}">Music School Management System</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -30,7 +30,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'signUp'%}">sign up</a>
+                    <a class="nav-link" href="{% url 'signUp'%}">Sign up</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'login'%}">Login</a>
@@ -42,9 +42,9 @@
               </div>
             </div>
           </nav> 
-          <div class=container-fluid>
+          <div class=container-fluid style="color:rgb(2, 1, 2)">
             {% block body %}
-            
+            <h1>Welcome</h1>
             {% endblock body %}
 
           </div>

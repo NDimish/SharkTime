@@ -1,18 +1,34 @@
 {% extends 'loginBase.html' %}
 {% block body %}
-    <div class="container vh-100">
-        <div class="row h-100">
-            <div class="col-12 my-auto">
-                <div class ="card cover-card offset-sm-2 offset-md-4 offset-lg-7">
-                    <h1 class="cover-heading">Homepage</h1>
-                    <p class="cover-text"><a href="{% url 'signUp' %}" class="btn btn-lg btn-secondary">Sign up</a></p>
-                    <p class="cover-text"><a href="{% url 'login' %}" class="btn btn-lg btn-secondary">Log in</a></p>
-                    <p class="cover-text"><a href='/lessons/student/home' class="btn btn-lg btn-secondary">student testing with blank student</a></p>
-                    <p class="cover-text"><a href='/lessons/admin/home' class="btn btn-lg btn-secondary">admin view</a></p>
-                    <p class="cover-text"><a href='/lessons/director/home' class="btn btn-lg btn-secondary">director view</a></p>
-                </div>
+<style type="text/css">
+    .brlarge {
+        display: block;
+        margin-bottom: 12em;
+    }
+    .wrapper {
+  text-align: center;
+  display: inline-block;
+  
+}
+</style>
+    <div class="container vh-100" >
+        <body style="background-color:beige;"></body>
+        <div row h-100>
+            <div class="col-12 my-auto" style="color:beige;">
+                <!-- <div class ="card cover-card offset-sm-2 offset-md-4 offset-lg-7" style="color:beige;"> -->
+                    <!-- <h1 class="cover-heading">Homepage</h1> -->
+                    <span class="brlarge"></span>                    
+                    <div class=" text-center">
+                    <div class="wrapper">
+                    <p class="cover-text"><a href="{% url 'signUp' %}" class="btn btn-lg btn-secondary" ><strong>Sign up</strong></a></p>
+                    <p class="cover-text"><a href="{% url 'login' %}" class="btn btn-lg btn-secondary"><strong>Log in</strong></a></p>
+                    <p class="cover-text"><a href='/lessons/student/home' class="btn btn-lg btn-secondary" class="block magenta margin-auto" ><strong>Student testing with blank student</strong></a></p>
+                    <p class="cover-text"><a href='/lessons/admin/home' class="btn btn-lg btn-secondary"><strong>admin view</strong></a></p>
+                    <p class="cover-text"><a href='/lessons/director/home' class="btn btn-lg btn-secondary"><strong>view</strong></a></p>
+                    </div>
+                    </div>
             </div>
         </div>
-
     </div>
+    
 {% endblock body %}

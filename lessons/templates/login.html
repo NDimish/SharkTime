@@ -9,9 +9,11 @@
 {%endif%}
 
 <div class="container">
+  <body style="background-color:beige;"></body>
+
   <div class="row">
     <div class="col-12">
-      <h1>Request</h1>
+      <h1>Log In</h1>
       <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         {% include 'bootstrap_form.html' with form=form %}

@@ -6,6 +6,8 @@ from ..forms.loginForms import login
 from django.urls import reverse
 from django.utils.timezone import now
 from lessons.models import User, Student
+from django.contrib.auth import authenticate
+from django.contrib import messages
 
 def signUpPage(request):
     alert=""
@@ -15,7 +17,6 @@ def signUpPage(request):
             return HttpResponseRedirect(reverse('home'))
         else:
             alert = "Email already used"
-
     data ={
         'form':form,
         'alert':alert,
@@ -24,15 +25,16 @@ def signUpPage(request):
     return render(request,'signUp.html',data)
 
 
-
 def loginPage(request):
     alert=""
     form = login(request.POST or None)
     if form.is_valid():
         formResult = form.save(commit=True)
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
         if(formResult == "F"):
             alert = "Somthings wrong with your details"
-        
         else:
             if(formResult == 'S'):
                 return HttpResponseRedirect(reverse('studentHome'))
@@ -43,7 +45,5 @@ def loginPage(request):
 
     data ={
         'form':form,
-        'alert':alert,
-
-    }
+        'alert':alert,}
     return render(request,'login.html',data)

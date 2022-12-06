@@ -2,6 +2,7 @@ from django import forms
 from lessons.models import User as sign
 from lessons.models import Sys_user as User
 from lessons.models import Student as Student
+from django.core.validators import RegexValidator
 from django.utils.timezone import now
 from django.db import models
 import datetime
@@ -11,11 +12,18 @@ class signUp(forms.Form):
   
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
-    email = forms.CharField(max_length=100)
-    password = forms.CharField(max_length=50)
+    email = forms.EmailField(max_length=100)
+    password = forms.CharField(label='Password',
+    widget=forms.PasswordInput(),
+    validators=[RegexValidator(
+    regex=r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$',
+    message='Password must contain an uppercase character, a lowercase '
+    'character and a number'
+    )]
+    )
     nick_name = forms.CharField(max_length=50)
     age = forms.IntegerField()
-
+    role=forms.CharField(max_length=50)
     class Meta:
         fields=(
 
@@ -25,15 +33,13 @@ class signUp(forms.Form):
             "password ",
             "nick_name", 
             "age", 
-
+            "role"
         )
         
 #labels = {'availability' : "Days You Are Available For Lessons"}  
 #widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
 
     
-
-
     def save(self, commit=True):
         """Create a new user."""
 
@@ -59,7 +65,6 @@ class signUp(forms.Form):
             update_time = now(),
         )
         
-
         student1 = Student.objects.create( 
             user=user1,
             created_at = now,
@@ -76,25 +81,18 @@ class signUp(forms.Form):
 class login(forms.Form):
   
 
-    email = forms.CharField(max_length=100)
-    password = forms.CharField(max_length=50)
+    email = forms.EmailField(max_length=100)
+    password = forms.CharField(max_length=50, widget=forms.PasswordInput())
 
 
     class Meta:
         fields=(
-
-
             "email ",
             "password ",
-
-
         )
         
 #labels = {'availability' : "Days You Are Available For Lessons"}  
 #widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
-
-    
-
 
     def save(self, commit=True):
         userCheck = sign.objects.filter(email = self.cleaned_data.get('email'))
