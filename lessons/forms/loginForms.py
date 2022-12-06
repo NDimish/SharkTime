@@ -99,7 +99,7 @@ class login(forms.Form):
         if(userCheck.count() <1):
             return "F"
         
-        passwordCheck = User.objects.filter(user = userCheck[0])
+        passwordCheck = sign.objects.filter(user = userCheck[0])
         if(passwordCheck[0].password == self.cleaned_data.get('password')):
              return userCheck[0].role
         return "F" 
