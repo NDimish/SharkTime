@@ -1,12 +1,14 @@
 from django import forms
-from lessons.models import User as sign
-from lessons.models import Sys_user as User
+from django.forms import ValidationError
+from lessons.models import User
 from lessons.models import Student as Student
 from django.core.validators import RegexValidator
 from django.utils.timezone import now
 from django.db import models
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 import datetime
 
+<<<<<<< Updated upstream
 
 class signUp(forms.Form):
   
@@ -103,3 +105,23 @@ class login(forms.Form):
         if(passwordCheck[0].password == self.cleaned_data.get('password')):
              return userCheck[0].role
         return "F" 
+=======
+class UserSignUpForm(UserCreationForm):
+   # email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(max_length=20)
+    class Meta():
+        model = User
+        fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name', "role" ,)
+
+        def clean_email(self):
+            email = self.cleaned_data['email']
+            obj = User.objects.get(email=email)
+            if obj is not None:
+                raise forms.ValidationError("This email is already associated with another account")
+        
+
+class UserLoginForm(AuthenticationForm):
+
+    email = forms.EmailField(required=True, label="email")
+>>>>>>> Stashed changes

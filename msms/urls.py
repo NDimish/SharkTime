@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path,include
 from lessons import views
 from lessons import Urls
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 
@@ -25,5 +26,5 @@ urlpatterns = [
     path('lessons/student/', include('lessons.Urls.studentUrls')),
     path('lessons/admin/', include('lessons.Urls.adminUrls')),
     path('lessons/director/', include('lessons.Urls.directorUrls')),
-    path('signpage/', include('lessons.Urls.loginUrls')),
+    path('accounts/', include('lessons.Urls.loginUrls')),
 ]

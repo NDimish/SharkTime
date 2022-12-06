@@ -4,6 +4,7 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(Director)
+admin.site.register(Admin)
 admin.site.register(Student)
 admin.site.register(Teacher)
 admin.site.register(Payment)

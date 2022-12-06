@@ -6,25 +6,30 @@ from lessons.models import LessonRequest as database
 from django.urls import reverse
 from django.utils.timezone import now
 from lessons.models import User, Student
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+@login_required()
 def studentHomePage(request):
-    obj = User.objects.filter(role='S').first()
+    current_user = request.user 
     data = {
-        'name' : obj.first_name , 
+        'name' : current_user.first_name , 
         'Available_lessons' : [1,2,3,45,5,6,76,2,3,4,56,7,34,345,345,57,56634,54,5765,75,]
     }
 
     return render(request,'studentHome.html',data)
-
+@login_required()
 def studentViewRequests(request):
-    obj = database.objects.all()
+    current_user = request.user 
+    #obj = database.objects.all()
     #For now just get the first student in the database
     #student = User.objects.filter(role='S').first()
-    student = Student.objects.first()
+    #student = Student.objects.first()
+    student = current_user
     print(student.pk, "says hello")
     s = student.pk
-    print("student id is " , obj)
+    print("student id is " , student.id)
     Pending = database.objects.filter( book_status ="P")
     for book in Pending:
         if(now().date().today() > book.lesson_start_date):
@@ -39,7 +44,7 @@ def studentViewRequests(request):
     Approved = database.objects.filter(student_id= s, book_status ="A")
 
     data ={
-        'booked_lessons' : obj,
+        'booked_lessons' : requests.objects,
         'Pending_lessons':Pending,
         'Rejected_lessons':Rejected,
         'Accepted_lessons':Approved,

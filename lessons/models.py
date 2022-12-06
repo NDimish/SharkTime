@@ -9,32 +9,41 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.contrib.auth.models import UserManager
 import uuid 
 
+
 #helper file 
 from lessons import helpers 
 from django.utils.translation import gettext_lazy as _
+
+from django.contrib.auth.models import User
+
+
 
 LESSON_DURATION_MAX_LENGTH=10
 LESSON_INTERVAL_MAX_LENGTH=22
 
 #The User model 
 class User(AbstractUser):
+    
     USER_ROLES = (
         ('A', 'Administrator'),
         ('D', 'Director'),
         ('S', 'Student'),
     )
-
-    role = models.CharField(max_length=1, blank=False, choices=USER_ROLES )
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    username = models.CharField(max_length=20)
-    email = models.EmailField(max_length=100,null=False, verbose_name="user name or email address", unique=True)
+    
+    email = models.EmailField(_("email address"), unique=True)
+    #email_verified = models.BooleanField(default=False)
+    role = models.CharField(max_length=1, blank=False, choices=USER_ROLES, default = "S" )
+    # first_name = models.CharField(max_length=50)
+    # last_name = models.CharField(max_length=50)gr
+    # username = models.CharField(max_length=20)
+    #email = models.EmailField(max_length=100,null=False, verbose_name="user name or email address", unique=True)
     objects = UserManager()
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
+    #USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
    
     def __str__(self):
         return '{}'.format(self.get_full_name())
+    #User._meta.get_field('email')._unique = True
 
 #Student class 
 class Student(models.Model):
@@ -43,8 +52,9 @@ class Student(models.Model):
     #unique 4 digit student reference number
     reference_number =models.CharField(default=str(uuid.uuid4().int)[:4], editable=False, max_length=4)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    #don't need created at as AbstractUser already has field date_joined
+    #created_at = models.DateTimeField(auto_now_add=True)
+    #updated_at = models.DateTimeField(auto_now=True)
     nick_name = models.CharField(max_length=500, null=True)
     age = models.IntegerField(null=False)
     objects = models.Manager()
@@ -61,21 +71,17 @@ class Student(models.Model):
 
 
 #Admin class
-# class Admin(models.Model):
-#     #unique admin id 
-#     id = models.AutoField(primary_key=True)
-#     user = models.OneToOneField(User,on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     objects = models.Manager()
+class Admin(models.Model):
+    #unique admin id 
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    objects = models.Manager()
 
 #Director class 
 class Director(models.Model):
     #unique admin id 
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
 class Teacher(models.Model):
