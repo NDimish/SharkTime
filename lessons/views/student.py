@@ -6,6 +6,7 @@ from django.utils.timezone import now
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 
 from ..forms.studentforms import make_request
 from ..models.requests import request as database
@@ -55,8 +56,6 @@ def studentViewRequests(request):
     return render(request,'studentViewRequests.html',data)
 
 
-from reportlab.lib.pagesizes import A4
-
 def makeAndViewInvoice(request, my_id):
     lesson = get_object_or_404(database,id=my_id)
     
@@ -85,7 +84,7 @@ def makeAndViewInvoice(request, my_id):
     pdf.drawString(0, x - 42, "London, W2 1DS")
     
     y = x - 90
-    pdf.drawString(0, y, "Nathan Mani")
+    pdf.drawString(0, y, f"{lesson.Student}")
 
     pdf.setFont("Courier-Bold", 18)
     pdf.drawString(0, y + 20, "BILL TO")
