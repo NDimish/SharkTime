@@ -4,7 +4,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.utils.timezone import now
 
-from ..forms.studentforms import make_request
+from ..forms import directorForms
 from lessons.models import LessonRequest as database
 
 
@@ -21,3 +21,19 @@ def directorHomePage(request):
 
 
     return render(request,'directorHome.html',data)
+
+
+def UserFormPage(request,my_id):
+
+
+    form = directorForms.Userform(request.POST or None)
+    if form.is_valid():
+        form.save(commit=True)
+
+    data ={
+        "form" : form,
+
+    }
+
+
+    return render(request,'directorDataChange.html',data)
