@@ -16,9 +16,8 @@
                            {% csrf_token %}
                            {% comment %} {% include 'bootstrap_form.html' with form=form %} {% endcomment %}
                            {{ form.as_p }}
-                           <button type="submit" name = "CustomBook" value = "Submit" class="btn btn-primary">Update & Book By Requested Start Date</button>
-                           <button type="submit" name = "CustomBook" value = "Submit" class="btn btn-primary">Update & Default Book For Term</button>
-                           <button type="submit" name = "Delete"  class="btn btn-primary">Delete Booking</button>
+                           <button type="submit" name = "Book" value = "Submit" class="btn btn-primary">Update & Book By Requested Start Date</button>
+                            <button type="submit" name = "Delete"  class="btn btn-primary">Delete Booking</button>
                          
                            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
                        </form>
