@@ -7,11 +7,13 @@ class bookingForm(forms.ModelForm):
 
         
     class Meta:
-        model = LessonBooking
+        
         def __init__(self,  *args, **kwargs):
             self.order_fields(self.Meta.fields)
-   
-        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_duration','lesson_interval','number_of_lessons'}
+            self.fields["term"].queryset = Term.objects.none()
+        model = LessonBooking
+        
+        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_duration','lesson_interval', 'lesson_day_of_week','number_of_lessons', 'term'}
         labels = {
             
             'lesson_time' : 'Time of Lesson' , 
@@ -19,8 +21,10 @@ class bookingForm(forms.ModelForm):
             'lesson_start_date' : 'Start Date' , 
             'lesson_duration' : 'Lesson Duration',
             'lesson_interval' : 'Lesson Interval' , 
+            'lesson_day_of_week' : 'Day of Lesson',
             'number_of_lessons' : 'Number Of Lessons' , 
-            'lesson_type' : 'Lesson Type'
+            'lesson_type' : 'Lesson Type',
+            'term' : "Term"
           
         } 
     
@@ -35,10 +39,12 @@ class bookingForm(forms.ModelForm):
             'lesson_start_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
             'lesson_duration' : forms.Select(attrs={'class' : 'form-control'}),
             'lesson_interval' : forms.Select(attrs={'class' : 'form-control'}),
+            'lesson_day_of_week' : forms.Select(attrs={'class' : 'form-control'}),
             'number_of_lessons' : forms.NumberInput(attrs={'class' : 'form-control'}),
             #'day_of_week' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'})
-            'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'})
-        }   
+            'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'}),
+           # 'term' : forms.ModelChoiceField(queryset = Term.objects.all())
+           }
 
         #OVERRIDE SAVE METHOD
         def save(self, commit=True):
@@ -50,17 +56,19 @@ class bookingForm(forms.ModelForm):
             instance.Date = self.cleaned_data.get('Date')
             instance.lesson_duration = self.cleaned_data['lesson_duration']
             instance.lesson_interval = self.cleaned_data['lesson_interval']
+            instance.lesson_day_of_week = self.cleaned_data['lesson_day_of_week']
             instance.lesson_type = self.cleaned_data['lesson_type']
             instance.number_of_lessons = self.cleaned_data['number_of_lessons']
             instance.lesson_time = self.cleaned_data['lesson_time']
+            instance.term = self.cleaned_data['term']
             
             
             if commit:
                 instance.save()
                 self.save_m2m()
-            
             return instance
-        
+
+
 
 class TermForm(forms.ModelForm):
     
@@ -99,7 +107,7 @@ class TermForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
-
+    
  
 
    
