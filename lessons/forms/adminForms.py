@@ -10,7 +10,7 @@ class bookingForm(forms.ModelForm):
     class Meta:
         model = LessonBooking
    
-        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_end_date', 'lesson_duration','lesson_interval', 'lesson_day_of_week','number_of_lessons', 'booking_method'}
+        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_end_date', 'lesson_duration','lesson_interval', 'lesson_day_of_week','number_of_lessons'}
         labels = {
             
             'lesson_time' : 'Time of Lesson' , 
@@ -22,7 +22,7 @@ class bookingForm(forms.ModelForm):
             'lesson_day_of_week' : 'Day of Lesson',
             'number_of_lessons' : 'Number Of Lessons' , 
             'lesson_type' : 'Lesson Type',
-            "booking_method" : "Booking Method"
+           
           
         } 
     
@@ -42,7 +42,7 @@ class bookingForm(forms.ModelForm):
             'number_of_lessons' : forms.NumberInput(attrs={'class' : 'form-control'}),
             #'day_of_week' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'})
             'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'}),
-            "booking_method" : forms.Select(attrs={'class' : 'form-control'})
+
            }
 
         #OVERRIDE SAVE METHOD
@@ -60,7 +60,7 @@ class bookingForm(forms.ModelForm):
             instance.lesson_type = self.cleaned_data['lesson_type']
             instance.number_of_lessons = self.cleaned_data['number_of_lessons']
             instance.lesson_time = self.cleaned_data['lesson_time']
-            instance.booking_method = self.cleaned_data['booking_method']
+           
             
             if instance.lesson_start_date > instance.lesson_end_date :
                 raise ValidationError ( "The lesson end date must occur after the start date")

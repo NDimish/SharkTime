@@ -86,7 +86,7 @@ def add_booking(request,id):
             booking = form.save(commit=False)
             #Update the number of lessons booked 
             booking.number_of_lessons = len(date_list)
-            booking.booking_method = 1 #custom booking method is saved as 1 
+ 
             form.save(commit=True)
             #Redirect back to admin home page
             return redirect('/')
@@ -115,8 +115,7 @@ def add_booking(request,id):
                         booking.lesson_start_date = term.start_of_term_date 
                     #Because default booking method was selected, the lesson end date will be the end of term
                     booking.lesson_end_date = term.end_of_term_date 
-                    booking.booking_method = 0 #default booking method is saved as 0
-                    
+        
                     corresponding_request.book_status = 'A'
                     corresponding_request.save()
 
@@ -141,11 +140,10 @@ def add_booking(request,id):
                     booking.number_of_lessons = len(date_list)
                     booking.lesson_start_date = term.start_of_term_date
                     booking.lesson_end_date = term.end_of_term_date
-                    booking.booking_method = 0 #default booking method is saved as 0
                     form.save(commit=True)
                     corresponding_request.book_status = 'A'
                     corresponding_request.save()
-                    booking.booking_method = 1 #custom booking method is saved as 1 
+      
                     form.save(commit=True)
                     #Redirect back to admin home page
                     return redirect('/')

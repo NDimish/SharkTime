@@ -240,9 +240,3 @@ class LessonBooking(models.Model):
     lesson_day_of_week = models.IntegerField(blank = False , choices=helpers.CHOICE_DAY_OF_THE_WEEK )
     lesson_teacher = models.CharField(max_length = 20, default='')
     objects = models.Manager()
-    CHOICE_BOOKING_METHOD = (
-        (0, "Default Book"),
-        (1, "Custom Book"),
-    )
-    booking_method = models.IntegerField(choices = CHOICE_BOOKING_METHOD,validators=[], default=0)
-

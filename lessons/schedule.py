@@ -20,7 +20,7 @@ def checkIfDateDuringTerm(d):
     return Term.objects.filter(start_of_term_date__gte=d, end_of_term_date__lte=d).exists()
 def getCurrentTerm():
     if checkIfDuringTerm():
-        current_term = Term.objects.get(start_of_term_date__gte=now, end_of_term_date__lte=now)
+        current_term = Term.objects.get(start_of_term_date__gte= dt.datetime.now(), end_of_term_date__lte= dt.datetime.now())
         return current_term 
 
 def getCurrentTermFromDate(d):
@@ -33,15 +33,12 @@ def getCurrentTermFromDate(d):
 def getNearestTerm(input_date):
     #if we are during term then , admin specifies a date
     if not checkIfDuringTerm()  :
-        now = dt.datetime.now().date()
-       # now = datetime.strftime(now, FORMAT)
-
         #Order the data so that the first object is closest to the current date
-        term_list = Term.objects.filter(start_of_term_date__gte=now).order_by('start_of_term_date')
+        term_list = Term.objects.filter(start_of_term_date__gte=dt.datetime.now().date()).order_by('start_of_term_date')
         nearest_upcoming_term = None
         for term in term_list:
             #Term must be UPCOMING
-            if term.start_of_term_date > now :
+            if term.start_of_term_date >  dt.datetime.now().date() :
                 nearest_upcoming_term=term
                 break
         #check if a term date was found
@@ -85,7 +82,7 @@ def getDateListOfScheduleForNewTerm(term : Term , num_of_lessons , start_date : 
     list = getDateRange(start_date,end_date)
     for d in list:
   
-        if d.weekday()== day_of_week and lessons_scheduled<num_of_lessons and (lesson_interval-1)%week_count==0 :
+        if d.weekday()== day_of_week and lessons_scheduled<num_of_lessons and (week_count)%lesson_interval==0 :
             date_list.append(d)
             print("date is " , d)
             lessons_scheduled+=1
