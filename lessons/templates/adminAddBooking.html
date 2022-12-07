@@ -16,7 +16,8 @@
                             {% csrf_token %}
                             {% comment %} {% include 'bootstrap_form.html' with form=form %} {% endcomment %}
                             {{ form.as_p }}
-                            <button type="submit" name = "Submit" value = "Submit" class="btn btn-primary">Book</button>
+                            <button type="submit" name = "CustomBook" value = "Submit" class="btn btn-primary">Book By Requested Start Date</button>
+                            <button type="submit" name = "CustomBook" value = "Submit" class="btn btn-primary">Default Book For Term</button>
                             <input type="submit" value="Reject" name = "Reject"  class="btn btn-primary">
                             <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
                         </form>
