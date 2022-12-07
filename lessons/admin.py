@@ -4,6 +4,7 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(Director)
+admin.site.register(Administrator)
 admin.site.register(Student)
 admin.site.register(Teacher)
 admin.site.register(Payment)
@@ -13,6 +14,7 @@ admin.site.register(Sys_authority)
 admin.site.register(Lesson)
 admin.site.register(LessonRequest)
 admin.site.register(LessonBooking)
+admin.site.register(Term)
 
 
 

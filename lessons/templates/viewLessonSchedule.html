@@ -1,0 +1,43 @@
+{%extends "base.html"%}
+{% block body %}
+<h3 class="m-4">Schedule for {{request.getStudentName}} </h3>
+<div class="row">
+    <div class="col-12">
+      {% if booking %}
+          <div class="card bg-light mb-4 ms-4 me-4" >
+              <div class="card-header">Booked Lessons</div>
+              <div class="card-body">
+                  <div class ="table-responsive">
+                      <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">Day Of Week</th>
+                              <th scope="col">Time Of Lesson</th>
+                              <th scope="col">Lesson Type</th>
+                              <th scope="col">Lesson Teacher</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for date in date_list %}
+                              <tr>
+                                <td>{{date}}</td>
+                                <td>{{booking.get_lesson_day_of_week_display}}</td>
+                                <td>{{booking.lesson_time|time:"H:i:s"}}</td>
+                                <td>{{booking.lesson_type}}</td>
+                                <td> {{booking.lesson_teacher}}  </td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                  </div>
+
+              </div>
+          </div>
+      {% else %}
+          <h5 class="alert alert-primary ms-4 me-4">No Requests</h5>
+      {% endif %}
+        
+    </div>
+</div>
+{% endblock body %}

@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.contrib.auth.models import UserManager
 import uuid 
 
+
 #helper file 
 from lessons import helpers 
 from django.utils.translation import gettext_lazy as _
@@ -55,19 +56,20 @@ class Student(models.Model):
     #             fields=['reference_number'], name='unique_migration_refno_combination'
     #         )
     # ]
+
     def __str__(self):
         return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
     
 
 
 #Admin class
-# class Admin(models.Model):
-#     #unique admin id 
-#     id = models.AutoField(primary_key=True)
-#     user = models.OneToOneField(User,on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     objects = models.Manager()
+class Administrator(models.Model):
+    #unique admin id 
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
 
 #Director class 
 class Director(models.Model):
@@ -93,6 +95,7 @@ class Teacher(models.Model):
         (1, 30),
         (2, 45),
     )
+
 
 
 class Payment(models.Model):
@@ -170,26 +173,49 @@ class LessonRequest(models.Model):
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
     lesson_teacher = models.ForeignKey(to=Teacher, related_name = 'Teaching', on_delete=models.CASCADE )
     lesson_type = models.CharField(max_length=50, null=True)
-    lesson_start_date = models.DateField(null=False,default = now)
+    lesson_start_date = models.DateField(null=True,default = now)
     date_created = models.DateField(null=False,default = now)
     remarks = models.CharField(max_length=500, null=True)
+    lesson_day_of_week = models.IntegerField(blank = False , choices=helpers.CHOICE_DAY_OF_THE_WEEK )
     objects = models.Manager()
 
     def isFulfilled(self):
-        if self.book_status=='P':
-            return False
-        return True
+        if self.book_status=='A':
+            return True
+    def isRejected(self):
+        if self.book_status=="R":
+            return True 
+      
 
+    @property
     def getStudentName(self):
-        student = Student.objects.get(pk=self.student_id)
-        user = User.objects.get(pk=student.user)
-        if user is not None: 
-            return user.first_name , " " , user.last_name 
+        obj = self.student_id
+        user = obj.user
+        return str(user)
+        
+        
+        # .first_name.removeprefix('"')
+        # return  ( first_name, " " , obj.user.last_name)
+         
 
     # for epic 2
     #additionalInfo = models.TextField(default = "N/A")
     
 
+class Term(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=40, null = False)
+    start_of_term_date = models.DateField(null=False,default = now)
+    end_of_term_date =  models.DateField(null=False,default = now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager() 
+    def __str__(self):
+        return self.name 
+
+
+
+
+    
 class LessonBooking(models.Model):
     id = models.AutoField(primary_key=True)
     request = models.ForeignKey(to=LessonRequest , related_name = 'LessonBookings', on_delete=models.CASCADE )
@@ -200,6 +226,7 @@ class LessonBooking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     lesson_start_date = models.DateField(validators=[helpers.validateDate]) 
+    lesson_end_date = models.DateField(validators=[helpers.validateDate]) 
     CHOICE_LESSON_DURATION = (
         (3, 60),
         (1, 30),
@@ -210,6 +237,6 @@ class LessonBooking(models.Model):
     lesson_interval = models.IntegerField(choices=CHOICE_LESSON_INTERVAL,default=1,blank=False)
     lesson_type = models.CharField(max_length=50, null=True)
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
+    lesson_day_of_week = models.IntegerField(blank = False , choices=helpers.CHOICE_DAY_OF_THE_WEEK )
     lesson_teacher = models.CharField(max_length = 20, default='')
-    objects = models.Manager() 
-
+    objects = models.Manager()

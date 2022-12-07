@@ -10,13 +10,14 @@
         <div class="row-justify-content-center">
             <div class="col-6">
                 <div class="card bg-light mb-3">
-                    <div class="card-header">Header</div>
+                    <div class="card-header">Booking Details</div>
                     <div class="card-body">
                         <form action="" method="POST">
                             {% csrf_token %}
                             {% comment %} {% include 'bootstrap_form.html' with form=form %} {% endcomment %}
                             {{ form.as_p }}
-                            <button type="submit" name = "Submit" value = "Submit" class="btn btn-primary">Book</button>
+                            <button type="submit" name = "CustomBook" value = "Submit" class="btn btn-primary">Book By Requested Start Date</button>
+                            <button type="submit" name = "DefaultBook" value = "Submit" class="btn btn-primary">Default Book For Term</button>
                             <input type="submit" value="Reject" name = "Reject"  class="btn btn-primary">
                             <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
                         </form>

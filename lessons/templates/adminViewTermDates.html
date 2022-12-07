@@ -1,0 +1,49 @@
+{% extends 'adminBase.html' %}
+{% block body  %}
+          <h3 class="m-4">All Terms</h3>
+          <div class="row">
+              <div class="col-12">
+                {% if terms %}
+                    <div class="card bg-light mb-4 ms-4 me-4" >
+                        <div class="card-header">Terms</div>
+                        <div class="card-body">
+                            <div class ="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                        <th scope="col">Actions</th> 
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for term in terms %}
+                                        <tr>
+                                          <td>{{term.name}}</td>
+                                          <td>{{term.start_of_term_date}}</td>
+                                          <td>{{term.end_of_term_date}}</td>
+                                          <td>
+                                                <a class="btn btn-success me-1" href="{% url 'update_term' term.id  %}">Edit Term Date</a>
+                                            
+                                          </td>
+                                        </tr>
+                                      {% endfor %}
+                                    </tbody>
+                                  </table>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                {% else %}
+                    <h5 class="alert alert-primary ms-4 me-4">No Term Dates Added</h5>
+                {% endif %}
+                  
+              </div>
+              <div>
+                <a class="btn btn-success me-1" href="{% url 'add_term' %}">Add A Term Date</a>
+              </div>
+          </div>
+
+{% endblock body %}

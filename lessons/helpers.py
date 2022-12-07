@@ -1,13 +1,14 @@
 #Add helper functions here - includes validators 
 from django.core.exceptions import ValidationError
-import datetime 
+import datetime
+from django.utils.timezone import now
 
 CHOICE_DAY_OF_THE_WEEK = [
-    (1, 'Monday'),
-    (2, 'Tuesday'),
-    (3, 'Wednesday'),
-    (4, 'Thursday'),
-    (5, 'Friday'),
+    (0, 'Monday'),
+    (1, 'Tuesday'),
+    (2, 'Wednesday'),
+    (3, 'Thursday'),
+    (4, 'Friday'),
     #For now, assume weekend leesons are not possible to book 
     #(5, 'Saturday'),
     #(6, 'Sunday'),
@@ -29,4 +30,3 @@ def validateLessonNumber(lessonNum):
         raise ValidationError("Invalid number of lessons")
 
 
-#For epic 2.2 later need to validate lesson start dates 

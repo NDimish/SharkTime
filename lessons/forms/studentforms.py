@@ -10,6 +10,7 @@ class make_request(forms.ModelForm):
         'lesson_start_date',
         'lesson_duration',
         'lesson_interval',
+        'lesson_day_of_week',
         'lesson_type',
         'number_of_lessons',
         'student_id',
@@ -24,6 +25,7 @@ class make_request(forms.ModelForm):
         instance.lesson_start_date = self.cleaned_data['lesson_start_date']
         instance.lesson_duration = self.cleaned_data['lesson_duration']
         instance.lesson_interval = self.cleaned_data['lesson_interval']
+        instance.lesson_day_of_week = self.cleaned_data['lesson_day_of_week']
         instance.lesson_type = self.cleaned_data['lesson_type']
         instance.number_of_lessons = self.cleaned_data['number_of_lessons']
         instance.lesson_time = self.cleaned_data['lesson_time']
