@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ValidationError
 from lessons.models import LessonRequest
 from lessons.models import LessonBooking,Term
 
@@ -7,24 +8,21 @@ class bookingForm(forms.ModelForm):
 
         
     class Meta:
-        
-        def __init__(self,  *args, **kwargs):
-            self.order_fields(self.Meta.fields)
-            self.fields["term"].queryset = Term.objects.none()
         model = LessonBooking
-        
-        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_duration','lesson_interval', 'lesson_day_of_week','number_of_lessons', 'term'}
+   
+        fields = {  'request' , 'lesson_time', 'lesson_type', 'lesson_teacher','lesson_start_date','lesson_end_date', 'lesson_duration','lesson_interval', 'lesson_day_of_week','number_of_lessons', 'booking_method'}
         labels = {
             
             'lesson_time' : 'Time of Lesson' , 
             'teacher' : 'Teacher' , 
             'lesson_start_date' : 'Start Date' , 
+            'lesson_end_date' : 'End Date' , 
             'lesson_duration' : 'Lesson Duration',
             'lesson_interval' : 'Lesson Interval' , 
             'lesson_day_of_week' : 'Day of Lesson',
             'number_of_lessons' : 'Number Of Lessons' , 
             'lesson_type' : 'Lesson Type',
-            'term' : "Term"
+            "booking_method" : "Booking Method"
           
         } 
     
@@ -37,36 +35,45 @@ class bookingForm(forms.ModelForm):
             'lesson_time' : forms.TimeInput(attrs={'class' : 'form-control'}),
             'lesson_teacher' : forms.TextInput(attrs={'class' : 'form-control'}),
             'lesson_start_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
+            'lesson_end_date' : forms.SelectDateWidget(attrs={'class' : 'form-control'}),
             'lesson_duration' : forms.Select(attrs={'class' : 'form-control'}),
             'lesson_interval' : forms.Select(attrs={'class' : 'form-control'}),
             'lesson_day_of_week' : forms.Select(attrs={'class' : 'form-control'}),
             'number_of_lessons' : forms.NumberInput(attrs={'class' : 'form-control'}),
             #'day_of_week' : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'})
             'lesson_type' : forms.TextInput(attrs={'class' : 'form-control'}),
-           # 'term' : forms.ModelChoiceField(queryset = Term.objects.all())
+            "booking_method" : forms.Select(attrs={'class' : 'form-control'})
            }
 
-        #OVERRIDE SAVE METHOD
-        def save(self, commit=True):
-            """Create a new user."""
-            instance = forms.ModelForm.save(self,False)
-            instance.lesson_start_date = self.cleaned_data['lesson_start_date']
-            instance.lesson_teacher=self.cleaned_data['lesson_teacher']
-            instance.student_id = self.cleaned_data['student_id']
-            instance.Date = self.cleaned_data.get('Date')
-            instance.lesson_duration = self.cleaned_data['lesson_duration']
-            instance.lesson_interval = self.cleaned_data['lesson_interval']
-            instance.lesson_day_of_week = self.cleaned_data['lesson_day_of_week']
-            instance.lesson_type = self.cleaned_data['lesson_type']
-            instance.number_of_lessons = self.cleaned_data['number_of_lessons']
-            instance.lesson_time = self.cleaned_data['lesson_time']
-            instance.term = self.cleaned_data['term']
-            
-            
-            if commit:
-                instance.save()
-                self.save_m2m()
-            return instance
+        def clean(self):
+            if self.lesson_start_date > self.lesson_end_date :
+                raise ValidationError ( "The lesson end date must occur after the start date")
+        def save(self, *args, **kwargs):
+            self.full_clean()
+            super().save(*args, **kwargs)
+
+    #OVERRIDE SAVE METHOD
+    def save(self, commit=True):
+        """Create a new user."""
+        instance = forms.ModelForm.save(self,False)
+        instance.lesson_start_date = self.cleaned_data['lesson_start_date']
+        instance.lesson_end_date = self.cleaned_data['lesson_end_date']
+        instance.lesson_teacher=self.cleaned_data['lesson_teacher']
+        instance.student_id = self.cleaned_data['student_id']
+        instance.Date = self.cleaned_data.get('Date')
+        instance.lesson_duration = self.cleaned_data['lesson_duration']
+        instance.lesson_interval = self.cleaned_data['lesson_interval']
+        instance.lesson_day_of_week = self.cleaned_data['lesson_day_of_week']
+        instance.lesson_type = self.cleaned_data['lesson_type']
+        instance.number_of_lessons = self.cleaned_data['number_of_lessons']
+        instance.lesson_time = self.cleaned_data['lesson_time']
+        instance.booking_method = self.cleaned_data['booking_method']
+        
+        
+        if commit:
+            instance.save()
+        
+        return instance
 
 
 
