@@ -15,7 +15,7 @@ import io
 def studentHomePage(request,Logged_ID):
     obj = User.objects.filter(id = Logged_ID).first()
     data = {
-        'name' : obj.first_name , 
+        'name' : obj.first_name ,
         'Available_lessons' : [23,3,4,4,2],
         'Logged_ID':Logged_ID
     }
@@ -24,12 +24,13 @@ def studentHomePage(request,Logged_ID):
 
 @login_required
 def studentViewRequests(request,Logged_ID):
-
+    #obj = database.objects.all()
     student = Student.objects.get(user = User.objects.get(id = Logged_ID))
+
     #For now just get the first student in the database
     #student = User.objects.filter(role='S').first()
     s = student.pk
-    Pending = database.objects.filter( book_status ="P",student_id= s)
+    Pending = database.objects.filter( book_status ="P",student_id=s)
     for book in Pending:
         if(now().date().today() > book.lesson_start_date):
             book.book_status = "R"
@@ -43,12 +44,11 @@ def studentViewRequests(request,Logged_ID):
     Approved = database.objects.filter(student_id= s, book_status ="A")
 
     data ={
-
         'Pending_lessons':Pending,
         'Rejected_lessons':Rejected,
         'Accepted_lessons':Approved,
         'Logged_ID':Logged_ID,
-    
+
     }
 
 
@@ -63,10 +63,10 @@ def viewInvoice(request, Logged_ID, my_id):
 
 def makeInvoice(lesson, my_id):
     invoice_number = f"{lesson.student_id.reference_number}-{'%03d' % my_id}"
-    
+
     pricePer = 30
     price = pricePer * lesson.number_of_lessons
-    
+
     # Create a buffer for receiving PDF data and intialise a pdf to save onto it
     pdfBuffer = io.BytesIO()
 
@@ -82,7 +82,7 @@ def makeInvoice(lesson, my_id):
     pdf.setTitle("Invoice")
 
     pdf.drawString(0, 0, "INVOICE")
- 
+
     pdf.setFont("Helvetica-Bold", 14)
     x = -40
     pdf.drawString(0, x, "Shark Time Music School")
@@ -90,13 +90,13 @@ def makeInvoice(lesson, my_id):
     pdf.setFont("Helvetica", 14)
     pdf.drawString(0, x - 22, "47 Haberdashery Avenue")
     pdf.drawString(0, x - 42, "London, W2 1DS")
-    
+
     y = x - 90
     pdf.drawString(0, y, f"{lesson.student_id.user.first_name} {lesson.student_id.user.last_name}")
 
     pdf.setFont("Courier-Bold", 18)
     pdf.drawString(0, y + 20, "BILL TO")
-    
+
     v = 270
     pdf.drawString(v, y + 40, "INVOICE #")
     pdf.drawString(v, y + 20, "INVOICE DATE")
@@ -121,7 +121,7 @@ def makeInvoice(lesson, my_id):
     pdf.drawString(12, w, f"{lesson.number_of_lessons}")
     # Get the values from the lesson booking and display them on the invoice
 
-    
+
 
     pdf.drawString(50, w, f"{((1,30),(2,45),(3,60))[lesson.lesson_duration - 1][1]} minute {lesson.lesson_type} lesson taught by {lesson.lesson_teacher} at {'%02d' % lesson.lesson_time.hour}:{'%02d' % lesson.lesson_time.minute}")
     pdf.drawString(50, w - 15, f"every {lesson.lesson_interval} week(s) starting from {lesson.lesson_start_date}.")
@@ -167,7 +167,7 @@ def studentMakeRequest(request, Logged_ID):
     }
     return render(request,'request.html',data)
 
-    
+
 @login_required
 def studentEditRequest(request,Logged_ID,my_id):
     try:
@@ -187,13 +187,13 @@ def studentEditRequest(request,Logged_ID,my_id):
         'student_id':obj.student_id,
         }
     form = make_request(request.POST or None, initial = context)
-   
+
     data ={
         'data':obj,
         'form':form,
         'Logged_ID':Logged_ID
     }
-    
+
     return render(request,'editrequest.html', data)
 
 @login_required
@@ -223,12 +223,9 @@ def update(request,Logged_ID,my_id):
     return HttpResponseRedirect(reverse('studentViewRequests' , args =(Logged_ID,)) )
 
 
-    
+
 @login_required
 def delete(request,Logged_ID, my_id):
   member = database.objects.get(id=my_id)
   member.delete()
   return HttpResponseRedirect(reverse('studentViewRequests' , args =(Logged_ID,)) )
-
-
-

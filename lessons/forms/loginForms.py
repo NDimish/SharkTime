@@ -9,7 +9,7 @@ import datetime
 
 
 class signUp(forms.Form):
-  
+
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
     email = forms.EmailField(max_length=100)
@@ -27,17 +27,13 @@ class signUp(forms.Form):
         fields=(
 
             "first_name",
-            "last_name", 
+            "last_name",
             "email ",
             "password ",
-            "nick_name", 
-            "age", 
+            "nick_name",
+            "age",
         )
-        
-#labels = {'availability' : "Days You Are Available For Lessons"}  
-#widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
 
-    
     def save(self, commit=True):
         """Create a new user."""
 
@@ -64,8 +60,8 @@ class signUp(forms.Form):
             create_time = now(),
             update_time = now(),
         )
-        
-        student1 = Student.objects.create( 
+
+        student1 = Student.objects.create(
             user=user1,
             created_at = now,
             updated_at = now,
@@ -73,33 +69,25 @@ class signUp(forms.Form):
             age = self.cleaned_data.get('age'),
             icon_url = "/user/a.jpg",
         )
-
         return True
-        
-
 
 class login(forms.Form):
-  
 
     email = forms.EmailField(max_length=100)
     password = forms.CharField(max_length=50, widget=forms.PasswordInput())
-
 
     class Meta:
         fields=(
             "email ",
             "password ",
         )
-        
-#labels = {'availability' : "Days You Are Available For Lessons"}  
-#widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
 
     def save(self, commit=True):
         userCheck = sign.objects.filter(email = self.cleaned_data.get('email'))
         if(userCheck.count() <1):
             return "F"
-        
+
         passwordCheck = sign.objects.filter(email = self.cleaned_data.get('email'))
         if(passwordCheck[0].password == self.cleaned_data.get('password')):
              return userCheck[0].role
-        return "F" 
+        return "F"

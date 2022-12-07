@@ -10,10 +10,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 def signUpPage(request):
     alert=""
     form = signUp(request.POST or None)
+    #Creates a new user and redirects to home or shows an error if email used before
     if form.is_valid():
         if(form.save(commit=True)):
             return HttpResponseRedirect(reverse('home'))
@@ -26,12 +28,12 @@ def signUpPage(request):
     }
     return render(request,'signUp.html',data)
 
-
 def loginPage(request):
     alert=""
     form = login(request.POST or None)
     if form.is_valid():
         formResult = form.save(commit=True)
+        #Authentication of values
         username = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
         user = authenticate(username=username,password = password)
@@ -42,13 +44,13 @@ def loginPage(request):
             user = get_user_model()
             user1= user.objects.get(username = username)
             Logged_ID = user1.id
-
+            #redirects the page based on the role
             if(formResult == 'S'):
                 return HttpResponseRedirect(reverse('studentHome',args=(Logged_ID,)))
             elif(formResult == 'A'):
                 return HttpResponseRedirect(reverse('adminHome'))
             elif(formResult == 'D'):
-                return HttpResponseRedirect(reverse('directorHome',args=(Logged_ID,)))        
+                return HttpResponseRedirect(reverse('directorHome',args=(Logged_ID,)))
 
     data ={
         'form':form,

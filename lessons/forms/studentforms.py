@@ -1,21 +1,13 @@
 from django import forms
 from lessons.models import LessonRequest as request
 
-
-
-
-
 #student forms
 class make_request(forms.ModelForm):
-    
-
-    
     class Meta:
         model = request
         fields =(
         'lesson_teacher',
         'lesson_start_date',
-        #'availability',
         'lesson_duration',
         'lesson_interval',
         'lesson_type',
@@ -23,11 +15,6 @@ class make_request(forms.ModelForm):
         'student_id',
         'lesson_time'
         )
-    #labels = {'availability' : "Days You Are Available For Lessons"}  
-    #widgets = {'availability'  : forms.CheckboxSelectMultiple(attrs={'class' : 'form-control'}) }
-    
-     
-    
 
     def save(self, commit=True):
         """Create a new user."""
@@ -42,27 +29,5 @@ class make_request(forms.ModelForm):
         instance.lesson_time = self.cleaned_data['lesson_time']
         if commit:
             instance.save()
-         
+
         return instance
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
