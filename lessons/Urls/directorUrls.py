@@ -4,7 +4,7 @@ from ..views import directorViews
 
 urlpatterns =[
 
-    path('home/',directorViews.directorHomePage,name='directorHome'),
+    path('home/<int:Logged_ID>',directorViews.directorHomePage,name='directorHome'),
     
 
 ]

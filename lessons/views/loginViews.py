@@ -48,7 +48,7 @@ def loginPage(request):
             elif(formResult == 'A'):
                 return HttpResponseRedirect(reverse('adminHome'))
             elif(formResult == 'D'):
-                return HttpResponseRedirect(reverse('directorHome'))        
+                return HttpResponseRedirect(reverse('directorHome',args=(Logged_ID,)))        
 
     data ={
         'form':form,
