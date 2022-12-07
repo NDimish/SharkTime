@@ -1,4 +1,5 @@
 #contains the views of the admin 
+from django import urls
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
@@ -9,7 +10,9 @@ from lessons.forms.adminForms import bookingForm as BookingForm , TermForm
 from lessons.models import LessonBooking, LessonRequest, Student,Term
 from django.contrib.auth.decorators import login_required 
 from django.http import Http404
-
+from lessons import schedule
+from django.contrib import messages
+from django.utils.timezone import now
 """
     Admin home view - This is the view displayed to the admin after logging in
     - Should display all student requests
@@ -65,19 +68,88 @@ def add_booking(request,id):
     #Get the available days 
     form = BookingForm(request.POST or None)
 
-    
-
-    if 'Submit' in request.POST:
+    if 'CustomBook' in request.POST:
        # booking = get_ob
         form = BookingForm(request.POST)
         print (form.errors)
         if form.is_valid():
             corresponding_request.book_status = 'A'
             corresponding_request.save()
+            lesson_start_date = request.POST['lesson_start_date_year'] + "-" + request.POST['lesson_start_date_month'] + "-" + request.POST['lesson_start_date_day']
+            lesson_end_date = request.POST['lesson_end_date_year'] + "-" + request.POST['lesson_end_date_month'] + "-" + request.POST['lesson_end_date_day']
+            num_of_lessons = request.POST['number_of_lessons']
+            day_of_week = request.POST["lesson_day_of_week"]
+            lesson_interval = request.POST['lesson_interval']
+            date_list = schedule.getDateListOfScheduleForNewTerm(None, num_of_lessons,lesson_start_date,lesson_end_date,day_of_week,lesson_interval)
+            # for i in date_list:
+            #     print ( i  ,day_of_week )
+            booking = form.save(commit=False)
+            #Update the number of lessons booked 
+            booking.number_of_lessons = len(date_list)
+            booking.booking_method = 1 #custom booking method is saved as 1 
             form.save(commit=True)
             #Redirect back to admin home page
             return redirect('/')
         print('invalid form')
+    elif 'DefaultBook' in request.POST :
+        #for default booking, need to get the current term 
+        form = BookingForm(request.POST)
+        print (form.errors)
+        if form.is_valid():
+            
+            num_of_lessons = request.POST['number_of_lessons']
+            day_of_week = request.POST["lesson_day_of_week"]
+            lesson_interval = request.POST['lesson_interval']
+            lesson_start_date = request.POST['lesson_start_date_year'] + "-" + request.POST['lesson_start_date_month'] + "-" + request.POST['lesson_start_date_day']
+            #if the given start date is during a term, then book for the remaining term 
+            if(schedule.checkIfDateDuringTerm(lesson_start_date)):
+                term = schedule.getCurrentTermFromDate(lesson_start_date)
+                if term is not None:
+                    date_list = schedule.getDateListOfScheduleForNewTerm(term, num_of_lessons, lesson_start_date, None , day_of_week, lesson_interval ) 
+                    # for i in date_list:
+                    #     print ( i  ,day_of_week )
+                    booking = form.save(commit=False)
+                    #Update the number of lessons booked 
+                    booking.number_of_lessons = len(date_list)
+                    if lesson_start_date==None:
+                        booking.lesson_start_date = term.start_of_term_date 
+                    #Because default booking method was selected, the lesson end date will be the end of term
+                    booking.lesson_end_date = term.end_of_term_date 
+                    booking.booking_method = 0 #default booking method is saved as 0
+                    
+                    corresponding_request.book_status = 'A'
+                    corresponding_request.save()
+
+                    form.save(commit=True)
+                    #Redirect back to admin home page
+                    return redirect('/')
+                else:
+                    pass
+                    #display a msg saying the booking was not possible ,retunr 
+            #if the lesson is not during term 
+                #need admin to specify a start date and then we will book for remaining term 
+                    
+            else :
+               #otherwise just get the next upcoming term and book lessons in that term 
+               term = schedule.getNearestTerm(lesson_start_date)
+               if term is not None :
+                    date_list = schedule.getDateListOfScheduleForNewTerm(term, num_of_lessons , None, None, day_of_week, lesson_interval)
+                    # for i in date_list:
+                    #     print ( i  ,day_of_week )
+                    booking = form.save(commit=False)
+                    #Update the number of lessons booked 
+                    booking.number_of_lessons = len(date_list)
+                    booking.lesson_start_date = term.start_of_term_date
+                    booking.lesson_end_date = term.end_of_term_date
+                    booking.booking_method = 0 #default booking method is saved as 0
+                    form.save(commit=True)
+                    corresponding_request.book_status = 'A'
+                    corresponding_request.save()
+                    booking.booking_method = 1 #custom booking method is saved as 1 
+                    form.save(commit=True)
+                    #Redirect back to admin home page
+                    return redirect('/')
+                    
     elif 'Reject' in request.POST:
         form = BookingForm(request.POST)
         corresponding_request.book_status = 'R'
@@ -93,10 +165,27 @@ def add_booking(request,id):
     context ={'form' : form ,'request' : corresponding_request}
     print("return render")
     return render(request, 'adminAddBooking.html', context)
+
+def view_schedule(request,id) : 
+    try:
+        booking = LessonBooking.objects.filter(request=id).order_by('-id').first()
+        req = LessonRequest.objects.get(pk=id)
+       # booking = get_object_or_404(LessonBooking,request=id)
+    except LessonBooking.DoesNotExist:
+        raise Http404
+    #Get the booking for which you want to see the schedule  
+    #booking = LessonBooking.objects.get(pk=id)
+    #get the date list which will be passed to the template
+    date_list = schedule.getDateListGivenASchedule(booking.number_of_lessons, booking.lesson_start_date,booking.lesson_end_date, booking.lesson_day_of_week, booking.lesson_interval)
+    #term = schedule.getCurrentTermFromDate(booking.lesson_start_date)
+    
+    context = {'booking' : booking , 'date_list' : date_list, 'request' : req} #'term' : term}
+    return render(request, "viewLessonSchedule.html", context)
+
 #@login_required
 def edit_booking(request,id):
     try:
-        obj = get_object_or_404(LessonBooking,request=id)
+        obj = LessonBooking.objects.filter(request=id).order_by('-id').first()
     except LessonBooking.DoesNotExist:
         raise Http404
 
@@ -112,6 +201,14 @@ def edit_booking(request,id):
         
         }
     form  = BookingForm(request.POST or None , initial=context)
+    if form.is_valid():
+        if('Update' in request.POST):
+            return update(request,id)
+        elif ('Delete in request.POST'):
+            return delete(request,id)
+    # else:
+    #     #change later
+    #     return HttpResponseRedirect(reverse('adminHome'))
     data = {
         'data' : obj,
         'form' : form
@@ -126,6 +223,7 @@ def editBookingRecord(request,id):
     else:
         #change later
         return HttpResponseRedirect(reverse('adminHome'))
+
 #@login_required
 def update(request, id):
     member = LessonBooking.objects.get(pk=id)
@@ -142,14 +240,15 @@ def update(request, id):
 #@login_required
 def delete(request, id):
   member = LessonBooking.objects.get(pk=id)
-  
-  request_obj = member.request.pk
-
-  member.delete()
+  #corresponding_request = LessonRequest.objects.get(pk=id) 
+    
+  request_obj = member.request
   corresponding_request = request_obj
-  print(corresponding_request.getStudentName)
+
   corresponding_request.book_status = 'P'
   corresponding_request.save()
+  member.delete()
+
   
   #Mark the corresponding request as unfulfilled 
   return HttpResponseRedirect(reverse('adminHome'))
