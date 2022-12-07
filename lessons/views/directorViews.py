@@ -5,25 +5,24 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 from ..forms import directorForms
-from lessons.models import LessonRequest as database
+from lessons.models import User as database
 
 
 
-def directorHomePage(request):
+def directorHomePage(request,Logged_ID):
 
    # obj =  database.objects.filter(Student = "testbob")
     
     data ={
-        'name' :'nathan',
-        'Available_lessons' : [1,2,3,45,5,6,76,2,3,4,56,7,34,345,345,57,56634,54,5765,75,]
-    
+        'name' : database.objects.get(id =Logged_ID).first_name,
+        'Logged_ID' : Logged_ID
     }
 
 
     return render(request,'directorHome.html',data)
 
 
-def UserFormPage(request,my_id):
+def UserFormPage(request,Logged_ID,my_id):
 
 
     form = directorForms.Userform(request.POST or None)
@@ -32,23 +31,38 @@ def UserFormPage(request,my_id):
 
     data ={
         "form" : form,
-
+        'Logged_ID' : Logged_ID
     }
 
 
     return render(request,'directorDataChange.html',data)
 
 
-def UserFormPage(request,my_id):
+def StudentFormPage(request,Logged_ID,my_id):
 
 
-    form = directorForms.Userform(request.POST or None)
+    form = directorForms.Studentform(request.POST or None)
     if form.is_valid():
         form.save(commit=True)
 
     data ={
         "form" : form,
+        'Logged_ID' : Logged_ID
+    }
 
+
+    return render(request,'directorDataChange.html',data)
+
+def DirectorFormPage(request,Logged_ID,my_id):
+
+
+    form = directorForms.Directorform(request.POST or None, initial =Directormy_id)
+    if form.is_valid():
+        form.save(commit=True)
+
+    data ={
+        "form" : form,
+        'Logged_ID' : Logged_ID
     }
 
 
