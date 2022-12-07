@@ -8,6 +8,7 @@ from lessons.forms import adminForms
 from lessons.forms.adminForms import bookingForm as BookingForm
 from lessons.models import LessonBooking, LessonRequest, Student
 from django.http import Http404
+from lessons.views.student import makeInvoice
 
 
 
@@ -168,7 +169,11 @@ def get_init_booking_data(id):
     #print (request.availability)
     return initial_data
 
-
-
+"""
+Open a student's invoice
+"""
+def viewInvoice(request, id):
+    lesson = LessonBooking.objects.get(pk=id)
+    return makeInvoice(lesson.request,id)
 
  
