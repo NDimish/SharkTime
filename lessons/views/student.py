@@ -57,15 +57,17 @@ def studentViewRequests(request,Logged_ID):
     return render(request,'studentViewRequests.html',data)
 
 @login_required
-def makeAndViewInvoice(request, Logged_ID, my_id):
+def viewInvoice(request, Logged_ID, my_id):
     lesson = get_object_or_404(database,id=my_id)
-    
+    return makeInvoice(lesson, my_id)
+
+def makeInvoice(lesson, my_id):
     invoice_number = f"{lesson.student_id.reference_number}-{'%03d' % my_id}"
     
     pricePer = 30
     price = pricePer * lesson.number_of_lessons
     
-    # Creat a buffer for receiving PDF data and intialise a pdf to save onto it
+    # Create a buffer for receiving PDF data and intialise a pdf to save onto it
     pdfBuffer = io.BytesIO()
 
     pdf = canvas.Canvas(pdfBuffer, pagesize=A4)
@@ -151,7 +153,6 @@ def makeAndViewInvoice(request, Logged_ID, my_id):
 
     return FileResponse(pdfBuffer, as_attachment=False, filename=f'invoice {invoice_number}.pdf')
     # as_attachment determines (primarily) whether the PDF will be downloaded automatically
-
 
 def studentMakeRequest(request, Logged_ID):
 
