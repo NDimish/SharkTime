@@ -45,35 +45,30 @@ class bookingForm(forms.ModelForm):
             "booking_method" : forms.Select(attrs={'class' : 'form-control'})
            }
 
-        def clean(self):
-            if self.lesson_start_date > self.lesson_end_date :
+        #OVERRIDE SAVE METHOD
+        def save(self, commit=True):
+            """Create a new user."""
+            instance = forms.ModelForm.save(self,False)
+            instance.lesson_start_date = self.cleaned_data['lesson_start_date']
+            instance.lesson_end_date = self.cleaned_data['lesson_end_date']
+            instance.lesson_teacher=self.cleaned_data['lesson_teacher']
+            instance.student_id = self.cleaned_data['student_id']
+            instance.Date = self.cleaned_data.get('Date')
+            instance.lesson_duration = self.cleaned_data['lesson_duration']
+            instance.lesson_interval = self.cleaned_data['lesson_interval']
+            instance.lesson_day_of_week = self.cleaned_data['lesson_day_of_week']
+            instance.lesson_type = self.cleaned_data['lesson_type']
+            instance.number_of_lessons = self.cleaned_data['number_of_lessons']
+            instance.lesson_time = self.cleaned_data['lesson_time']
+            instance.booking_method = self.cleaned_data['booking_method']
+            
+            if instance.lesson_start_date > instance.lesson_end_date :
                 raise ValidationError ( "The lesson end date must occur after the start date")
-        def save(self, *args, **kwargs):
-            self.full_clean()
-            super().save(*args, **kwargs)
-
-    #OVERRIDE SAVE METHOD
-    def save(self, commit=True):
-        """Create a new user."""
-        instance = forms.ModelForm.save(self,False)
-        instance.lesson_start_date = self.cleaned_data['lesson_start_date']
-        instance.lesson_end_date = self.cleaned_data['lesson_end_date']
-        instance.lesson_teacher=self.cleaned_data['lesson_teacher']
-        instance.student_id = self.cleaned_data['student_id']
-        instance.Date = self.cleaned_data.get('Date')
-        instance.lesson_duration = self.cleaned_data['lesson_duration']
-        instance.lesson_interval = self.cleaned_data['lesson_interval']
-        instance.lesson_day_of_week = self.cleaned_data['lesson_day_of_week']
-        instance.lesson_type = self.cleaned_data['lesson_type']
-        instance.number_of_lessons = self.cleaned_data['number_of_lessons']
-        instance.lesson_time = self.cleaned_data['lesson_time']
-        instance.booking_method = self.cleaned_data['booking_method']
-        
-        
-        if commit:
-            instance.save()
-        
-        return instance
+            
+            if commit:
+                instance.save()
+                self.save_m2m()
+            return instance
 
 
 
