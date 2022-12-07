@@ -1,7 +1,6 @@
 #Add helper functions here - includes validators 
 from django.core.exceptions import ValidationError
 import datetime
-from datetime import datetime, date 
 from django.utils.timezone import now
 
 CHOICE_DAY_OF_THE_WEEK = [
