@@ -11,6 +11,7 @@ urlpatterns =[
     path('addBooking/<int:id>/', adminViews.add_booking, name = 'add_booking'),
     path('editBooking/<int:id>/', adminViews.edit_booking, name = 'edit_booking'),
     path('editBooking/update/<int:id>', adminViews.editBookingRecord, name='editBookingRecord'),
+    path('viewInvoice/<int:id>',adminViews.viewInvoice,name='viewInvoice'),
     
 
 ]

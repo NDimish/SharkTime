@@ -15,7 +15,7 @@
                                         <th scope="col">Student</th>
                                         <th scope="col">Lesson Type</th>
                                         <th scope="col">book_status</th>
-                                        <th scope="col">ACTiONS</th>
+                                        <th scope="col">ACTIONS</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -70,6 +70,8 @@
                                             {% else %}
                                               <a class="btn btn-warning me-1" href="{% url 'add_booking' request.id  %}">Fulfil Request</a>
                                             {% endif %}
+
+                                            <a class="btn btn-success me-1" href="{% url 'viewInvoice' request.id  %}">View Invoice</a>
                                           </td>
                                         </tr>
                                       {% endfor %}
