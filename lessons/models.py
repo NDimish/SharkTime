@@ -172,9 +172,10 @@ class LessonRequest(models.Model):
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
     lesson_teacher = models.CharField(max_length = 20, default='')
     lesson_type = models.CharField(max_length=50, null=True)
-    lesson_start_date = models.DateField(null=False,default = now)
+    lesson_start_date = models.DateField(null=True,default = now)
     date_created = models.DateField(null=False,default = now)
     remarks = models.CharField(max_length=500, null=True)
+    lesson_day_of_week = models.IntegerField(blank = False , choices=helpers.CHOICE_DAY_OF_THE_WEEK )
     objects = models.Manager()
 
     def isFulfilled(self):
@@ -193,6 +194,16 @@ class LessonRequest(models.Model):
     #additionalInfo = models.TextField(default = "N/A")
     
 
+class Term(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20, null = False)
+    start_of_term_date = models.DateField(null=False,default = now)
+    end_of_term_date =  models.DateField(null=False,default = now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager() 
+
+
+    
 class LessonBooking(models.Model):
     id = models.AutoField(primary_key=True)
     request = models.ForeignKey(to=LessonRequest , related_name = 'LessonBookings', on_delete=models.CASCADE )
@@ -213,12 +224,7 @@ class LessonBooking(models.Model):
     lesson_interval = models.IntegerField(choices=CHOICE_LESSON_INTERVAL,default=1,blank=False)
     lesson_type = models.CharField(max_length=50, null=True)
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
+    lesson_day_of_week = models.IntegerField(blank = False , choices=helpers.CHOICE_DAY_OF_THE_WEEK )
     lesson_teacher = models.CharField(max_length = 20, default='')
     objects = models.Manager() 
-
-class Term(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=20, null = False)
-    start_of_term_date = models.DateField(null=False,default = now)
-    end_of_term_date =  models.DateField(null=False,default = now)
-    created_at = models.DateTimeField(auto_now_add=True)
+    term = models.ForeignKey(to=Term, related_name = 'Term', on_delete=models.CASCADE )
