@@ -106,6 +106,7 @@ def edit_booking(request,id):
         'lesson_time': obj.lesson_time,
         'lesson_duration': obj.lesson_duration,
         'lesson_interval': obj.lesson_interval,
+        'lesson_day_of_week': obj.lesson_day_of_week,
         'lesson_type':obj.lesson_type,
         'number_of_lessons':obj.number_of_lessons,
         
@@ -135,6 +136,7 @@ def update(request, id):
     member.lesson_type = request.POST['lesson_type']
     member.number_of_lessons = request.POST['number_of_lessons']
     member.lesson_interval = request.POST['lesson_interval']
+    member.lesson_day_of_week = request.POST['lesson_day_of_week']
     member.save()
     return HttpResponseRedirect(reverse('adminHome'))
 #@login_required
@@ -163,7 +165,7 @@ def get_init_booking_data(id):
         'request' : id,
         'lesson_teacher' : request.lesson_teacher ,
         'lesson_start_date' : request.lesson_start_date, 
-        #add day_of_week
+         'lesson_day_of_week' : request.lesson_day_of_week , 
         'lesson_time' : request.lesson_time,
         'lesson_duration' : request.lesson_duration,
         'lesson_interval' : request.lesson_interval,
