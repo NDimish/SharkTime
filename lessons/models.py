@@ -62,13 +62,13 @@ class Student(models.Model):
 
 
 #Admin class
-# class Admin(models.Model):
-#     #unique admin id 
-#     id = models.AutoField(primary_key=True)
-#     user = models.OneToOneField(User,on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     objects = models.Manager()
+class Administrator(models.Model):
+    #unique admin id 
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
 
 #Director class 
 class Director(models.Model):
@@ -94,6 +94,7 @@ class Teacher(models.Model):
         (1, 30),
         (2, 45),
     )
+
 
 
 class Payment(models.Model):
@@ -215,3 +216,9 @@ class LessonBooking(models.Model):
     lesson_teacher = models.CharField(max_length = 20, default='')
     objects = models.Manager() 
 
+class Term(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20, null = False)
+    start_of_term_date = models.DateField(null=False,default = now)
+    end_of_term_date =  models.DateField(null=False,default = now)
+    created_at = models.DateTimeField(auto_now_add=True)
