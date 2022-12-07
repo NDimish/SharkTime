@@ -169,7 +169,9 @@ def get_init_booking_data(id):
     #print (request.availability)
     return initial_data
 
-
+"""
+Open a student's invoice
+"""
 def viewInvoice(request, id):
     lesson = LessonBooking.objects.get(pk=id)
     return makeInvoice(lesson.request,id)
