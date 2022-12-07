@@ -7,7 +7,8 @@ from django.urls import reverse
 from django.utils.timezone import now
 from lessons.models import User, Student
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,logout
+from django.contrib.auth import login as AuthLogin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
@@ -32,17 +33,14 @@ def loginPage(request):
     alert=""
     form = login(request.POST or None)
     if form.is_valid():
+        userdata = get_user_model()
         formResult = form.save(commit=True)
-        #Authentication of values
-        username = form.cleaned_data.get('email')
+        username = userdata.objects.get(email=form.cleaned_data.get('email')).username
         password = form.cleaned_data.get('password')
-        user = authenticate(username=username,password = password)
-
-        if(formResult == "F"):
-            alert = "Somthings wrong with your details"
-        else:
-            user = get_user_model()
-            user1= user.objects.get(username = username)
+        user = authenticate(request,username=username)
+        if(user is not None):
+            AuthLogin(request,user)
+            user1= userdata.objects.get(username = username)
             Logged_ID = user1.id
             #redirects the page based on the role
             if(formResult == 'S'):
@@ -51,6 +49,8 @@ def loginPage(request):
                 return HttpResponseRedirect(reverse('adminHome'))
             elif(formResult == 'D'):
                 return HttpResponseRedirect(reverse('directorHome',args=(Logged_ID,)))
+        else:
+            alert = "Somthings wrong with your details"
 
     data ={
         'form':form,

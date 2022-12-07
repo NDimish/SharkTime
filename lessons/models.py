@@ -168,7 +168,7 @@ class LessonRequest(models.Model):
     lesson_interval = models.IntegerField(blank=False,choices=helpers.CHOICE_LESSON_INTERVAL, default=1 )
     lesson_duration = models.IntegerField(blank=False, choices=helpers.CHOICE_LESSON_DURATION, default=1)
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
-    lesson_teacher = models.CharField(max_length = 20, default='')
+    lesson_teacher = models.ForeignKey(to=Teacher, related_name = 'Teaching', on_delete=models.CASCADE )
     lesson_type = models.CharField(max_length=50, null=True)
     lesson_start_date = models.DateField(null=False,default = now)
     date_created = models.DateField(null=False,default = now)

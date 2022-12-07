@@ -41,14 +41,17 @@ class signUp(forms.Form):
         if(dataCheck.count() >0):
             return False
 
-        user1 = sign.objects.create(
+        user1 = sign(
         username = self.cleaned_data.get('email'),
-        password = self.cleaned_data.get('password'),
         first_name = self.cleaned_data.get('first_name'),
         last_name = self.cleaned_data.get('last_name'),
         email = self.cleaned_data.get('email'),
         role = 'S',
+       # password=self.cleaned_data.get('password'),
+        is_active = True,
         )
+        user1.set_password(self.cleaned_data.get('password'))
+        user1.save()
 
 
         sys_user1 = User.objects.create(
@@ -78,8 +81,8 @@ class login(forms.Form):
 
     class Meta:
         fields=(
-            "email ",
-            "password ",
+            "email",
+            "password",
         )
 
     def save(self, commit=True):
@@ -88,6 +91,6 @@ class login(forms.Form):
             return "F"
 
         passwordCheck = sign.objects.filter(email = self.cleaned_data.get('email'))
-        if(passwordCheck[0].password == self.cleaned_data.get('password')):
+        if(userCheck[0].password == self.cleaned_data.get('password')):
              return userCheck[0].role
         return "F"
