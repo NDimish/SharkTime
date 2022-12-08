@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.contrib.auth.models import UserManager
 import uuid 
+import random
 
 
 #helper file 
@@ -17,6 +18,8 @@ from django.utils.translation import gettext_lazy as _
 LESSON_DURATION_MAX_LENGTH=10
 LESSON_INTERVAL_MAX_LENGTH=22
 
+def random_id():
+    return str(random.randint(1111,9999))
 #The User model 
 class User(AbstractUser):
     USER_ROLES = (
@@ -42,20 +45,13 @@ class Student(models.Model):
     #unique student_id 
     id = models.AutoField(primary_key=True)
     #unique 4 digit student reference number
-    reference_number =models.CharField(default=str(uuid.uuid4().int)[:4], editable=False, max_length=4)
+    reference_number =models.CharField(default = random_id, max_length=4, null=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     nick_name = models.CharField(max_length=500, null=True)
     age = models.IntegerField(null=False)
     objects = models.Manager()
-    icon_url = models.CharField(max_length=500, null=True)
-    # class Meta:
-    #     constraints = [
-    #         models.UniqueConstraint(
-    #             fields=['reference_number'], name='unique_migration_refno_combination'
-    #         )
-    # ]
+
 
     def __str__(self):
         return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
@@ -68,7 +64,6 @@ class Administrator(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
 #Director class 
@@ -77,24 +72,24 @@ class Director(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
 class Teacher(models.Model):
-    reference_number = models.CharField(max_length=50, null=False)
-    name = models.CharField(max_length=50, null=True)
-    email = models.CharField(max_length=30, null=True)
-    nick_name = models.CharField(max_length=20, null=True)
-    special = models.CharField(max_length=10, null=True)
-    password = models.CharField(max_length=100, null=True)
-    create_time = models.DateTimeField(null=False)
-    update_time = models.DateTimeField(null=False)
+    id = models.AutoField(primary_key=True)
+    email = models.CharField( max_length=30, null=True)
+    CHOICE_TITLE = ((1, "MRS") , (2, "MR") , (3,"MISS") , (4,"MS"))
 
     CHOICE_LESSON_DURATION = (
         (3, 60),
         (1, 30),
         (2, 45),
     )
+    reference_number = models.CharField(max_length=50, null=False)
+    title = models.IntegerField(choices=CHOICE_TITLE,default=1,blank=False)
+    name = models.CharField(max_length=50, null=True)
+    speciality = models.CharField(max_length=10, null=True)
+    objects = models.Manager()
+    
 
 
 
@@ -138,15 +133,10 @@ class Sys_user_authority(models.Model):
 
 class Lesson(models.Model):
     name = models.CharField(max_length=50, null=True)
-    lesson_num = models.IntegerField()
     lesson_price = models.FloatField()
-    interval = models.IntegerField()
     duration = models.IntegerField()
     description = models.CharField(max_length=500, null=True)
-    create_time = models.DateTimeField(null=False)
-    update_time = models.DateTimeField(null=False)
-
-
+    objects = models.Manager()
 
     CHOICE_LESSON_DURATION = (
         (3, 60),
