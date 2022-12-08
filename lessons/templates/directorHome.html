@@ -7,4 +7,27 @@
 <h1>Hello djjango<h1></h1>
 {%endif%}
 
+
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">email</th>
+        <th scope="col">role</th>
+        <th scope="col">ID</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for data in database%}
+        <tr class="table-info">
+            <th scope="row">{{data.email}}</th>
+            <td>{{data.role}}</td>
+            <td>{{data.id}}</td>
+            <td><a href="{% url 'UserFormPage' Logged_ID data.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
+          </tr>
+    {%endfor%}
+
 {% endblock body  %}

@@ -16,7 +16,7 @@ def studentHomePage(request,Logged_ID):
     obj = User.objects.filter(id = Logged_ID).first()
     data = {
         'name' : obj.first_name ,
-        'Available_lessons' : [23,3,4,4,2],
+        'Available_lessons' : Lesson.objects.filter(),
         'Logged_ID':Logged_ID
     }
 

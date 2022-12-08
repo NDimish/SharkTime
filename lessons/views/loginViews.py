@@ -61,3 +61,8 @@ def loginPage(request):
         'form':form,
         'alert':alert,}
     return render(request,'login.html',data)
+
+
+def logoutPage(request):  
+    logout(request)
+    return HttpResponseRedirect(reverse('home' ))

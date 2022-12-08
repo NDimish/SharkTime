@@ -32,18 +32,12 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'studentViewRequests' Logged_ID %}">View Request</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">View Dependents</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">View Invoices</a>
-                  </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">settings</a>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="#">Edit Account</a>
                       <a class="dropdown-item" href="#">Contact Admin</a>
-                      <a class="dropdown-item" href="#">Sign out</a>
+                      <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Report</a>
                     </div>
