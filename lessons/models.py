@@ -51,7 +51,6 @@ class Student(models.Model):
     nick_name = models.CharField(max_length=500, null=True)
     age = models.IntegerField(null=False)
     objects = models.Manager()
-<<<<<<< HEAD
     icon_url = models.CharField(max_length=500, null=True)
     dependent_id = models.IntegerField(null=True)
     # class Meta:
@@ -60,9 +59,7 @@ class Student(models.Model):
     #             fields=['reference_number'], name='unique_migration_refno_combination'
     #         )
     # ]
-=======
 
->>>>>>> b416423c3d10f5218496a32595f17f754cec499f
 
     def __str__(self):
         return (self.user.first_name + " " + self.user.last_name + " ID ("  + str(self.id) + ")" + "reference_number = " + self.reference_number)  
