@@ -1,15 +1,27 @@
 {% extends 'directorBase.html' %}
 {% block body  %}
 {% block content %}
+
+{%if alert%}
+<div class="alert alert-dismissible bg-success">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <strong>yaay</strong> <a href="#" class="alert-link">{{alert}}</a>.
+</div>
+{%endif%}
+
 <div class="container">
   <div class="row">
     <div class="col-12">
       <h1>Request</h1>
-      <form action="{% url 'editrecord' data.id %}" method="POST">
+      <form action="{{ request.get_full_path }}" method="POST">
         {% csrf_token %}
         {% include 'bootstrap_form.html' with form=form %}
+        {%if my_id == 0%}
+        <input type="submit" value="Save" name = "Create" class="btn btn-primary">
+        {%else%}
         <input type="submit" value="Save" name = "Edit" class="btn btn-primary">
         <input type="submit" value="Delete" name = "Delete"  class="btn btn-primary">
+        {%endif%}
       </form>
     </div>
   </div>

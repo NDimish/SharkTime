@@ -8,6 +8,7 @@ from ..forms import directorForms
 from lessons.models import User as database
 from lessons import models
 from lessons.forms import directorForms
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -18,6 +19,7 @@ def directorHomePage(request,Logged_ID):
     data ={
         'name' : database.objects.get(id =Logged_ID).first_name,
         'Logged_ID' : Logged_ID,
+        'value' : 0,
         'database':database.objects.filter()
     }
 
@@ -26,18 +28,29 @@ def directorHomePage(request,Logged_ID):
 
 
 
-def FormRender( request,Logged_ID,my_id,inputform,formtype):
-
-    if (my_id == -1):
-        form = inputform(request.POST or None)
+def FormRender( request,Logged_ID,my_id,inputdatabase,formtype):
+    alert = ""
+    if (my_id == 0):
+        form = formtype(request.POST or None)
     else:
-        form = formtype(request.POST or None, instance =inputform.objects.get(id=my_id))
+        obj =  get_object_or_404(inputdatabase,id =my_id)
+        form = formtype(request.POST or None, instance =obj)
     if form.is_valid():
-        form.save(commit=True)
-
+        if("Edit" in request.POST):
+            form.save()
+            alert = "form saved"
+        elif("Delete" in request.POST):
+            instance = inputdatabase.objects.get(id=my_id)
+            instance.delete()
+            return HttpResponseRedirect(reverse('directorHome' , args =(Logged_ID,)) )
+        elif("Create" in request.POST):
+            form.save()
+            return HttpResponseRedirect(reverse('directorHome' , args =(Logged_ID,)) )
     data ={
         "form" : form,
-        'Logged_ID' : Logged_ID
+        'Logged_ID' : Logged_ID,
+        'my_id' : my_id,
+        "alert":alert
     }
 
 
