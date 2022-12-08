@@ -229,3 +229,41 @@ def delete(request,Logged_ID, my_id):
   member = database.objects.get(id=my_id)
   member.delete()
   return HttpResponseRedirect(reverse('studentViewRequests' , args =(Logged_ID,)) )
+
+
+@login_required
+def studentDependent(request, Logged_ID):
+    student_dependent = Student.objects.filter(dependent_id=Logged_ID)
+    data = {
+        'students': student_dependent,
+    }
+    return render(request, 'booking/studentDependentView.html', data)
+
+
+@login_required
+def studentEditDependent(request, Logged_ID, student_id):
+    try:
+        obj = get_object_or_404(database, id=student_id)
+    except database.DoesNotExist:
+        raise Http404
+    if (obj.book_status != "P"):
+        return HttpResponseRedirect(reverse('studentHome', args=(Logged_ID,)))
+
+    context = {
+        'lesson_teacher': obj.lesson_teacher,
+        'lesson_start_date': obj.lesson_start_date,
+        'lesson_time': obj.lesson_time,
+        'lesson_duration': obj.lesson_duration,
+        'lesson_type': obj.lesson_type,
+        'number_of_lessons': obj.number_of_lessons,
+        'student_id': obj.student_id,
+    }
+    form = make_request(request.POST or None, initial=context)
+
+    data = {
+        'data': obj,
+        'form': form,
+        'Logged_ID': Logged_ID
+    }
+
+    return render(request, 'editrequest.html', data)
