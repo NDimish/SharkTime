@@ -236,6 +236,7 @@ def studentDependent(request, Logged_ID):
     student_dependent = Student.objects.filter(dependent_id=Logged_ID)
     data = {
         'students': student_dependent,
+         'Logged_ID': Logged_ID,
     }
     return render(request, 'booking/studentDependentView.html', data)
 

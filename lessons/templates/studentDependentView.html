@@ -3,8 +3,6 @@
 
 <h1>student dependent list  </h1>
 
-<h1>Student dependent list </h1>
-
     <div class="card text-white bg-warning mb-3" >
         <div class="card-header">Dependent</div>
         <div class="card-body">
@@ -28,7 +26,7 @@
                         <td>{{Student.reference_number}}</td>
                         <td>{{Student.nick_name}}</td>
                         <td>{{Student.age}}</td>
-                        <td><a href="{% url 'editDependentRequest' Logged_ID Student.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
+                        <td><a href="" class = "btn btn-primary">Edit/Delete</a> </a></td>
                       </tr>
                   {%endfor%}
                 </tbody>
@@ -36,5 +34,3 @@
 
         </div>
     </div>
-
-{% endblock body  %}
