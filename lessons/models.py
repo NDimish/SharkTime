@@ -51,7 +51,6 @@ class Student(models.Model):
     nick_name = models.CharField(max_length=500, null=True)
     age = models.IntegerField(null=False)
     objects = models.Manager()
-    icon_url = models.CharField(max_length=500, null=True)
     dependent_id = models.IntegerField(null=True)
     # class Meta:
     #     constraints = [
