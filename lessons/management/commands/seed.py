@@ -3,12 +3,12 @@ import random
 
 
 from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority,  LessonBooking,  Term, \
-    LessonRequest
+    LessonRequest, User
 from django.core.management.base import BaseCommand
 from faker import Faker
 from django_seed import Seed
 
-seeder = Seed.seeder()
+Seeder = Seed.seeder()
 import datetime as dt
 import numpy as np
 FORMAT =  "%Y-%m-%d"
@@ -18,9 +18,17 @@ specialList = ["piano", "violin", "guitar", "guitar", "drums", "saxophone", "cel
 
 
 class Command(BaseCommand):
+    def __init__(self):
+        super().__init__()
+        self.faker = Faker('en_GB', 0)
+
+
     def handle(self, *args, **options):
         self.create_Terms()
         self.seed_teacher()
+        self.seed_student()
+        self.seed_Lesson()
+       # self.seed_Sys_user()
 
 
 # It is more accurate to use faker to write
@@ -71,53 +79,54 @@ class Command(BaseCommand):
         term6.save()
         print ("Term Seeding Complete")
 
-    def seed_Lesson():
-        faker = Faker("en_UK")
-        for name in specialList:
-            lesson = Lesson
-            lesson.name = name
-            lesson.lesson_num = 50  # how many the lesson num suitable?
-            lesson.lesson_price = random("price")
-            lesson.interval = random("interval")
-            lesson.duration = "30,60,90"
-            lesson.description = name
-            lesson.create_time = datetime.datetime.now()
-            lesson.update_time = datetime.datetime.now()
 
 
-    def seed_teacher():
-        faker = Faker("en_UK")
+    def seed_teacher(self):
+
         list_teacher_name = []
         for i in range(1, 101):
-            teacher = Teacher()
-            teacher.reference_number = faker.ean8()
-            teacher.last_name = faker.last_name()
-            teacher.email = faker.emal()
-            teacher.title = faker.title()
-            teacher.nick_name = faker.company()
-            teacher.special = np.random_special()
-            teacher.password = faker.password()
-            teacher.create_time = datetime.datetime.now()
-            teacher.update_time = datetime.datetime.now()
+            teacher = Teacher.objects.create(
+            reference_number = self.faker.ean8(),
+            email = self.faker.email(),
+            title = self.random_title(),
+            name = self.faker.last_name(),
+            speciality = specialList[np.random.randint(0,8)])
             # insert data to sqlite3 db
-            Teacher.objects.update(teacher)
+            teacher.save()
+        print("Teacher seeding complete")
+    
+    def seed_Lesson(self):
+
+        for l_name in specialList:
+            lesson = Lesson.objects.create(
+                name = l_name,
+                lesson_price = random.randint(30,100),
+                duration = np.random.randint(1,4),
+
+            )
+            lesson.save()
+        print("Lesson seeding complete")
+      
 
 
-    def seed_student():
+    def seed_student(self):
         faker = Faker("en_UK")
         for i in range(1, 101):
-            student = Student()
-            student.reference_number = faker.ean8()
-            student.first_name = faker.first_name()
-            student.last_name = faker.last_name()
-            student.birth_date = faker.date_of_birth()
-            student.password = faker.password()
-            student.email = faker.email()
-            student.nick_name = faker.company()
-            student.create_time = datetime.datetime.now()
-            student.update_time = datetime.datetime.now()
-            # insert data to sqlite3 db
-            Student.objects.update(student)
+            student_user = User.objects.create(
+                role = "S",
+                first_name = self.faker.first_name(),
+                last_name = self.faker.last_name(),
+                username  = self.faker.name(),
+                email = self.faker.email(),
+            )
+            student_user.save()
+            student = Student.objects.create(
+                user = student_user,
+                nick_name = self.faker.first_name(),
+                age = np.random.randint(8,19)
+            )
+            student.save()
+        print("Student seeding complete")
 
 
 # # Put some ordered action data and some snapshots here
@@ -125,11 +134,11 @@ class Command(BaseCommand):
 #     faker = Faker("en_UK")
 #     for i in range(1, 101):
 #         lessonbook = LessonBook()
-#         lessonbook.lesson_id = faker.ean8()
+#         lessonbook.lesson_id = self.faker.ean8()
 #         lessonbook.lesson_name = random_special()
 #         lessonbook.book_status = 1
 #         lessonbook.booking_time = datetime.datetime.now()
-#         lessonbook.student_id = faker.ean8()
+#         lessonbook.student_id = self.faker.ean8()
 #         lessonbook.create_time = datetime.datetime.now()
 #         lessonbook.update_time = datetime.datetime.now()
 #         LessonBook.objects.update(lessonbook)
@@ -139,22 +148,22 @@ class Command(BaseCommand):
 #     faker = Faker("en_UK")
 #     for i in range(1, 101):
 #         lessonconfirmed = LessonConfirmed()
-#         lessonconfirmed.lesson_id = faker.ean8()
-#         lessonconfirmed.teacher_id = faker.ean8()
+#         lessonconfirmed.lesson_id = self.faker.ean8()
+#         lessonconfirmed.teacher_id = self.faker.ean8()
 #         lessonconfirmed.schedule_time = datetime.timedelta(days=2)
 #         lessonconfirmed.finish_time = datetime.timedelta(days=2, hours=1)
 #         lessonconfirmed.create_time = datetime.datetime.now()
 #         lessonconfirmed.update_time = datetime.datetime.now()
 #         LessonConfirmed.objects.update(lessonconfirmed)
 
-    def seed_Term_Dates():
-        pass
 
-    def random_price():
+    def random_price(self):
         return round(np.random.uniform(5, 10), 1)
 
+    def random_title(self):
+        return np.random.randint(1,5)
 
-    def random_special():
+    def random_special(self):
         # special list
         index = random.randint(0, 7)
         return specialList[index]
@@ -166,36 +175,37 @@ class Command(BaseCommand):
             return np.random.randint(1, 15)
 
 
-    
 
 
-    # Here we use seed to automatically generate test data
-    def seed_Payment():
-        # write like this ,it will add 10 numbers of Lesson data
-        # we used seeder package
-        Seeder.add_entity(Payment, 100)
-        Seeder.execute()
+
+    # # Here we use seed to automatically generate test data
+    # def seed_Payment(self):
+    #     # write like this ,it will add 10 numbers of Lesson data
+    #     # we used seeder package
+
+    #     Seeder.add_entity(Payment, 100)
+    #     Seeder.execute()
 
 
-    def seed_Sys_user():
-        # write like this ,it will add 10 numbers of Lesson data
-        # we used seeder package
-        Seeder.add_entity(Sys_user, 10)
-        Seeder.execute()
+    # def seed_Sys_user(self):
+    #     # write like this ,it will add 10 numbers of Lesson data
+    #     # we used seeder package
+    #     Seeder.add_entity(Sys_user, 10)
+    #     Seeder.execute(self)
 
 
-    def seed_Sys_authority():
-        # write like this ,it will add 10 numbers of Lesson data
-        # we used seeder package
-        Seeder.add_entity(Sys_authority, 10)
-        Seeder.execute()
+    # def seed_Sys_authority(self):
+    #     # write like this ,it will add 10 numbers of Lesson data
+    #     # we used seeder package
+    #     Seeder.add_entity(Sys_authority, 10)
+    #     Seeder.execute()
 
 
-    def seed_Sys_user_authority():
-        # write like this ,it will add 10 numbers of Lesson data
-        # we used seeder package
-        Seeder.add_entity(Sys_user_authority, 10)
-        Seeder.execute()
+    # def seed_Sys_user_authority(self):
+    #     # write like this ,it will add 10 numbers of Lesson data
+    #     # we used seeder package
+    #     Seeder.add_entity(Sys_user_authority, 10)
+    #     Seeder.execute()
 
 
 
