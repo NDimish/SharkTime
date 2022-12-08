@@ -3,3 +3,6 @@ Django
 Faker
 django-widget-tweaks
 reportlab
+django-seed
+psycopg2-binary
+numpy 

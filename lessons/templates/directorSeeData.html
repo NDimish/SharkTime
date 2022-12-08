@@ -1,0 +1,29 @@
+{% extends 'directorBase.html' %}
+{% block body  %}
+
+
+
+<h1> Make {{text}} </h1>
+
+<a href="{% url URL Logged_ID value %}" class="btn btn-lg btn-outline-primary">New {{text}}</button></a>
+
+<h1>View {{text}}</h1>
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      {% for data in database%}
+        <tr class="table-info">
+            <th scope="row">{{data.id}}</th>
+            <td><a href="{% url URL Logged_ID data.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
+          </tr>
+    {%endfor%}
+
+{% endblock body  %}

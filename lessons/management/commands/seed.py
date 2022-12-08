@@ -1,9 +1,14 @@
 import datetime
 import random
-from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonRequest, LessonBooking,  Term
+
+
+from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonRequest, LessonBooking,  Term, \
+    LessonRequest
 from django.core.management.base import BaseCommand
 from faker import Faker
-from django_seed.seeder import Seeder
+from django_seed import Seed
+
+seeder = Seed.seeder()
 import datetime as dt
 import numpy as np
 FORMAT =  "%Y-%m-%d"
@@ -114,32 +119,32 @@ class Command(BaseCommand):
             Student.objects.update(student)
 
 
-    # Put some ordered action data and some snapshots here
-    # def seed_lessonBook():
-    #     faker = Faker("en_UK")
-    #     for i in range(1, 101):
-    #         lessonbook = LessonRequest()
-    #         lessonbook.lesson_id = faker.ean8()
-    #         lessonbook.lesson_name = random_special()
-    #         lessonbook.book_status = 1
-    #         lessonbook.booking_time = datetime.datetime.now()
-    #         lessonbook.student_id = faker.ean8()
-    #         lessonbook.create_time = datetime.datetime.now()
-    #         lessonbook.update_time = datetime.datetime.now()
-    #         LessonRequest.objects.update(lessonbook)
+# Put some ordered action data and some snapshots here
+def seed_lessonBook():
+    faker = Faker("en_UK")
+    for i in range(1, 101):
+        lessonbook = LessonBook()
+        lessonbook.lesson_id = faker.ean8()
+        lessonbook.lesson_name = random_special()
+        lessonbook.book_status = 1
+        lessonbook.booking_time = datetime.datetime.now()
+        lessonbook.student_id = faker.ean8()
+        lessonbook.create_time = datetime.datetime.now()
+        lessonbook.update_time = datetime.datetime.now()
+        LessonBook.objects.update(lessonbook)
 
 
-    # def seed_lessonConfirmed():
-    #     faker = Faker("en_UK")
-    #     for i in range(1, 101):
-    #         lessonbooking = LessonBooking()
-    #         lessonbooking.lesson_id = faker.ean8()
-    #         lessonbooking.teacher_id = faker.ean8()
-    #         lessonbooking.schedule_time = datetime.timedelta(days=2)
-    #         lessonbooking.= datetime.timedelta(days=2, hours=1)
-    #         lessonbooking.create_time = datetime.datetime.now()
-    #         lessonbooking.update_time = datetime.datetime.now()
-    #         LessonBooking.objects.update(lessonbooking)
+def seed_lessonConfirmed():
+    faker = Faker("en_UK")
+    for i in range(1, 101):
+        lessonconfirmed = LessonConfirmed()
+        lessonconfirmed.lesson_id = faker.ean8()
+        lessonconfirmed.teacher_id = faker.ean8()
+        lessonconfirmed.schedule_time = datetime.timedelta(days=2)
+        lessonconfirmed.finish_time = datetime.timedelta(days=2, hours=1)
+        lessonconfirmed.create_time = datetime.datetime.now()
+        lessonconfirmed.update_time = datetime.datetime.now()
+        LessonConfirmed.objects.update(lessonconfirmed)
 
     def seed_Term_Dates():
         pass
@@ -153,15 +158,14 @@ class Command(BaseCommand):
         index = random.randint(0, 7)
         return specialList[index]
 
-
     def random(type):
         if type == "price":
-            return round(np.random.uniform(5, 10), 1)
+            return round(np.random.int(5, 10), 1)
         if type == "interval":
             return np.random.randint(1, 15)
 
 
-    random_price()
+    
 
 
     # Here we use seed to automatically generate test data

@@ -56,7 +56,16 @@ def FormRender( request,Logged_ID,my_id,inputdatabase,formtype):
 
     return render(request,'directorDataChange.html',data)
 
+def ShowRender( request,Logged_ID,inputdatabase,pagetype,url):
 
+    data ={
+        "URL" :url,
+        "text" : pagetype,
+        'Logged_ID' : Logged_ID,
+        "database":inputdatabase.objects.filter(),
+        "value":0
+    }
+    return render(request,'directorSeeData.html',data)
 
 
 
@@ -107,3 +116,58 @@ def LessonRequestFormPage(request,Logged_ID,my_id):
 def LessonBookingFormPage(request,Logged_ID,my_id):
 
     return(FormRender( request,Logged_ID,my_id,models.LessonBooking,directorForms.LessonBookingform))
+
+
+
+
+
+
+
+
+
+def UserShowPage(request,Logged_ID,):
+
+
+    return(ShowRender( request,Logged_ID,models.User,"user",'UserFormPage'))
+
+
+def StudentShowPage(request,Logged_ID,):
+
+
+    return(ShowRender( request,Logged_ID,models.Student,"student",'StudentFormPage'))
+
+def DirectorShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Director,"Director",'DirectorFormPage'))
+
+def TeacherShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Teacher,"Teacher",'TeacherFormPage'))
+
+def PaymentShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Payment,"Payment",'PaymentFormPage'))
+
+def Sys_userShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Sys_user,"Sys_user",'Sys_userFormPage'))
+
+def Sys_authorityShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Sys_authority,"Authorities",'Sys_authorityFormPage'))
+
+def Sys_user_authorityShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Sys_user_authority,"UserAuthorities",'Sys_user_authorityFormPage'))
+
+def LessonShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.Lesson,"lessons",'LessonFormPage'))
+
+def LessonRequestShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.LessonRequest,"lesson Requests",'LessonRequestFormPage'))
+
+def LessonBookingShowPage(request,Logged_ID,):
+
+    return(ShowRender( request,Logged_ID,models.LessonBooking,"lesson booked",'LessonBookingFormPage'))
