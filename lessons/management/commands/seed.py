@@ -2,7 +2,7 @@ import datetime
 import random
 
 
-from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonRequest, LessonBooking,  Term, \
+from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority,  LessonBooking,  Term, \
     LessonRequest
 from django.core.management.base import BaseCommand
 from faker import Faker
@@ -20,6 +20,7 @@ specialList = ["piano", "violin", "guitar", "guitar", "drums", "saxophone", "cel
 class Command(BaseCommand):
     def handle(self, *args, **options):
         self.create_Terms()
+        self.seed_teacher()
 
 
 # It is more accurate to use faker to write
@@ -57,8 +58,8 @@ class Command(BaseCommand):
 
         term5 = Term.objects.create(
         name =  "Term five",
-        start_of_term_date = dt.datetime.strptime( "2023-17-04", FORMAT),
-        end_of_term_date = dt.datetime.strptime( "2023-26-05", FORMAT)
+        start_of_term_date = dt.datetime.strptime( "2023-04-17", FORMAT),
+        end_of_term_date = dt.datetime.strptime( "2023-05-26", FORMAT)
         )
         term5.save()
 
@@ -94,7 +95,7 @@ class Command(BaseCommand):
             teacher.email = faker.emal()
             teacher.title = faker.title()
             teacher.nick_name = faker.company()
-            teacher.special = random_special()
+            teacher.special = np.random_special()
             teacher.password = faker.password()
             teacher.create_time = datetime.datetime.now()
             teacher.update_time = datetime.datetime.now()
@@ -119,32 +120,32 @@ class Command(BaseCommand):
             Student.objects.update(student)
 
 
-# Put some ordered action data and some snapshots here
-def seed_lessonBook():
-    faker = Faker("en_UK")
-    for i in range(1, 101):
-        lessonbook = LessonBook()
-        lessonbook.lesson_id = faker.ean8()
-        lessonbook.lesson_name = random_special()
-        lessonbook.book_status = 1
-        lessonbook.booking_time = datetime.datetime.now()
-        lessonbook.student_id = faker.ean8()
-        lessonbook.create_time = datetime.datetime.now()
-        lessonbook.update_time = datetime.datetime.now()
-        LessonBook.objects.update(lessonbook)
+# # Put some ordered action data and some snapshots here
+# def seed_lessonBook():
+#     faker = Faker("en_UK")
+#     for i in range(1, 101):
+#         lessonbook = LessonBook()
+#         lessonbook.lesson_id = faker.ean8()
+#         lessonbook.lesson_name = random_special()
+#         lessonbook.book_status = 1
+#         lessonbook.booking_time = datetime.datetime.now()
+#         lessonbook.student_id = faker.ean8()
+#         lessonbook.create_time = datetime.datetime.now()
+#         lessonbook.update_time = datetime.datetime.now()
+#         LessonBook.objects.update(lessonbook)
 
 
-def seed_lessonConfirmed():
-    faker = Faker("en_UK")
-    for i in range(1, 101):
-        lessonconfirmed = LessonConfirmed()
-        lessonconfirmed.lesson_id = faker.ean8()
-        lessonconfirmed.teacher_id = faker.ean8()
-        lessonconfirmed.schedule_time = datetime.timedelta(days=2)
-        lessonconfirmed.finish_time = datetime.timedelta(days=2, hours=1)
-        lessonconfirmed.create_time = datetime.datetime.now()
-        lessonconfirmed.update_time = datetime.datetime.now()
-        LessonConfirmed.objects.update(lessonconfirmed)
+# def seed_lessonConfirmed():
+#     faker = Faker("en_UK")
+#     for i in range(1, 101):
+#         lessonconfirmed = LessonConfirmed()
+#         lessonconfirmed.lesson_id = faker.ean8()
+#         lessonconfirmed.teacher_id = faker.ean8()
+#         lessonconfirmed.schedule_time = datetime.timedelta(days=2)
+#         lessonconfirmed.finish_time = datetime.timedelta(days=2, hours=1)
+#         lessonconfirmed.create_time = datetime.datetime.now()
+#         lessonconfirmed.update_time = datetime.datetime.now()
+#         LessonConfirmed.objects.update(lessonconfirmed)
 
     def seed_Term_Dates():
         pass
