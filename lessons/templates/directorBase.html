@@ -30,20 +30,30 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'directorHome' Logged_ID %}">Edit Bookings</a>
+                    <a class="nav-link" href="{% url 'LessonBookingShowPage' Logged_ID %}">Edit Bookings</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Edit Students</a>
+                    <a class="nav-link" href="{% url 'LessonRequestShowPage' Logged_ID %}">Edit Requests</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Edit Administrators</a>
+                    <a class="nav-link" href="{% url 'LessonShowPage' Logged_ID %}">Edit Default lessons</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'StudentShowPage' Logged_ID %}">Edit Students</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'DirectorShowPage' Logged_ID %}">Edit Administrators</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'TeacherShowPage' Logged_ID %}">Teachers</a>
                   </li>
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Settings</a>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Other</a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">Edit Account</a>
-                      <a class="dropdown-item" href="#">Contact Admin</a>
-                      <a class="dropdown-item" href="#">Sign out</a>
+                      <a class="dropdown-item" href='PaymentShowPage'>Payments</a>
+                      <a class="dropdown-item" href='Sys_authorityShowPage'>Sys_authority</a>
+                      <a class="dropdown-item" href='Sys_user_authorityShowPage'>User authority</a>
+                      <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Report</a>
                     </div>

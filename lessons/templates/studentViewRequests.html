@@ -18,6 +18,7 @@
                     <th scope="col">Teacher</th>
                     <th scope="col">Lesson Date</th>
                     <th scope="col">Lesson Time</th>
+                    <th scope="col">ID</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
@@ -30,6 +31,7 @@
                         <td>{{Bookings.lesson_teacher}}</td>
                         <td>{{Bookings.lesson_start_date}}</td>
                         <td>{{Bookings.lesson_time}}</td>
+                        <td>{{Bookings.id}</td>
                         <td><a href="{% url 'editrequest' Logged_ID Bookings.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
                       </tr>
                   {%endfor%}
