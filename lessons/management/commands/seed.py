@@ -1,10 +1,15 @@
 import datetime
 import random
 
-from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonBooking
+
+
+from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonBooking, \
+    LessonRequest
 from django.core.management.base import BaseCommand
 from faker import Faker
-from django_seed.seeder import Seeder
+from django_seed import Seed
+
+seeder = Seed.seeder()
 
 
 class Command(BaseCommand):
@@ -70,10 +75,10 @@ def seed_student():
 
 
 # Put some ordered action data and some snapshots here
-def seed_lessonBook():
+def seed_lessonRequest():
     faker = Faker("en_UK")
     for i in range(1, 101):
-        lessonbook = LessonBook()
+        lessonbook = LessonRequest()
         lessonbook.lesson_id = faker.ean8()
         lessonbook.lesson_name = random_special()
         lessonbook.book_status = 1
@@ -81,24 +86,23 @@ def seed_lessonBook():
         lessonbook.student_id = faker.ean8()
         lessonbook.create_time = datetime.datetime.now()
         lessonbook.update_time = datetime.datetime.now()
-        LessonBook.objects.update(lessonbook)
+        LessonRequest.objects.update(lessonbook)
 
 
-def seed_lessonConfirmed():
+def seed_lessonBooking():
     faker = Faker("en_UK")
     for i in range(1, 101):
-        lessonconfirmed = LessonConfirmed()
+        lessonconfirmed = LessonBooking()
         lessonconfirmed.lesson_id = faker.ean8()
         lessonconfirmed.teacher_id = faker.ean8()
         lessonconfirmed.schedule_time = datetime.timedelta(days=2)
         lessonconfirmed.finish_time = datetime.timedelta(days=2, hours=1)
         lessonconfirmed.create_time = datetime.datetime.now()
         lessonconfirmed.update_time = datetime.datetime.now()
-        LessonConfirmed.objects.update(lessonconfirmed)
+        LessonBooking.objects.update(lessonconfirmed)
 
 
-def random_price():
-    return round(random.uniform(5, 10), 1)
+
 
 
 def random_special():
@@ -106,15 +110,14 @@ def random_special():
     index = random.randint(0, 7)
     return specialList[index]
 
-
 def random(type):
     if type == "price":
-        return round(random.uniform(5, 10), 1)
+        return round(random.int(5, 10), 1)
     if type == "interval":
         return random.randint(1, 15)
 
 
-random_price()
+
 
 
 # Here we use seed to automatically generate test data

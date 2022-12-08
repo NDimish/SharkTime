@@ -20,7 +20,7 @@ from django.utils.timezone import now
     - Should display all student requests
 
 """
-#@login_required
+@login_required
 def admin_home(request):
     current_user = request.user
     #Get all requests 
@@ -31,21 +31,21 @@ def admin_home(request):
     return render(request, 'adminHome.html', context)
 
 #display all students in the school who have registered
-#@login_required
+@login_required
 def view_students(request):
     current_user = request.user
     students = Student.objects.all()
     context = {'students' : students}
     return render(request, 'adminViewStudents.html', context)
 
-#@login_required
+@login_required
 #view an individual request
 def view_request(request,id):
     #get the request from db with same pk as selected request
     a_request = LessonRequest.objects.get(pk=id)
     return HttpResponseRedirect(reverse ('adminHome.html'))
 
-#@login_required
+@login_required
 #view request page 
 def view_requests(request):
     #Get all requests
@@ -53,14 +53,14 @@ def view_requests(request):
     context = {'requests' : requests}
     #request_count = LessonRequest.objects.all().count()
     return render(request, 'adminViewRequests.html', context)
-#@login_required
+
+@login_required
 #display all incoming transacions 
 def view_transactions(request):
     students = Student.objects.all()
     context = {'students' : students}
     return render(request, 'adminViewTransactions.html',context)
-
-#@login_required
+@login_required
 #add a booking
 def add_booking(request,id):
     corresponding_request = LessonRequest.objects.get(pk=id)
@@ -164,6 +164,7 @@ def add_booking(request,id):
     print("return render")
     return render(request, 'adminAddBooking.html', context)
 
+@login_required
 def view_schedule(request,id) : 
     try:
         booking = LessonBooking.objects.filter(request=id).order_by('-id').first()
@@ -180,7 +181,7 @@ def view_schedule(request,id) :
     context = {'booking' : booking , 'date_list' : date_list, 'request' : req} #'term' : term}
     return render(request, "viewLessonSchedule.html", context)
 
-#@login_required
+@login_required
 def edit_booking(request,id):
     try:
         obj = LessonBooking.objects.filter(request=id).order_by('-id').first()
@@ -212,7 +213,7 @@ def edit_booking(request,id):
         'form' : form
     }
     return render(request, 'adminEditBooking.html', data)
-#@login_required
+@login_required
 def editBookingRecord(request,id):
     if('Update' in request.POST):
         return update(request,id)
@@ -222,7 +223,7 @@ def editBookingRecord(request,id):
         #change later
         return HttpResponseRedirect(reverse('adminHome'))
 
-#@login_required
+@login_required
 def update(request, id):
     member = LessonBooking.objects.get(pk=id)
     member.lesson_teacher = request.POST['lesson_teacher']
@@ -235,7 +236,7 @@ def update(request, id):
     member.lesson_day_of_week = request.POST['lesson_day_of_week']
     member.save()
     return HttpResponseRedirect(reverse('adminHome'))
-#@login_required
+@login_required
 def delete(request, id):
   member = LessonBooking.objects.get(pk=id)
   #corresponding_request = LessonRequest.objects.get(pk=id) 
@@ -255,7 +256,7 @@ def delete(request, id):
 """
 Create an initial booking object based on the request
 """
-#@login_required
+@login_required
 def get_init_booking_data(id):
     request = LessonRequest.objects.get(pk=id)
     initial_data = {
@@ -274,13 +275,14 @@ def get_init_booking_data(id):
     #print (request.availability)
     return initial_data
 
+@login_required
 #display all the term dates set
 def view_term_dates(request):
     term_dates = Term.objects.all()
     context = {'terms' : term_dates}
     return render(request, 'adminViewTermDates.html', context)
 
-#add a term
+@login_required
 def add_term(request):
     form =TermForm(request.POST or None)
     if 'Submit' in request.POST:
@@ -297,7 +299,7 @@ def add_term(request):
     context ={'form' : form }
     print("return render")
     return render(request, 'adminAddTermDates.html', context)
-
+@login_required
 def edit_term(request,id):
     try:
         obj = get_object_or_404(Term,pk=id)
@@ -317,6 +319,7 @@ def edit_term(request,id):
     }
     return render(request, 'adminEditTermDates.html', data) 
 
+@login_required
 #edit the selected term where id is the id of the selected term
 def edit_a_term(request, id):
     if('Update' in request.POST):
@@ -326,7 +329,7 @@ def edit_a_term(request, id):
     else:
         #change later
         return HttpResponseRedirect(reverse('adminViewTermDates'))
-
+@login_required
 def update_term(request,id):
 
     term = Term.objects.get(pk=id)
