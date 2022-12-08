@@ -29,17 +29,20 @@ def signUpPage(request):
     }
     return render(request,'signUp.html',data)
 
-def loginPage(request):
+def loginPage(request):  
     alert=""
     form = login(request.POST or None)
     if form.is_valid():
         userdata = get_user_model()
         formResult = form.save(commit=True)
-        username = userdata.objects.get(email=form.cleaned_data.get('email')).username
+        username = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
-        user = authenticate(request,username=username)
-        if(user is not None):
-            AuthLogin(request,user)
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                AuthLogin(request, user)
+            else:
+                alert = "user deactivated"    
             user1= userdata.objects.get(username = username)
             Logged_ID = user1.id
             #redirects the page based on the role
@@ -49,6 +52,8 @@ def loginPage(request):
                 return HttpResponseRedirect(reverse('adminHome'))
             elif(formResult == 'D'):
                 return HttpResponseRedirect(reverse('directorHome',args=(Logged_ID,)))
+            else:
+                alert = "your not a decided user "
         else:
             alert = "Somthings wrong with your details"
 

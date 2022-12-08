@@ -1,8 +1,7 @@
 import datetime
 import random
 
-from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonBook, \
-    LessonConfirmed
+from lessons.models import Lesson, Teacher, Student, Sys_user, Payment, Sys_authority, Sys_user_authority, LessonBooking
 from django.core.management.base import BaseCommand
 from faker import Faker
 from django_seed.seeder import Seeder
