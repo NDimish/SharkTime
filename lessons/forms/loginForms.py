@@ -57,7 +57,6 @@ class signUp(forms.Form):
         student1 = Student.objects.create(
             user=user1,
             created_at = now,
-            updated_at = now,
             nick_name = self.cleaned_data.get('nick_name'),
             age = self.cleaned_data.get('age'),
             icon_url = "/user/a.jpg",
