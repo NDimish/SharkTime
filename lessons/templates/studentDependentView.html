@@ -1,0 +1,40 @@
+{% extends 'studentBase.html' %}
+{% block body  %}
+
+<h1>student dependent list  </h1>
+
+<h1>Student dependent list </h1>
+
+    <div class="card text-white bg-warning mb-3" >
+        <div class="card-header">Dependent</div>
+        <div class="card-body">
+
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">reference number</th>
+                    <th scope="col">student name</th>
+                    <th scope="col">nick name</th>
+                    <th scope="col">age</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  {% for Student in students%}
+                    <tr class="table-info">
+                        <th scope="row">{{Student.created_at}}</th>
+                        <td>{{Student.reference_number}}</td>
+                        <td>{{Student.nick_name}}</td>
+                        <td>{{Student.age}}</td>
+                        <td><a href="{% url 'editDependentRequest' Logged_ID Student.id %}" class = "btn btn-primary">Edit/Delete</a> </a></td>
+                      </tr>
+                  {%endfor%}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock body  %}

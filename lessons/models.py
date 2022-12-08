@@ -50,6 +50,7 @@ class Student(models.Model):
     age = models.IntegerField(null=False)
     objects = models.Manager()
     icon_url = models.CharField(max_length=500, null=True)
+    dependent_id = models.IntegerField(null=True)
     # class Meta:
     #     constraints = [
     #         models.UniqueConstraint(
@@ -171,6 +172,7 @@ class LessonRequest(models.Model):
     lesson_interval = models.IntegerField(blank=False,choices=helpers.CHOICE_LESSON_INTERVAL, default=1 )
     lesson_duration = models.IntegerField(blank=False, choices=helpers.CHOICE_LESSON_DURATION, default=1)
     number_of_lessons = models.IntegerField(validators=[helpers.validateLessonNumber])
+    submit_depend_id = models.ForeignKey(to=Student, related_name='request_commit', on_delete=models.CASCADE)
     lesson_teacher = models.ForeignKey(to=Teacher, related_name = 'Teaching', on_delete=models.CASCADE )
     lesson_type = models.ForeignKey(to=Lesson, related_name = 'Lessontype', on_delete=models.CASCADE )
     lesson_start_date = models.DateField(null=True,default = now)
